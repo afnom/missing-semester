@@ -65,7 +65,7 @@ Downloading source code instead of compiled executables is much safer as the sou
 
 ## Build Systems
 
-Instead of having to deal with manually compiling, linking, and managing dependencies, build systems are available. These automatically detect hardware architecture and OS (if differences aren't specified, and build the source code files for the user automatically.
+Instead of having to deal with manually compiling, linking, and managing dependencies, build systems are available. These automatically detect hardware architecture and OS (if differences aren't specified), and build the source code files for the user automatically.
 
 These often use specific data files that specify dependencies, versions, and how to compile and link the source code files.
 
@@ -110,7 +110,7 @@ Building and running can also be done in containers like docker, and this is use
 
 ## Types of Executables
 
-Executables can be built as standalone executables, or with dependencies. Standalone executables don't require dependencies to be installed on the host os, as they include the dependency code inside them. Executable files with dependencies refer to installed libraries to access code, but these libraries need to be installed on the host OS to run.
+Executables can be built as standalone executables, or with dependencies. Standalone executables don't require dependencies to be installed on the host OS, as they include the dependency code inside them. Executable files with dependencies refer to installed libraries to access code, but these libraries need to be installed on the host OS to run.
 
 Standalone executables are a lot more portable, but are larger than their dependency-reliant counterparts. They can be quicker and smaller to install if the dependencies aren't often used, but if many executables require these dependencies, then it's often more storage-efficient to use dependencies.
 
