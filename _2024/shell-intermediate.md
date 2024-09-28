@@ -287,48 +287,6 @@ ps -aux | grep konsole
 
 and we can immediately see the three terminals open as this guide is written.
 
-# SSH
-
-Secure shell (SSH) is a protocol used to log in to another Linux computer over a network. The `ssh` tool is one of the most important utilities, as being able to use other computers without having to sit in front them is a key feature and something worth mastering. Here at UoB, all lab computers can be logged into remotely. This is useful if you wish to view or manage files stored in your CS account or run some computing task (such as machine learning) that is not suitable to be run on your local machine. Being logged into the CS network from home also allows you access services that are only available on the University intranet from anywhere. An example of one of these hosts only accessible from the University intranet is the servers used to host team projects for the 2nd year UG Team Project module.
-
-To log in to a remote machine with SSH, the command follows the format `ssh <username>@<host>`. At UoB, the username you use is your CS account name (e.g abc123) and the publicly accessible host is called tinky-winky, available at tinky-winky.cs.bham.ac.uk. So an example login might look like
-
-```bash
-ssh abc123@tinky-winky.cs.bham.ac.uk
-# abc123@tinky-winky.cs.bham.ac.uk's password:
-# [abc123@tinky-winky ~]$
-```
-where you get prompted for your CS password and then get dropped to a shell on tinky-winky. Tinky-winky acts as a "bastion" server, meaning that all hosts are accessible from it, but it is not to be used as a server for any work. If we want to start doing any work, we should then connect to a lab machine, which we can do with the command `ssh-lab`. We then get asked for our password again to log on to the machine. Once logged in, we have the same shell as if we sat down at the lab machine physically.
-
-Typing out a long password every time you wish to login can become cumbersome (especially so if you are using tools that connect on your behalf). To resolve this, we can use an SSH key. An SSH key consists of two parts: a private key and public key. In short, the public key is used by others to encrypt data to be sent to you, and the private is used by you to decrypt data sent to you. Since the private key serves as your identity, the key must be kept secret, ideally with a password used to encrypt it.
-
-For the university systems, password based login is always available so a key is not strictly required. Most servers however are configured with password based login disabled and only allow key login. This is due to the low security of the average password, possibility of brute forcing them, and the possibility of an attacker stealing the password with a malicious server. For these security reasons key authenticated is widely preferred.
-
-To generate a key, we use `ssh-keygen`. Current security practices recommend using the ed25519 key algorithm, so the full command to generate a new key is `ssh-keygen -t ed25519`. The key generation program is interactive and asks you for a name for the key and what password you would like to protect the key with.
-Keys and other SSH information are stored within the `.ssh` folder. The prefixed dot means the folder is hidden by default, so it will not appear in an `ls`. We can use the `-a` flag to list all files, which includes hidden ones. Once the key is generated, you will notice two new files inside your `.ssh` folder: `keyname` and `keyname.pub`. The .pub file is the public key, and the file without an extension is the private key.
-
-In order for the server you're connecting to to know about the key, you have to copy the public key to the server. To do this, you must edit the `.ssh/authorized_keys` file (note the American spelling), and paste in the contents of your .pub file into an empty line. Once you save the file, login with your key is now possible.
-
-Important note: never copy the private key. If you do so by accident, make sure you de-authorise the key from all servers it allows access to. 
-
-To login with a key, we can use the `-i` option in ssh, with the i standing for identity file. So for example, we may do `ssh -i .ssh/keyname abc123@tinky-winky.cs.bham.ac.uk`. You will not be asked for your CS account password as the key authenticates you and proves your identity.
-
-## SSHFS
-
-Another feature of SSH is the ability to mount a directory on the remote server on your local filesystem, allowing easy access to read and write to your files. To do this, we first create a mountpoint, and then use the `sshfs` command to mount the filesystem over SSH. Once we're done, we can then unmount the remote filesystem with `fusermount3 -u`. An example may look like the following:
-```bash
-mkdir mountpoint
-sshfs abc123@tinky-winky.cs.bham.ac.uk:/home/students/abc123 mountpoint
-ls mountpoint
-# <all the files in your CS account here>
-
-# some time later
-fusermount3 -u mountpoint
-# make sure the unmount succeeded before removing the mountpoint!
-rm -d mountpoint # tidy up afterwards. the d flag allows removing empty directories
-```
-As we can see, the `sshfs` command has three key components: the user and host we're connecting to, the directory on the host we want to mount, and the location on our filesystem and we are mounting it to.
-
 
 # Git
 
