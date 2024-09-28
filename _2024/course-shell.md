@@ -261,49 +261,18 @@ page_. Press `q` to exit.
 missing:~$ man ls
 ```
 
-## Connecting programs
-
-In the shell, programs have two primary "streams" associated with them:
-their input stream and their output stream. When the program tries to
-read input, it reads from the input stream, and when it prints
-something, it prints to its output stream. Normally, a program's input
-and output are both your terminal. That is, your keyboard as input and
-your screen as output. However, we can also rewire those streams!
-
-The simplest form of redirection is `< file` and `> file`. These let you
-rewire the input and output streams of a program to a file respectively:
+## Cat
 
 ```console
-missing:~$ echo hello > hello.txt
-missing:~$ cat hello.txt
-hello
-missing:~$ cat < hello.txt
-hello
-missing:~$ cat < hello.txt > hello2.txt
-missing:~$ cat hello2.txt
-hello
+missing:~$ cat /etc/hostname
 ```
 
-Demonstrated in the example above, `cat` is a program that con`cat`enates
-files. When given file names as arguments, it prints the contents of each of
-the files in sequence to its output stream. But when `cat` is not given any
-arguments, it prints contents from its input stream to its output stream (like
-in the third example above).
+Demonstrated in the example above, `cat` is a program that
+con`cat`enates files. When given file names as arguments, it prints the
+contents of each of the files in sequence to its output stream.
 
-You can also use `>>` to append to a file. Where this kind of
-input/output redirection really shines is in the use of _pipes_. The `|`
-operator lets you "chain" programs such that the output of one is the
-input of another:
-
-```console
-missing:~$ ls -l / | tail -n1
-drwxr-xr-x 1 root  root  4096 Jun 20  2019 var
-missing:~$ curl --head --silent google.com | grep --ignore-case content-length | cut --delimiter=' ' -f2
-219
-```
-
-We will go into a lot more detail about how to take advantage of pipes
-in later lectures on the shell.
+Regarding input/output streams, we will go into more detail on how to
+control and interact with these in later lectures on the linux shell.
 
 
 ## SSH
