@@ -164,6 +164,34 @@ The access of a file can be changed with `chmod`. Again, this can only be done b
 
 Both of the above can also be applied recursively to change the permissions of an entire directory structure. Do this with caution! For details on how to use these commands, take a look at their manual pages.
 
+# Package managers
+
+The primary method of installing packages for linux is usually using a package manager from the command line. There is some variation of package manager based on linux distribution, but most use one of the following: `apt` (Debian-based), `pacman` (Arch-based), `dnf` (RedHat-based), or `zypper` (SUSE-based). For simplicity's sake, we'll be demonstrating how to use `apt`, as it is the most popular package manager, and the principles should carry on to the other package managers through different command names.
+
+Since package managers edit package files system-wide, root privileges are needed to install, delete, and update package repositories, so most commands will be prefixed by `sudo`.
+
+**Note: Take the same care with using `sudo` now as you always should.**
+
+As as example, let's install `cowsay`:
+
+First, try running `cowsay "Hello!"`. Usually, the `cowsay` command isn't installed, so `bash` should return a `comand not found` error.
+Let's start by updating our package repositories with `sudo apt update`
+Run `sudo apt install cowsay` and enter your password to install the package.
+Folloing this, run `cowsay "Hello!"` and notice that the command is now available.
+To remove `cowsay`, run `sudo apt remove cowsay`.
+
+The following cheat sheet should give you all the commands needed to manage your system packages with `apt`:
+
+| Command             | Function                      | Root privileges required |
+|---------------------|-------------------------------|--------------------------|
+| `install [PACKAGE]` | Installs a package            | ✓                        |
+| `remove [PACKAGE]`  | Removes a package             | ✓                        |
+| `update`            | Updates package repositories  | ✓                        |
+| `autoremove`        | Removes unneeded dependencies | ✓                        |
+| `list`              | Lists installed packages      | ✗                        |
+| `search [KEYWORD]`  | Searches available packages   | ✗                        |
+
+
 # Writing a basic bash script
 
 Throughout Missing Semester so far we have been working with the bash shell to execute various commands. However, bash is more than a shell: it is an entire scripting language. Bash is as powerful as other programming languages, but its syntax is relatively arcane and difficult to use. Coming from other languages such as Python or Java it will be very unfamiliar. It is for this reason we are going to leave the fundamental structures in bash such as if-statements, iteration and function definition / calls to later on.
