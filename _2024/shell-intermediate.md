@@ -30,7 +30,7 @@ To write data to a file directly from the shell, we use _redirection_. Redirecti
 echo 'Hello World!'
 # Hello World!
 ```
-and we wish to instead write this to the file `hello.txt`. To achieve this we can use the redirection operator `>`, which has syntax `[stdout] > [filename]`.
+and we wish to instead write this to the file `hello.txt`. To achieve this we can use the redirection operator `>`, which has syntax `[command] > [filename]`.
 
 `echo` writes to the standard output (stdout) so:
 ```bash
@@ -289,7 +289,9 @@ missing-semester
 
 With this setup, every executable placed inside the executables folder will be available to us in this shell.
 
-Importantly, do note that this change isn't permanent and only applies to the particular shell you have changed the environment variable in. If you wished to apply this change to every shell, you could modify the `.bashrc` file, as this file is executed as part of the start-up process for all shells.
+New environment variables can be set using `[NAME]=[VALUE]`, where the variable can be accessed with `$[NAME]`.
+
+Importantly, do note that this change isn't permanent and only applies to the particular shell you have changed the environment variable in. If you wished to apply this change to every shell, you could modify the `~/.bashrc` file, as this file is executed as part of the start-up process for all shells.
 
 In the computer labs at UoB, you may find that you are asked to use the `module` command to make some program available. This works exactly like our PATH change above. The software you're loading with `module` is actually present on the computer all the time, but it's not found by your shell as it's not in the PATH. Once you run the `module load` command, it gets inserted into your PATH so your shell can find it.
 
@@ -301,7 +303,7 @@ One key part of maintaining a system is being aware of what programs are running
 
 For example, your system might be bogged down by an application thrashing the disk or an application using a lot of memory, and you might want to know what program is causing the slowdown. To do this you can use the the `top` program. top gives you a list of all of the processes running, and by default sorts them by CPU usage. It provides information about the processes, such as their priority, total CPU time and memory usage. It also provides an overview of the total load of the system, what CPU utilisation is like and how much memory is used/available in total. Additionally, you can take actions on processes inside of top such as terminating them or changing their priority. Pressing the h key while inside top will display a brief help message showing what functionality is available.
 
-While top is an interactive tool, sometimes we also wish to simply list processes. We can do this with the `ps` tool. ps supports many flags to control what fields are output, and a typical invocation to list all processes with full information is `ps -aux`. As a typical system has a lot of processes, this outputs many lines. If we are looking for a specific process, we may wish to pipe the output of ps into a grep to filter it. Suppose we're looking running instances of the program konsole (the terminal being used to demonstrate this):
+While top is an interactive tool, sometimes we also wish to simply list processes. We can do this with the `ps` tool. ps supports many flags to control what fields are output, and a typical invocation to list all processes with full information is `ps faux`. `ps fauxw` can be used instead to do the same, but print the full command string of processes as well. As a typical system has a lot of processes, this outputs many lines. Subprocesses are shown branching off their parent processes. If we are looking for a specific process, we can pipe the output of ps into `grep` to filter it. Suppose we're looking running instances of the program konsole (the terminal being used to demonstrate this):
 
 ```bash
 # for reference, the normal ps header
@@ -443,6 +445,8 @@ When launching scripts, you will often want to provide arguments that are simila
 - Wildcards - Whenever you want to perform some sort of wildcard matching, you can use `?` and `*` to match one or any amount of characters respectively. For instance, given files `foo`, `foo1`, `foo2`, `foo10` and `bar`, the command `rm foo?` will delete `foo1` and `foo2` whereas `rm foo*` will delete all but `bar`.
 - Curly braces `{}` - Whenever you have a common substring in a series of commands, you can use curly braces for bash to expand this automatically. This comes in very handy when moving or converting files.
 
+**Note:** Install the `imagemagick` package to use the `convert` command.
+
 ```bash
 convert image.{png,jpg}
 # Will expand to
@@ -510,6 +514,7 @@ For interactive tools such as the ones based on ncurses, help for the commands c
 Sometimes manpages can provide overly detailed descriptions of the commands, making it hard to decipher what flags/syntax to use for common use cases.
 [TLDR pages](https://tldr.sh/) are a nifty complementary solution that focuses on giving example use cases of a command so you can quickly figure out which options to use.
 For instance, I find myself referring back to the tldr pages for [`tar`](https://tldr.inbrowser.app/pages/common/tar) and [`ffmpeg`](https://tldr.inbrowser.app/pages/common/ffmpeg) way more often than the manpages.
+`tldr` can also be installed using your default package manager and run in the terminal, for example with: `tldr ls`, which is very useful for quick reminders on command syntax and usage.
 
 
 ## Finding files
@@ -527,14 +532,18 @@ find . -mtime -1
 # Find all zip files with size in range 500k to 10M
 find . -size +500k -size -10M -name '*.tar.gz'
 ```
+
 Beyond listing files, find can also perform actions over files that match your query.
 This property can be incredibly helpful to simplify what could be fairly monotonous tasks.
+
 ```bash
 # Delete all files with .tmp extension
 find . -name '*.tmp' -exec rm {} \;
 # Find all PNG files and convert them to JPG
 find . -name '*.png' -exec convert {} {}.jpg \;
 ```
+
+**Note:** `{}` here represents the name of the file found for each `-exec` command, so if a file `file.txt` is found, `-exec rm {} \;` would run `rm file.txt`.
 
 Despite `find`'s ubiquitousness, its syntax can sometimes be tricky to remember.
 For instance, to simply find files that match some pattern `PATTERN` you have to execute `find -name '*PATTERN*'` (or `-iname` if you want the pattern matching to be case insensitive).
@@ -560,7 +569,7 @@ To achieve this, most UNIX-like systems provide [`grep`](https://www.man7.org/li
 `grep` is an incredibly valuable shell tool that we will cover in greater detail during the data wrangling lecture.
 
 For now, know that `grep` has many flags that make it a very versatile tool.
-Some I frequently use are `-C` for getting **C**ontext around the matching line and `-v` for in**v**erting the match, i.e. print all lines that do **not** match the pattern. For example, `grep -C 5` will print 5 lines before and after the match.
+Some commonly used flags include `grep -i` for case **i**nsensitive matching, `-C` for getting **C**ontext around the matching line and `-v` for in**v**erting the match, i.e. print all lines that do **not** match the pattern. For example, `grep -C 5` will print 5 lines before and after the match.
 When it comes to quickly searching through many files, you want to use `-R` since it will **R**ecursively go into directories and look for files for the matching string.
 
 But `grep -R` can be improved in many ways, such as ignoring `.git` folders, using multi CPU support, &c.

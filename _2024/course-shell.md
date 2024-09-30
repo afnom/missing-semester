@@ -160,6 +160,8 @@ find out which file is executed for a given program name using the
 `which` program. We can also bypass `$PATH` entirely by giving the
 _path_ to the file we want to execute.
 
+**Note:** You can use `Ctrl+C` to terminate a running shell process.
+
 ## Navigating in the shell
 
 A path on the shell is a delimited list of directories; separated by `/`
@@ -170,8 +172,10 @@ lie, whereas on Windows there is one root for each disk partition (e.g.,
 in this class. A path that starts with `/` is called an _absolute_ path.
 Any other path is a _relative_ path. Relative paths are relative to the
 current working directory, which we can see with the `pwd` command and
-change with the `cd` command. In a path, `.` refers to the current
-directory, and `..` to its parent directory:
+change with the `cd` command. `cd` can be run without any arguments to
+return to the home directory, and with an argument with the syntax
+`cd [DIRECTORY]` to move to another directory. In a path, `.` refers to
+the current directory, and `..` to its parent directory:
 
 ```console
 missing:~$ pwd
@@ -260,6 +264,9 @@ page_. Press `q` to exit.
 ```console
 missing:~$ man ls
 ```
+
+**Note:** You can use `clear` to clear the terminal window.
+
 
 ## Cat
 
@@ -380,7 +387,11 @@ Instead, you will be using the `sudo` command. As its name implies, it
 lets you "do" something "as su" (short for "super user", or "root").
 When you get permission denied errors, it is usually because you need to
 do something as root. Though make sure you first double-check that you
-really wanted to do it that way!
+really want to do it that way!
+
+**Note: Be careful when using `sudo`, make sure what you're running is safe,
+and you understand what is being done. If misused, root level privileges can
+damage and possibly even break your system.**
 
 One thing you need to be root in order to do is writing to the `sysfs` file
 system mounted under `/sys`. `sysfs` exposes a number of kernel parameters as
