@@ -3,8 +3,6 @@ layout: lecture
 title: "#2: Intermediate Shell"
 date: 2024-10-14
 ready: false
-todo:
-  - Need to get rid of git stuff -- that goes in week 3 now!
 ---
 <div class="note">
 <b> Update 08/10/23: </b> The contents below have been adjusted to reflect the Missing Semester content covered at UoB. Check our <a href="https://github.com/afnom/missing-semester/commits/master">git history</a> for a full list of changes.
@@ -12,7 +10,7 @@ todo:
 </div>
 
 
-In this lecture, we will present some more intermediate concepts around using the shell, including using pipes and redirection, pagers, permissions and groups, basic bash scripts, environment variables, monitoring your system and logging into other systems remotely. We will also mention the basics of Git, though a much more in depth explanation will be offered in session #5.
+In this lecture, we will present some more intermediate concepts around using the shell, including using pipes and redirection, pagers, permissions and groups, basic bash scripts, environment variables, monitoring your system and logging into other systems remotely.
 
 We will also present some of the basics of using bash as a scripting language along with a number of shell tools that cover several of the most common tasks that you will be constantly performing in the command line.
 
@@ -316,23 +314,6 @@ ps -aux | grep konsole
 ```
 
 and we can immediately see the three terminals open as this guide is written.
-
-
-# Git
-
-Finally, let's check out the basics of Git. Git is a version control system that records the history of files as the change. This is very useful for tracking changes to a project over time, and almost necessary for collaborative work on a project. If you've ever had some project file/folder named something like "Project v4.3 FINAL final SUBMISSION" then Git is what you've been looking for this whole time.
-
-In this lecture we're going over just the basics of Git. Git is capable of a lot, but there are four key operations that you need to get started.
-
-`git clone <url>` makes a copy of a remote repository on your machine. In Git, a repository is where all of the files tracked by Git are stored (i.e your project code, assets etc) along with the metadata that Git uses to provide history. The remote is usually a Git hosting service such as GitLab or GitHub.
-
-Once you've got a copy of a repository, you can start editing files. If you create any new files and want to start tracking them in the repository, add them with `git add <file>`. When you would like to commit the changes you've made to your local repository, run `git commit -a -m <commit message>`. This creates a new snapshot of the state of the files in the repository. Use the commit message to record what changes you've made.
-
-Then, you'll probably want to send your changes back to the remote. This is done with `git push`. After this, your commit will appear on the remote server where everyone with access to the repository can see it.
-
-Finally, there's one more command that's worth knowing. When other people have made changes to the repository by introducing new commits, and then have pushed them to the remote, you may want to pull these changes down into your local copy of the repository. You guessed it, that's exactly what `git pull` does.
-
-There are many more Git commands, but we'll cover them in lecture #5 with a deep dive on exactly what Git is, what problem it solves, how it works and how to use it. So stay tuned for more!
 
 
 # Shell Scripting
