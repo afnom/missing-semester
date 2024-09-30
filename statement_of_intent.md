@@ -21,11 +21,11 @@ MS is a fork or modified version of MIT's Missing Semester.  We've taken MIT's m
 
 ### Assumptions / Requirements
 
-We assume students have access to a Linux computer for MS.  Please drop by the [Linux Installfest](https://linux.afnom.net) on September 27th, 2023 if you're interested in getting help installing Linux onto your personal computer.  Alternatively, you may use the SoCS's lab machines or a remote linux system if you have access to one.
+We assume students have access to a Linux computer for MS.  Please drop by the [Linux Installfest](https://linux.afnom.net) on October 2nd, 2024 if you're interested in getting help installing Linux onto your personal computer.  Alternatively, you can use the [guide](https://linux.afnom.net), or you may use a remote linux system if you have access to one.
 
 ### Who is this for?
 
-We are targeting all computer science students who would like to gain more familiarity with Linux.  While these skills are not explicitly required in first year modules (with the exception of version control), you may find they help you work more efficiently and effectively.  Second Year students will need some of the tools described herein for their coursework and so it is recommended to start in your first year to get a head start.  We also welcome third year undergraduates, masters students (specifically conversion masters) and PhDs -- everyone is welcome.
+We are targeting all students who would like to gain more familiarity with Linux.  For Computer Science, these skills are not explicitly required in first year modules (with the exception of version control), however you may find they help you work more efficiently and effectively.  Second Year students will need some of the tools described herein for their coursework and so it is recommended to start in your first year to get a head start.  We also welcome third year undergraduates, masters students (specifically conversion masters) and PhDs -- everyone is welcome.
 
 ### Format and Content
 
@@ -41,7 +41,7 @@ MS is not a class; there are no grades and no checking of assignments.  The cont
 
 ### Who is running this?
 
-Volunteers from [AFNOM](https://afnom.net) and [CSS](https://cssbham.com/) are running MS.  This includes managing / supporting students on the discord as well as planning and executing the lectures.  Though we are being encouraged and supported by the SoCS, this is an extracuricular activity.
+Volunteers from [AFNOM](https://afnom.net), [CSS](https://cssbham.com/), and CS community are running MS.  This includes managing / supporting students on the discord as well as planning and executing the lectures.  Though we are being encouraged and supported by the SoCS, this is an extracuricular activity.
 
 ### Statement of Diversity and Inclusivity
 
@@ -51,6 +51,6 @@ If you experience any behavior that makes you uncomfortable, please contact the 
 
 ### The Future
 
-Depending on the success of the first 5 lectures, we may run more later in the semester.
+This will be our second academic year running Missing Semester!  We've slightly changed the sessions we're running from what we've learnt running MS last year. As we get through the teaching term we may continue to make further changes, so be sure to keep updated by checking both the Discord and the website!.
 
-For now, we will not be recording the lectures but we may reconsider this in the future.
+We may record some of our sessions but this will be up to the preference of individual speakers.
