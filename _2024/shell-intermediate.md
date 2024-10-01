@@ -10,7 +10,7 @@ ready: false
 </div>
 
 
-In this lecture, we will present some more intermediate concepts around using the shell, including using pipes and redirection, pagers, permissions and groups, basic bash scripts, environment variables, monitoring your system and logging into other systems remotely.
+In this lecture, we will present some more intermediate concepts around using the shell, including using pipes and redirection, pagers, permissions and groups, basic bash scripts, environment variables, and monitoring your system.
 
 We will also present some of the basics of using bash as a scripting language along with a number of shell tools that cover several of the most common tasks that you will be constantly performing in the command line.
 
@@ -55,6 +55,17 @@ echo 'Hello from Line 2, but actually this time!' >> hello.txt
 cat hello.txt
 # Hello from Line 2
 # Hello from Line 2, but actually this time!
+```
+
+As well as this, we can use the `<` operator to redirect the content of a file into a program. Here's an example demonstrating how data can be sent to and from files using redirection operators:
+
+```bash
+echo 'hello!' > hello.txt
+cat < hello.txt
+# hello!
+cat < hello.txt > hello2.txt
+cat hello2.txt
+# hello!
 ```
 
 Let's now use input event debugging as an example for why we might want to do this. Libinput handles all user input events like keypresses and mouse movements, and if there is a problem with input devices we may wish to review the the Libinput debug logs. We can see these with `sudo libinput debug-events`. However, when moving the mouse or using the touchpad, a huge number of a events are generated and we could not possibly review them all in real time. So instead, we can redirect the output of this command to a file, and then review it afterwards to see if we can spot whatever issue we are pursuing. We will cover reviewing large files in the pagers section below.
@@ -173,10 +184,7 @@ Since package managers edit package files system-wide, root privileges are neede
 As as example, let's install `cowsay`:
 
 First, try running `cowsay "Hello!"`. Usually, the `cowsay` command isn't installed, so `bash` should return a `comand not found` error.
-Let's start by updating our package repositories with `sudo apt update`
-Run `sudo apt install cowsay` and enter your password to install the package.
-Folloing this, run `cowsay "Hello!"` and notice that the command is now available.
-To remove `cowsay`, run `sudo apt remove cowsay`.
+Let's start by updating our package repositories with `sudo apt update`. Run `sudo apt install cowsay` and enter your password to install the package. Folloing this, run `cowsay "Hello!"` and notice that the command is now available. To remove `cowsay`, run `sudo apt remove cowsay`.
 
 The following cheat sheet should give you all the commands needed to manage your system packages with `apt`:
 
@@ -535,7 +543,7 @@ Bonus points if you can also report how many runs it took for the script to fail
 
     if [[ n -eq 42 ]]; then
        echo "Something went wrong"
-       >&2 echo "The error was using magic numbers"
+       echo "The error was using magic numbers"
        exit 1
     fi
 
