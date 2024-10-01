@@ -6,16 +6,16 @@ ready: false
 ---
 
 <div class="note">
-This lesson is a UoB original and has been completely written from scratch by @bluka479. This is intended as a supplementary lecture to build off of skills learned in the shell beginner and shell intermediate lectures.
+This lesson is contains content written by UoB missing semester volunteers, as well as content adapted from the original MIT Missing Semester lecture notes. This is intended as a supplementary lecture to build off of skills learned in the shell beginner and shell intermediate lectures.
 </div>
 
 
-Hopefully you'll have built up a decent understanding of the linux shell, and the underlying operating system, but there are a few extra tools and tricks to learn that can help you maximise your terminal efficiency and knowledge. This lecture will cover standard streams, backgrounding processes, multiplexing, and aliases.
+Hopefully you'll have built up a decent understanding of the linux shell, and the underlying operating system, but there are a few extra tools and tricks to learn that can help you maximise your terminal efficiency and knowledge. This lecture will cover advanced redirection, job control, multiplexing, aliases, advanced scripting, and GNU parallel.
 
 
 # Advanced redirection
 
-After playing around with pipes and redirection, you may find that some out isn't filtering appropriately through programs such as `grep`, or gets ouputted to terminal even though output is redirected with `>`.
+After playing around with pipes and redirection, you may find that some output isn't filtering appropriately through programs such as `grep`, or gets ouputted to terminal even though output is redirected with `>`.
 This is due to `>` by default only redirecting STDOUT. 
 
 The default file descriptors and their data streams are labelled as such:
@@ -26,7 +26,7 @@ The default file descriptors and their data streams are labelled as such:
 | 1               | STDOUT | Program output  |
 | 2               | STDERR | Program errors  |
 
-Standard streams can be redirected by specifying their id before `>`, for example `cat /non/existent/file 2>error.txt`, which tries to output a non-existent file, and saves the error output in a file called `error.txt`. STDIN (fd 0) isn't often redirected, so you'll mostly be redirecting STDOUT and STDERR.
+Standard streams 1 and 2 can be redirected by specifying their ID before `>`, for example `cat /non/existent/file 2>error.txt`, which tries to output a non-existent file, and saves the error output in a file called `error.txt`. STDIN (fd 0) isn't often redirected, so you'll mostly be redirecting STDOUT and STDERR.
 
 If you have output for a file that you don't want to save or read, then you can redirect the standard stream to the device file `/dev/null`, which deletes any data sent to it.
 As an example, run `echo test` then `echo test >/dev/null` and notice that the error isn't logged in the latter example.
@@ -36,37 +36,39 @@ Using this, data streams can be split, for example with `python3 -c "print('stdo
 The command might look complicated, but all you need to know is the the `python3` command outputs data to STDOUT and STDERR.
 `>stdout.txt` redirects the STDOUT of the program to a file called `stdout.txt`, and `2>stderr` redirects the STDERR of the program to a file called `stderr.txt`.
 
-**Note:** the syntax `&>` can be used to redirect both STDOUT and STDERR, for example using `python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" &>output.txt` to redirect all data to `output.txt`
+**Note:** the syntax `&>` can be used to redirect both STDOUT and STDERR, for example using `python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" &>output.txt` to redirect all data to `output.txt`.
 
 You might have noticed that piping to `grep` doesn't filter error messages. This is because `grep` only filters STDOUT. This means that error messages that get sent through STDERR don't get processed by `grep`, and we need to redirect our standard streams to fix this.
 
 If we move the output from STDERR to STDOUT, `grep` will be able to filter it.
-We can do this with the syntax `2>&1`. This moves data from STDERR (fd `2`) to STDOUT (fd `1`), using an `&` before `1` to avoid ambiguity between writing to a file named `1`
+We can do this with the syntax `2>&1`. This moves data from STDERR (fd `2`) to STDOUT (fd `1`), using an `&` before `1` to avoid ambiguity between writing to a file named `1`.
 
-Let's practice this by running `python3 -c "raise Exception('This goes to STDERR')"`. This runs the python code `raise Exception('This goes to STDERR')`, which throws an error and outputs context data around it. Trying to filter the output with `python3 -c "raise Exception('This goes to STDERR')" | grep STDERR` doesn't work, since the python error output goes to STDERR, but running `python3 -c "raise Exception('This goes to STDERR')" 2>&1 | grep STDERR` does, since it moves the STDERR stream to STDOUT, which `grep` does filter.
+Let's practice this by running `python3 -c "raise Exception('This goes to STDERR')"`. This runs the python code `raise Exception('This goes to STDERR')`, which throws an error and outputs context data around it. Trying to filter the output with `python3 -c "raise Exception('This goes to STDERR')" | grep STDERR` doesn't work, since the python error output goes to STDERR, but running `python3 -c "raise Exception('This goes to STDERR')" 2>&1 | grep STDERR` does, since it moves the STDERR stream to STDOUT, which `grep` does filter. As well as this, STDOUT can be redirected to STDERR to properly log errors, such as with `echo 'error here!' >&2`.
 
 
-# Background processes
+# Job control
 
-Sometimes when running a program, some processes or subprocesses may be run in the background of a shell, allowing processes to be run while commands are executed in the foreground. Running `ps` with no other arguments allows you to see all processes in the current shell. If you don't have any processes currently running in your shell background, your output should look similar to this:
+Sometimes when running a program, some jobs may be run in the background of a shell, allowing processes to be run while commands are executed in the foreground. Running `ps` with no other arguments allows you to see all processes in the current shell. If you don't have any processes currently running in your shell background, your output should look similar to this:
 
-```PID TTY          TIME CMD
-  83144 pts/1    00:00:00 bash
-  83343 pts/1    00:00:00 ps
+```
+  PID TTY          TIME CMD
+  344 pts/1    00:00:00 bash
+  357 pts/1    00:00:00 ps
 ```
 
-To run processes in the background, the `&` (ampersand) character can be appended to a command to run it in the background. The current subprocess number, as well as system process id should be printed after running the command, for example `[1] 3779`. Try running `sleep 5 &` and `sleep 5` and notice the former allows you to still use the shell while it runs. Running `ps` soon after the backgrounded command should also show the `sleep` process in the shell process list.
+To run processes in the background, the `&` (ampersand) character can be appended to a command to run it in the background. This turns it into a job. The current job number, as well as system process ID should be printed after running the command, for example `[1] 381`. Try running `sleep 5 &` and `sleep 5` and notice the former allows you to still use the shell while it runs. Running `ps` soon after the backgrounded command should also show the `sleep` process in the shell process list.
 
 **Note**: Even if processes are run backgrounded, output may be sent to the terminal, if you don't want to see the output consider hiding STDOUT and STDERR by using `&>/dev/null` to redirect the program's output.
 
-To background a currently running process, we can suspend and background it. As an example. Let's run `sleep 15`, enter `Ctrl+Z` to suspend the program (there should be an output of the subprocess id, for example `[1]+`), then run `bg [SUBPROCESS ID]` (usually 1). Run `ps` again to see the process running in the background.
+To background a currently running process, we can suspend and background it. As an example. Let's run `sleep 15`, enter `Ctrl+Z` to suspend the program (there should be an output of the job ID, for example `[1]+`), then run `bg [JOB ID]` (usually 1). Run `ps` again to see the process running in the background. A better way to monitor jobs in the shell is by running `jobs`, which should list any currently running jobs alongside their IDs.
 
-To foreground a process, run `fg [SUBPROCESS ID]`, feel free to try the above example again using `fg` instead of `bg`. This also works with processes currently backgrounded.
+To foreground a job, run `fg [JOB ID]`, feel free to try the above example again using `fg` instead of `bg`. This also works with processes currently backgrounded.
 
-However, even if a process is backgrounded, closing the terminal will close any processes running from the shell, including applications started from the shell. To fix this, you can use `disown` to remove processes from the shell's job control list. To test this, let's run `nautilus &`, the default file manager for Ubuntu in the background (if this is unavailable, than any other application with a gui can be used to demonstrate. Close the shell window and notice that `nautilus` (or your chosen application) closes as well.
-Next, open your shell window again, run `nautilus &`, then type `disown` to clear the shell's job control list. Close the shell window again and see that `nautilus` stays open.
+If you want to kill a job, use `kill [JOB ID]` to terminate it.
 
-**Note:** `disown` can also be used with a specific process id, for example `disown 5723` to remove a specific process from the shell job control list.
+However, even if a job is backgrounded, closing the terminal will close any processes running from the shell, including jobs running applications started from the shell. To fix this, you can use `disown` to remove processes from the shell's job control list. To test this, let's run `nautilus &`, the default file manager for Ubuntu in the background (if this is unavailable, than any other application with a gui can be used to demonstrate. Close the shell window and notice that `nautilus` (or your chosen application) closes as well. Next, open your shell window again, run `nautilus &`, then type `disown` to clear the shell's job control list. Close the shell window again and see that `nautilus` stays open.
+
+**Note:** `disown` can also be used with a specific process ID, for example `disown 245` to remove a specific process from the shell job control list.
 
 
 # Multiplexing
@@ -233,3 +235,55 @@ Some differences between shell functions and scripts that you should keep in min
 - Functions are executed in the current shell environment whereas scripts execute in their own process. Thus, functions can modify environment variables, e.g. change your current directory, whereas scripts can't. Scripts will be passed by value environment variables that have been exported using [`export`](https://www.man7.org/linux/man-pages/man1/export.1p.html)
 - As with any programming language, functions are a powerful construct to achieve modularity, code reuse, and clarity of shell code. Often shell scripts will include their own function definitions.
 
+
+# GNU Parallel
+
+GNU `parallel` is an very useful, customisable tool that uses threads to split multiple commands into threads to speeding up script execution, while preserving the initial command order. `parallel` can be used as a quick and intuitive replacement for `for` loops and `xargs`.
+
+The typical syntax for a `parallel` command looks like `parallel [COMMAND] ::: [INPUT LIST]`, for example, `parallel echo ::: {1..100}`. To repeat a command a certain number of times without passing the number as an argument, the flag `-N0` can be used after `parallel` to pass 0 arguments into the command, letting the command to run the same every time.
+
+As well as using `{1..100}` to expand a list of numbers up to 100, any other list of arguments can be used to iterate over. For example, `parallel ls -la ::: *.txt` lists file metadata for all `.txt` files in the current directory. `parallel` also allows data to be piped into the command, such as `cat /etc/passwd | cut -d ':' -f 1 | parallel id` listing the ID info for all users. Another way of using `parallel` is with the syntax `parallel [COMMAND] :::: [FILE]`, for example with the command `parallel which > paths.txt :::: commands.txt`, which reads all command names in `command.txt` and saves their full paths to `paths.txt`.
+
+One way of stepping up your `parallel` using is by utilising replacement strings. These function as ways to modify arguments given to the command. A couple examples are:
+
+- `{}`   - The argument
+- `{#}`  - The index of the argument (starting from 1)
+- `{.}`  - The file argument with the extension stripped (e.g: `hello.txt` -> `hello`)
+- `{/}`  - The file argument's basename (e.g: `dir/hello.txt` -> `hello.txt`)
+- `{//}` - The file argument's directory path (e.g: `dir1/dir2/hello.txt` -> `dir1/dir2`)
+
+These can be used for operations such as converting all jpg images to pngs in parallel, where doing so in a single thread would be much slower, for example (reminder that the `imagemagick` package is required to use `convert`), using the command `parallel convert {} {.}.png ::: *.jpg`. Learning how to use `parallel` effectively can signiificantly increase your terminal efficiency.
+
+
+
+# Exercises
+
+To test your learning this session, try the following exercises:
+
+1. Create a bash script that runs the first argument given as a background process that will persist past the terminal's exit, printing the process' name and ID in the terminal with the format `[COMMAND] [PID]`
+{% comment %}
+```
+#!/bin/bash
+$1 &
+echo $!
+disown
+```
+{% endcomment %}
+1. Write a bash function that reads any number of arguments, and writes them to a file `args.txt`, clearing the file contents if it exists, with the syntax `[ARG NUM]: [ARG VALUE]`
+{% comment %}
+```
+args()
+{
+    echo -n "" > args.txt
+    index=1
+    for i in $@; do
+        echo "$index: $i" >> args.txt
+        ((index++))
+    done
+}
+```
+{% endcomment %}
+1. Build a one-line command that reads website urls from a file `urls.txt`, accesses the websites using multiple threads, and outputs the http status codes to the terminal in the format `[URL] — [CODE]`. Try to hide any progress bars shown when receiving data from websites.
+{% comment %}
+`parallel "echo -n {} '— '; curl -I {} 2>/dev/null | cut -d ' ' -f 2 | grep -m1 ''" :::: urls.txt`
+{% endcomment %}
