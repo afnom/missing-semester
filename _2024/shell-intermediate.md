@@ -184,18 +184,67 @@ Since package managers edit package files system-wide, root privileges are neede
 As as example, let's install `cowsay`:
 
 First, try running `cowsay "Hello!"`. Usually, the `cowsay` command isn't installed, so `bash` should return a `comand not found` error.
-Let's start by updating our package repositories with `sudo apt update`. Run `sudo apt install cowsay` and enter your password to install the package. Folloing this, run `cowsay "Hello!"` and notice that the command is now available. To remove `cowsay`, run `sudo apt remove cowsay`.
+Let's start by updating our package repositories with `sudo apt update`.
+
+
+```
+[sudo] password for user:
+Hit:1 http://ee.archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://ee.archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:3 http://ee.archive.ubuntu.com/ubuntu focal-backports InRelease
+---[snip]---
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+```
+
+Run `sudo apt install cowsay` to install the package.
+
+```
+Installing:
+  cowsay
+---[snip]---
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+```
+
+Following this, run `cowsay 'Hello!'`.
+
+```
+ ________
+< Hello! >
+ --------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+To remove `cowsay`, run `sudo apt remove cowsay`.
+
+```
+REMOVING:
+  cowsay
+---[snip]---
+Continue? [Y/n] y
+---[snip]---
+Removing cowsay (3.03+dfsg2-8) ...
+Processing triggers for man-db (2.12.1-1) ...
+```
 
 The following cheat sheet should give you all the commands needed to manage your system packages with `apt`:
 
-| Command             | Function                      | Root privileges required |
-|---------------------|-------------------------------|--------------------------|
-| `install [PACKAGE]` | Installs a package            | ✓                        |
-| `remove [PACKAGE]`  | Removes a package             | ✓                        |
-| `update`            | Updates package repositories  | ✓                        |
-| `autoremove`        | Removes unneeded dependencies | ✓                        |
-| `list`              | Lists installed packages      | ✗                        |
-| `search [KEYWORD]`  | Searches available packages   | ✗                        |
+| Command             | Function                      | Root privileges required? |
+|---------------------|-------------------------------|---------------------------|
+| `install [PACKAGE]` | Installs a package            | ✓                         |
+| `remove [PACKAGE]`  | Removes a package             | ✓                         |
+| `update`            | Updates package repositories  | ✓                         |
+| `upgrade`           | Updates installed packages    | ✓                         |
+| `autoremove`        | Removes unneeded dependencies | ✓                         |
+| `list`              | Lists installed packages      | ✗                         |
+| `search [KEYWORD]`  | Searches available packages   | ✗                         |
 
 
 # Writing a basic bash script

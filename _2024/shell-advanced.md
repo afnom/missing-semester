@@ -33,21 +33,83 @@ The default file descriptors and their data streams are labelled as such:
 Standard streams 1 and 2 can be redirected by specifying their ID before `>`. Consider the same example as earlier, but with the error stream redirected: `cat /non/existent/file 2> error.txt`. This time, the error output is redirected to `error.txt`, and nothing is output to the terminal. STDIN (fd 0) isn't often redirected, so you'll mostly be redirecting STDOUT and STDERR.
 
 If you have output for a file that you don't want to save or read, then you can redirect the standard stream to the device file `/dev/null`, which deletes any data sent to it.
-As an example, run `echo test` then `echo test >/dev/null` and notice that the error isn't logged in the latter example.
-This can also be used with STDERR, for example with `cat /non/existent/file 2>/dev/null`.
+As an example, run `echo test`
+
+```
+$ echo test
+test
+```
+
+then `echo test >/dev/null`
+
+```
+$ echo test >/dev/null
+```
+
+and notice that the error isn't logged in the latter example. This can also be used with STDERR, for example with `cat /non/existent/file 2>/dev/null` not printing an error.
 
 Using this, data streams can be split, for example with `python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" >stdout 2>stderr`.
 The command might look complicated, but all you need to know is the the `python3` command outputs data to STDOUT and STDERR.
 `>stdout.txt` redirects the STDOUT of the program to a file called `stdout.txt`, and `2>stderr` redirects the STDERR of the program to a file called `stderr.txt`.
 
+Example output:
+
+```
+$ python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" >stdout 2>stderr
+$ cat stdout
+stdout goes here
+$ cat stderr
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+Exception: stderr goes here
+```
+
 **Note:** the syntax `&>` can be used to redirect both STDOUT and STDERR, for example using `python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" &>output.txt` to redirect all data to `output.txt`.
+
+Example output:
+
+```
+$ python3 -c "print('stdout goes here'); raise Exception('stderr goes here')" &>output.txt
+$ cat output.txt
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+Exception: stderr goes here
+stdout goes here
+```
 
 You might have noticed that piping to `grep` doesn't filter error messages. This is because `grep` only filters STDOUT. This means that error messages that get sent through STDERR don't get processed by `grep`, and we need to redirect our standard streams to fix this.
 
 If we move the output from STDERR to STDOUT, `grep` will be able to filter it.
 We can do this with the syntax `2>&1`. This moves data from STDERR (fd `2`) to STDOUT (fd `1`), using an `&` before `1` to avoid ambiguity between writing to a file named `1`.
 
-Let's practice this by running `python3 -c "raise Exception('This goes to STDERR')"`. This runs the python code `raise Exception('This goes to STDERR')`, which throws an error and outputs context data around it. Trying to filter the output with `python3 -c "raise Exception('This goes to STDERR')" | grep STDERR` doesn't work, since the python error output goes to STDERR, but running `python3 -c "raise Exception('This goes to STDERR')" 2>&1 | grep STDERR` does, since it moves the STDERR stream to STDOUT, which `grep` does filter. As well as this, STDOUT can be redirected to STDERR to properly log errors, such as with `echo 'error here!' >&2`.
+Let's practice this by running `python3 -c "raise Exception('This goes to STDERR')"`.
+
+```
+$ python3 -c "raise Exception('This goes to STDERR')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+Exception: This goes to STDERR
+```
+
+This runs the python code `raise Exception('This goes to STDERR')`, which throws an error and outputs context data around it. Trying to filter the output with `python3 -c "raise Exception('This goes to STDERR')" | grep STDERR` doesn't work, since the python error output goes to STDERR.
+
+```
+$ python3 -c "raise Exception('This goes to STDERR')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+Exception: This goes to STDERR
+```
+
+(Note the output is unfiltered.)
+
+However, running `python3 -c "raise Exception('This goes to STDERR')" 2>&1 | grep STDERR` does, since it moves the STDERR stream to STDOUT, which `grep` does filter.
+
+```
+$ python3 -c "raise Exception('This goes to STDERR')" 2>&1 | grep STDERR
+Exception: This goes to STDERR
+```
+
+As well as this, STDOUT can be redirected to STDERR to properly log errors, such as with `echo 'error here!' >&2`.
 
 
 # Job control
@@ -81,7 +143,7 @@ Often when using the shell, you might want to use multiple applications in one w
 
 To start, install the `tmux` package.
 
-**Note:** To always automatically start tmux when you open your terminal, run `echo -e '\nif command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then\n  exec tmux\nfi' >> ~/.bashrc`. To disable this, delete the 3 lines starting with `if command -v tmux`.
+**Note:** To always automatically start tmux when you open your terminal, run `echo -e '\nif command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then\n  exec tmux\nfi' >> ~/.bashrc`. What this does is add bash code to the shell startup file, `.bashrc`, that starts a new `tmux` session if one is not already running in the shell. To disable it, delete the 3 lines starting with `if command -v tmux` in `~/.bashrc`.
 
 Operations in `tmux` will start with the prefix `Ctrl-B`, represented by the syntax `C-b` in `tmux` documentation. Although shortcuts can be edited later, we'll be going over the defaults now. `tmux` commands can be outside a tmux session with `tmux` prepended to the command, or in a tmux session after running `C-b :` to access the command line. The following commands will have the `tmux` keyword prepended.
 
