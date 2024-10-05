@@ -175,7 +175,7 @@ Both of the above can also be applied recursively to change the permissions of a
 
 # Package managers
 
-The primary method of installing packages for linux is usually using a package manager from the command line. There is some variation of package manager based on linux distribution, but most use one of the following: `apt` (Debian-based), `pacman` (Arch-based), `dnf` (RedHat-based), or `zypper` (SUSE-based). For simplicity's sake, we'll be demonstrating how to use `apt`, as it is the most popular package manager, and the principles should carry on to the other package managers through different command names.
+The primary method of installing applications on Linux systems is by using a package manager. Each Linux distribution has its own package manager, but most use one of the following: `apt` (Debian-based), `pacman` (Arch-based), `dnf` (RedHat-based), or `zypper` (SUSE-based). For simplicity's sake, we'll be demonstrating how to use `apt`, as it is the most popular package manager, and the principles should carry on to the other package managers through different command names.
 
 Since package managers edit package files system-wide, root privileges are needed to install, delete, and update package repositories, so most commands will be prefixed by `sudo`.
 
