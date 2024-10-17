@@ -4,17 +4,17 @@ title: "#3: Version Control with Git"
 date: 2024-10-21
 ready: false
 video:
-  aspect: 56.25
-  id: 2sjqTHE0zok
-todo: 
-  - need to pull baby git stuff from week 2!
+    aspect: 56.25
+    id: 2sjqTHE0zok
+todo:
+    - need to pull baby git stuff from week 2!
 ---
 
 <div class="note">
 This document has been completely rewritten from scratch compared the original. The above video is still informative, but isn't the same as what you're about to read. We think ours is better 😉
 </div>
 
-**Note beforehand:** this document assumes that you have already installed Git! If you don't have Git, you can get it at https://git-scm.com/downloads (which I recommend) or via your system package manager (which might be a little out of date but should still work - if something doesn't try updating first!).
+**Note beforehand:** this document assumes that you have already installed Git! If you don't have Git, you can get it at <https://git-scm.com/downloads> (which I recommend) or via your system package manager (which might be a little out of date but should still work - if something doesn't try updating first!).
 
 **Another note:** this document also assumes you're decently fluent on the command line - if you're not, go checkout some of the previous talks in the series!
 
@@ -34,15 +34,24 @@ Git has a relatively straight forwards model that it adheres to, the foundation 
 
 In order to create a repository, drop into your shell and change into the directory that you want to store your project in. From there, run:
 
-```
+```bash
 git init <folder name>
 
-git init myProject // will create a directory called `myProject` and initialise a git repository in it
+git init myProject # will create a directory called `myProject` and initialise a git repository in it
+```
+
+For example,
+
+```console
+$ git init myProject
+Initialized empty Git repository in ~/test/.git/
 ```
 
 Once you have done this, you can change into that directory and run `git status` to make sure that it worked - you should see something like this.
 
-```
+```console
+$ cd myProject
+$ git status
 On branch main
 
 No commits yet
@@ -78,9 +87,12 @@ You would need to do this the same for any change you make to a file, no matter 
 
 **Tip:** If you're ever unsure as to what you have and haven't staged, you can run `git status` to see what the state of your repository is.
 
-Once we've staged everything we want to commit, we can then go ahead and actually make the commit. A commit contains three things - a message explaining what's in the commit, a set of diffs and a reference to a parent commit. A diff is functionally a list of changes that have been made to a file, and Git uses these in order to construct a history of your code by combining a set of diffs one-by-one using the references to parent commits to reconstruct a copy of a given file at any point in time.
+Once we've staged everything we want to commit, we can then go ahead and actually make the commit. A commit contains four things - a message explaining what's in the commit, an author, a set of files ("blobs") representing the state of the repository, and a reference to a parent commit. Changes between commits can be represented by diffs, which is functionally a list of changes that have been made to a file.
 
-<div drawio-diagram="550"><img src="/static/media/2024/git/commits.png"></div>
+<figure drawio-diagram="550">
+    <img src="/static/media/2024/git/commits.png">
+    <figcaption>Three commits changing a README.md file, with their changes represented by diffs</figcaption>
+</figure>
 
 To make a commit, we just use the `git commit` command, which will open an editor of your choice:
 
@@ -92,19 +104,27 @@ Write your commit message in the editor (it should be something descriptive, lik
 
 Optionally, you can write multiple lines in a commit message if you want in order to explain why you made the changes you made. For example, take a look at this commit that I made on one of my projects.
 
-![](/static/media/2024/git/goodcommit.png)
+<figure>
+    <img src="/static/media/2024/git/goodcommit.png" alt="Bio images can now be removed with the bio site tool">
+    <figcaption>A good commit message, with multiple lines</figcaption>
+</figure>
 
-This is  a good commit. Not all your commits have to be 7 lines long (most of the time, one suffices), but you should try to keep them descriptive and avoid commits like this one:
+This is a good commit. Not all your commits have to be 7 lines long (most of the time, one suffices), but you should try to keep them descriptive and avoid commits like this one:
 
-![](/static/media/2024/git/badcommit.png)
+<figure>
+    <img src="/static/media/2024/git/badcommit.png" alt="Fuck you, timezones">
+    <figcaption>A bad commit message - avoid this</figcaption>
+</figure>
+
+**Tip:** If you're writing a one-line commit message, you may find the command `git commit -m "<message>"` quicker to use.
 
 ## Remotes
 
-So far, we've only touched on what you can do on your local machine. However, one of the most useful features of Git (and VCSes in general) is its ability to work with remote copies of your code. 
+So far, we've only touched on what you can do on your local machine. However, one of the most useful features of Git (and VCSes in general) is its ability to work with remote copies of your code.
 
 This is super helpful as it allows you to easily backup your code and share code between multiple computers and servers that you own and use, but also because it makes it really easy for other people to work on your codebase as well as you.
 
-As the name suggests, a remote is a remote copy of your repository. These are usually hosted on dedicated websites like GitHub or GitLab (but there are many others - the School of Computer Science has their own at https://git.cs.bham.ac.uk) - in this example, we're going to be using GitHub.
+As the name suggests, a remote is a remote copy of your repository. These are usually hosted on dedicated websites like GitHub or GitLab (but there are many others - the School of Computer Science has their own at <https://git.cs.bham.ac.uk>) - in this example, we're going to be using GitHub.
 
 It's important to remember that Git and GitHub are different things! Git is the piece of software we're learning about - GitHub is separate website that provides a place for you sync your repositories and provides some additional fancy features on top of that to that make collaboration easier - those extra features are totally separate to Git itself.
 
@@ -114,7 +134,7 @@ If you're following along, you're going to want to make an account on GitHub and
 
 With our URL in hand, we need to tell Git about it. We do this with the `git remote` command.
 
-```
+```bash
 git remote add origin https://github.com/codemicro/sample.git
 ```
 
@@ -124,13 +144,14 @@ However, just because we've added a remote to our repository doesn't mean that o
 
 The first time you run `git push`, you'll have to tell it where to send your changes. You do that like this:
 
-```
+```bash
 git push -u origin main
 ```
 
 and you should see an output that looks something like this:
 
-```
+```console
+$ git push -u origin main
 Enumerating objects: 3, done.
 Counting objects: 100% (3/3), done.
 Delta compression using up to 8 threads
@@ -156,7 +177,7 @@ Let's say that somebody has a repository full of code that you want to get on yo
 
 Lucky for you - this is super simple thanks to the `git clone` command. It works a little bit like `git init`, but instead of providing a directory to put your new repository in, you provide a repository URL and it will put the repository in a folder of the same name as the repository - but you can change this. For example:
 
-```
+```bash
 git clone https://github.com/codemicro/sample.git # clones into a directory called `sample`
 
 git clone https://github.com/codemicro/sample.git hello # clones into a directory called `hello`
@@ -170,30 +191,33 @@ Branches are a really neat, albeit slightly confusing, feature of Git.
 
 You can think of a branch as a way of having two different, potentially conflicting, sets of edits in a repository at once that you can switch back and forwards between at will and that can eventually be merged into one.
 
-An example of when you might want to use a branch is when you want to add a big feature to your repository that will take, say, a week to write, but you don't want to keep the leave the repository in a slightly broken state while you're working on it. Here, you would create a  new branch, implement your changes there, and then "merge" your changes back into the main branch.
+An example of when you might want to use a branch is when you want to add a big feature to your repository that will take, say, a week to write, but you don't want to keep the leave the repository in a slightly broken state while you're working on it. Here, you would create a new branch, implement your changes there, and then "merge" your changes back into the main branch.
 
 To make this crystal clear, here's a diagram:
 
-<div drawio-diagram="553"><img src="/static/media/2024/git/branches.png"></div>
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/branches.png">
+    <figcaption>Branching allows work to be done in parallel</figcaption>
+</figure>
 
 In this, both branches start at commit A, have changes made to them independently (commit B and commits D, E and F) and then the feature branch is merged back into the main branch as commit C. None of the changes that you make on the feature branch show up on the main branch (and vice versa) until they're merged back together.
 
 When you create a new Git repository, Git automatically creates a new branch for you called `main` (that's what the `git push -u origin main` thing that we did earlier was referencing!). When you create new commits, you're adding them to this main branch. You can see this for yourself by running the `git branch` command and see a list of all the branches in the repository, with the one you're currently on highlighted.
 
-```
+```console
 $ git branch
 * main
 ```
 
 If you want to make a new branch based off of the current state of the main branch, you use the `git branch` command followed by the name you want the branch to have. To create a branch called `my-awesome-feature`, you would run
 
-```
+```bash
 git branch my-awesome-feature
 ```
 
 and you should be able to see it in the master list of Git branches!
 
-```
+```console
 $ git branch
 * main
   my-awesome-feature
@@ -203,7 +227,7 @@ $ git branch
 
 To change between branches, you use the `git switch` command along with the branch name you want to move to.
 
-```
+```console
 $ git switch my-awesome-feature
 Switched to branch 'my-awesome-feature'
 $ git branch
@@ -213,7 +237,7 @@ $ git branch
 
 And just like that we can start making some commits. Let's create a new file and commit it.
 
-```
+```console
 $ cat > hello.txt << EOF
 > Hi there! It's nice to meet you.
 > EOF
@@ -226,13 +250,13 @@ $ git commit -m "Add hello.txt"
 
 Just like as before, we can also push our changes to our remote so other people can see them. Since this is the first time we're pushing from our new branch, we'll have to use the `-u` flag again.
 
-```
+```bash
 git push -u origin my-awesome-feature
 ```
 
 If we then `git switch` back to main and run `ls`, we can see that `hello.txt` has vanished! In order to make it show up, we'll have to merge `my-awesome-feature` back into `main`. First, make sure you're on the branch that you want to merge your changes into (so in this case that's `main`), and then run `git merge`:
 
-```
+```console
 $ git merge my-awesome-feature
 Updating 92c026e..d39cab9
 Fast-forward
@@ -245,10 +269,124 @@ and now you should be able to run `ls` and see `hello.txt`!
 
 Since we're done with our new branch, we can delete it to reduce clutter. This is done with a flag that gets passed along with the `git branch` command, like so:
 
-```
+```console
 $ git branch --delete my-awesome-feature
 Deleted branch my-awesome-feature (was d39cab9).
 ```
+
+## Merging and rebasing
+
+You just saw `my-awesome-feature` get "merged" into `main` in the previous example. But what actually happened?
+
+### Fast-forwarding
+
+To understand that example, you need to know what a **fast-forward merge** is. Suppose the following example of two branches, `main` and `feature-branch`.
+
+![](/static/media/2024/git/ff_before.png)
+
+Here, `feature-branch` is "ahead" of `main` by two commits. We can incorporate these changes by using `git merge feature-branch` from `main`.
+
+```console
+$ git status
+On branch main
+nothing to commit, working tree clean
+$ git merge feature-branch
+Updating 10a1a87..68bd634
+Fast-forward
+ [...]
+```
+
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/ff_after.png">
+    <figcaption>The two commits from <code>feature-branch</code> have appeared on top of <code>main</code></figcaption>
+</figure>
+
+Note the message "Fast-forward" in the above example. This is known as a **fast-forward merge**, named as such because `main` is effectively overwritten with the contents of `feature-branch`. (In Git, a branch is just a pointer to a commit&mdash;in our example, the pointer for `main` is updated from commit B to commit D.)
+
+### Three-way merge
+
+Now what happens if `main` diverges from `feature-branch`, as is the case in the following example?
+
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/diverged_branches.png">
+    <figcaption><code>main</code> has divgered from <code>feature-branch</code></figcaption>
+</figure>
+
+It's not possible to do a fast-forward merge here. We could try to force one, however Git will refuse.
+
+```console
+$ git merge feature-branch --ff-only
+fatal: Not possible to fast-forward, aborting.
+```
+
+It would be unwise to fast-forward in this case, as commit D would be lost! Fortunately, Git can create a **merge commit** to incorporate both changes.
+
+```console
+$ git status
+On branch main
+nothing to commit, working tree clean
+$ git merge feature-branch
+Merge made by the 'ort' strategy.
+ [...]
+```
+
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/merge_commit.png">
+    <figcaption>A merge commit, F, is created</figcaption>
+</figure>
+
+Using the same command as before, Git will automatically attempt a merge. This differs from a fast-forward merge as in this example, two different commit histories have been merged into one via a merge commit. This is known as a **three-way merge**.
+
+This merge commit, commit F, has two parents from seperate histories, D and E. These commits have a common ancestor, B, which makes the merge possible.
+
+The term "three-way merge" comes from the fact that Git uses B, D, and E to generate the merge commit. However, sometimes both branches may change the same file in a way Git cannot automatically reconcile. This is called a _merge conflict_ and will be covered in lecture 8.
+
+### Rebasing
+
+Sometimes it is undesirable to create a merge commit, particularly if you want to incorporate changes in `main` into a feature branch, or if you prefer fast-forward merges to maintain a linear commit history.
+
+Fortunately, **rebasing** can allow us to re-write history, and is another strategy to merging. A rebase lets us change the commit a branch was based from, effectively making it appear that you've created your branch from a different commit.
+
+Consider the same example as before.
+
+![](/static/media/2024/git/diverged_branches.png)
+
+We can "rebase" `feature-branch` onto `main`, by using `git rebase`.
+
+```console
+$ git status
+On branch feature-branch
+nothing to commit, working tree clean
+$ git rebase main
+Successfully rebased and updated refs/heads/feature-branch.
+```
+
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/rebase.png">
+    <figcaption>Commits C and E now come after commit D</figcaption>
+</figure>
+
+Notice how `feature-branch` is based off commit D now? Git has "replayed" our commits C and E on top of the main branch (commit D), and created two new commits: C' and E'. These commits have the same content, but the parent of commit C has been updated from B to D.
+
+It's now possible to do a fast-forward merge, as in the first example.
+
+```console
+$ git checkout main
+Switched to branch 'main'
+$ git merge feature-branch
+Updating 6c02adc..f4fc1f0
+Fast-forward
+ [...]
+```
+
+<figure drawio-diagram="553">
+    <img src="/static/media/2024/git/rebase_ff.png">
+    <figcaption>Commits C and E now appear in <code>main</code>, without the need of a merge commit</figcaption>
+</figure>
+
+It is important to note that C' and E' are _not_ the same as C and E. When you rebase a branch, you abandon the previous commits and create new ones, which can become tricky when you're working with other people. If you push a branch to a remote repository and then later rebase it, you will annoy anybody who has based work off that branch.
+
+In short: **don't rebase commits which others may have based their work off**. More advanced examples on working with others will be covered in lecture 8.
 
 # Ways to make Git less confusing
 
@@ -256,15 +394,19 @@ Git is big, complicated and hard. It gets easier once you've got the basics down
 
 Lots of people like using graphical interfaces to work with Git instead of the command line. There are [lots of these available](https://git-scm.com/downloads/guis), but some notable mentions are:
 
-* GitHub Desktop - [https://desktop.github.com/](https://desktop.github.com/)
-  * Made by GitHub
-* GitKraken - [https://www.gitkraken.com/](https://www.gitkraken.com/)
-  * Really slick and easy to use
-  * Free with the GitHub Education Student Developer pack - [https://education.github.com/pack/offers](https://education.github.com/pack/offers)
-* GitExtensions - [https://gitextensions.github.io/](https://gitextensions.github.io/)
-  * Windows-only
-  * What I used to use!
- 
+-   GitHub Desktop - [https://desktop.github.com/](https://desktop.github.com/)
+    -   Made by GitHub
+-   GitKraken - [https://www.gitkraken.com/](https://www.gitkraken.com/)
+    -   Really slick and easy to use
+    -   Free with the GitHub Education Student Developer pack - [https://education.github.com/pack/offers](https://education.github.com/pack/offers)
+-   GitExtensions - [https://gitextensions.github.io/](https://gitextensions.github.io/)
+    -   Windows-only
+    -   What I used to use!
+
+# Exercises
+
+..todo..?
+
 # Git tips and tricks
 
 Here's a couple of extra little tricks that you might find especially useful when you're using Git
@@ -291,15 +433,20 @@ If you want to make a custom command, put an executable file on your PATH with a
 
 For example, putting [this Python script](https://gist.github.com/codemicro/bde7fc6082197b5fd67c5e9630a4be1b) somewhere on your PATH and calling it `git-autoacommit` will mean you can run `git autocommit` to have Git write your commit messages for you!
 
-```
-# nano hello.txt
-# git add hello.txt
-# git autocommit
+```console
+$ nano hello.txt
+$ git add hello.txt
+$ git autocommit
 [main 0c9140d] Update `hello.txt`
  1 file changed, 3 insertions(+), 1 deletion(-)
 ```
 
 # Other useful links
 
-* Git's own introductory guide: [https://git-scm.com/docs/gitcore-tutorial](https://git-scm.com/docs/gitcore-tutorial)
-* Julia Evans' confusing Git terminology post: [https://jvns.ca/blog/2023/11/01/confusing-git-terminology](https://jvns.ca/blog/2023/11/01/confusing-git-terminology)
+-   Git's own introductory guide: [https://git-scm.com/docs/gitcore-tutorial](https://git-scm.com/docs/gitcore-tutorial)
+-   Julia Evans' confusing Git terminology post: [https://jvns.ca/blog/2023/11/01/confusing-git-terminology](https://jvns.ca/blog/2023/11/01/confusing-git-terminology)
+
+Further reading if you're interested on the Git internals:
+
+-   <https://git-scm.com/book/en/v2/Git-Internals-Git-Objects>
+-   <https://git-scm.com/book/en/v2/Git-Internals-Git-References>
