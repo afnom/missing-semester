@@ -25,7 +25,7 @@ along, be sure to have a GitHub account, and if you're a student, you can take a
 pack that gives you access to JetBrain's innovative IDEs, free domain names provided by Namecheap, name.com or .TECH, and
 if you choose to go down the route of payment processing for a project you have, waived transaction fees on Stripe.
 
-You can read more Education pack here: https://github.com/education
+You can read more about the Education pack here: https://github.com/education
 
 We'll be focusing on both ends of open-source development, from making contributions to open source projects to maintaining
 your own repository for contributions. As a demo, we'll open a pull request to our MS repository, writing our name to
