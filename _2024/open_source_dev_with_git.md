@@ -47,7 +47,7 @@ Creating a fork is relatively simple on GitHub and even other sites. There'll of
 simply press:
 
 ![A screenshot of the fork button on Github, of which is the middle of three buttons in the top-right corner of the site.
-](files/create_fork.png)
+](/static/media/2024/git_os/create_fork.png)
 
 Once you click on this button, you'll be presented with a screen to name your fork, a description of it and whether it
 copies the main branch or not. Generally, this is fine to keep enabled, unless you look to contribute to a different 
@@ -101,7 +101,7 @@ visual tools that you choose to use instead. For example, I used [GitHub Desktop
 I first started out. There's also the `gitk` command, which is provided with Git itself. If you run the command within a
 folder hosting a repository, it'll open up a window that looks like this:
 
-![A screenshot of gitk.](files/gitk.png)
+![A screenshot of gitk.](/static/media/2024/gitk.png)
 
 `gitk` is only for viewing commits rather than making them, and is very verbose - so it may be better for reviewing the
 finer details of commits in a GUI.
@@ -115,12 +115,12 @@ which I will do as well.
 Once you've pushed your code, go to the main page of your fork, and check the "Contribute" button where it mentions your
 branch being ahead of your upstream repository:
 
-![The prompt to open a pull request to the original repository.](files/open-pr.png)
+![The prompt to open a pull request to the original repository.](/static/media/2024/open-pr.png)
 
 Then, click the "Open pull request" button. GitHub will then prompt you for the title of the PR, a description of what
 the PR does, and the branches to merge into/from.
 
-![The menu for opening a pull request.](files/open-pr-screen.png)
+![The menu for opening a pull request.](/static/media/2024/open-pr-screen.png)
 
 If you see the small dropdown arrow next to "Create pull request" too, you can create a pull request as a draft, meaning
 that you've not completed your work yet, but can accept early review from maintainers or other contributors. 
@@ -198,7 +198,7 @@ git checkout add-holly-to-guestbook
 git merge main
 ```
 It results in something that looks like this:
-![How a merge conflict looks in text.](files/merge_conflict.png)
+![How a merge conflict looks in text.](/static/media/2024/merge_conflict.png)
 > Note: The conflicting branch here is `merge-conflict-test-2` - in our example, this would be `main`. `HEAD` is also a
 > stand-in for `add-holly-to-guestbook` - it's just a slight difference in how I produced the conflict.
 
@@ -265,7 +265,7 @@ or make general comments.
 If you're a maintainer, you may get prompted for a review on each PR made to your project. To add a review, just switch
 to the "Files changed" tab, then you can conduct a review:
 
-![An overview of how code review in GitHub looks.](files/code_review.png)
+![An overview of how code review in GitHub looks.](/static/media/2024/code_review.png)
 
 As you go through each file, you can tick the "viewed" box to the right of the file, which will collapse it. If you need 
 to make comments on certain lines, you can hover over the line numbers and click on the + icon that shows up, typing in
@@ -281,7 +281,7 @@ Now, let's move onto the maintainer's side of open source. GitHub has a communit
 of your project, which you can treat as a todo list for setting up a project for open-source contributions. Not all of
 these are required for effective contribution, but some are vital, which I will go over below.
 
-![An overview of community standards that GitHub lists.](files/community_standards.png)
+![An overview of community standards that GitHub lists.](/static/media/2024/community_standards.png)
 
 ### README
 A README file is often the very first file that someone will see when visiting your repository. It will often give a
@@ -342,7 +342,7 @@ examples for bugs and features.
 However, issue templates can be deleted be users reporting bugs, much to developers' demises - which is when issue forms
 come in. These are a development in GitHub pretty much seen in every mainstream repository, enforcing you to fill out
 certain fields and structure your report in a certain way. Instead of using .md files, issue forms are configured as
-YAML files (i.e. `bug_report.yaml`). These are a bit too complex for us to cover this lecture, but I've linked the 
+YAML /static/media/2024 (i.e. `bug_report.yaml`). These are a bit too complex for us to cover this lecture, but I've linked the 
 official documentation for [creating an issue form](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
 from GitHub's documentation.
 
@@ -375,7 +375,7 @@ let's say we want to test a Java project's compilation.
 
 Let's go into the Actions tab in the repository. When we go into the page, we're greeted with workflows that are suggested
 for the repository:
-![A list of actions that GitHub suggests for the repository.](files/actions.png)
+![A list of actions that GitHub suggests for the repository.](/static/media/2024/actions.png)
 However, as we scroll, we also happen to find workflow categories, such as:
 - Deployment
 - Security
