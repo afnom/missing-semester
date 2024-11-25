@@ -12,14 +12,34 @@ This lesson is a UoB original and has been completely written from scratch by @j
 
 ## 1. Introduction
 
-How to build and maintain software at scale has become one of the most
-important problems in software engineering in the last few years. The internet
-has only grown at huge pace, and the landscape looks very different to how it
-might have used to only a few decades ago. The industry has very heavily
-adopted using virtual machines (virtualization) and containers
-(containerization) to help manage this new complexity.
+There are generally two big "metrics" we care about when building + shipping
+software:
+- Velocity - how quickly we can build and ship software
+- Scale - how many users we can ship our software to
+
+Pretty much all developer tooling aims to solve one or both of these issues -
+e.g. git aims to make it easier to have multiple developers working on one
+codebase (improving velocity), the cloud aims to make it easy to balance to any
+number of users (improving scale). The general ideas of containerization +
+virtualization (we'll look at docker, since it's the most common tool for this)
+aims to help solve both.
 
 What specific problems are we trying to solve?
+
+- Easier reproducible development.
+
+  The "works on my machine" problem is really quite miserable. Containers and
+  VMs let us create near-identical development and production environments. We
+  can write code that compiles in a reproducible way, and deploy/test it with a
+  consistent operating system and libraries.
+
+- Scaling up and out.
+
+  Internet traffic is pretty variable - a website might go from near zero
+  activity to absolutely heaving in hours. We want to built sites that can
+  scale with traffic, easily adding new machines to handle the traffic. Cloud
+  providers can help us here, but our software still needs to be split into
+  composable units that *can* scale.
 
 - Building for a cloud-native landscape.
 
@@ -29,33 +49,17 @@ What specific problems are we trying to solve?
   with thousands of GBs of RAM - we want to trade in much smaller units, and be
   more cost-efficient.
 
-- Scaling up and out.
-
-  Internet traffic is pretty variable - a website might go from near zero
-  activity to absolutely heaving in hours. We want to built sites that can
-  scale with traffic, easily adding new machines to handle the traffic. Cloud
-  providers can help us here, but our software still needs to be split into
-  composable units.
-
-- Easier reproducible development.
-
-  The "works on my machine" problem is really quite miserable. Containers and
-  VMs let us create near-identical development and production environments. We
-  can write code that compiles in a reproducible way, and deploy/test it with a
-  consistent operating system and libraries.
-
 To do this, the core idea of containers and virtual machines is to
 
 > Split up our big computers into smaller computers
 
 In doing this:
 
-- We don't have to rent/buy huge machines to run lightweight applications
+- We don't have to rent/buy huge machines to run lightweight applications.
 - We can easily to add more machines that are running our applications, since
-  we create reproducible templates
+  we create reproducible templates.
 - We don't have to worry about different dev+prod environments. This also helps
-  break down the barrier between development and operations - nowadays we often
-  merge the role into one DevOps role.
+  break down the barrier between development and operations (called DevOps).
 
 ### Containerization vs Virtualization
 
@@ -90,10 +94,10 @@ That's the main difference, but this has some big implications on what they up
 looking like:
 
 - Containers generally run a whole lot faster that virtual machines. We're
-  seperating less out, and we don't need to run multiple operating systems, so
+  splitting less out, and we don't need to run multiple operating systems, so
   we generally have a lot less overhead.
 - Container images tend to be a lot smaller. We don't need to ship things like
-  drivers or operating systems around (which can be massive).
+  drivers or whole kernels and bootloaders systems around (which can be massive).
 - Because of these, it's really easy to spin up *tons* of containers - this is
   nice for creating local dev environments, but also for facilitating entirely
   new modes of engineering. We can split all of our services into separate
@@ -102,7 +106,7 @@ looking like:
 Some common software for virtualization:
 - VirtualBox, VMWare, QEMU, firecracker
 vs some common software for containerization:
-- Docker, podman, containerd via CRI-O
+- Docker, podman, containerd, systemd
 
 ## 2. Technical details
 
@@ -129,7 +133,7 @@ So how is this enforced?
 - The supervisor runs in "ring 0" or "el1" or whatever your architecture says.
 - The supervisor configures interrupts, that will wait for some trigger to
   happen (like "some time has passed").
-- The supervisor drops priviledges down to the application level "ring 3" or
+- The supervisor drops privileges down to the application level "ring 3" or
   "el0" (yes, depending on architecture, this number is completely arbitrary
   and can go in either direction, have fuuuun).
 - The supervisor maps memory, etc, and then transfers control to the
@@ -144,18 +148,18 @@ really.
 
 ### Containerization
 
-Containerization just at the supervisor level, managing applications. But to
-provide isolation, we need to use capabilities built into the linux kernel,
-called namespaces.
+Containerization occurs just at the supervisor level, managing applications.
+But to provide isolation, we need to use capabilities built into the Linux
+kernel, called namespaces.
 
-Namespaces are hilariouly complicated (`man 7 namespaces`). But generally, each
+Namespaces are hilariously complicated (`man 7 namespaces`). But generally, each
 namespace groups a set of resources: from within a namespace, processes see a
 different view of the world.
 
 For example, one of the most interesting resources to isolate is the view of
 the directory hierarchy - starting at `/`, and covering the installed software
 in `/bin`, and the user files in `/home`. To do this, we use the "mount
-namespace". In linux, mounts are what goes into the directory hierarchy:
+namespace". In Linux, mounts are what goes into the directory hierarchy:
 
 - We might mount an ext4 filesystem on a block device (like a hard drive) to `/`
 - We might mount an xfs filesystem on a network device (like some network
@@ -178,7 +182,7 @@ to mount, or we could mirror parts of the host system. This way `/` outside of
 the container can have *entirely* different contents than `/` in the container!
 
 Linux lets us namespace **lots** of things. Just to name a few:
-- Mount namespaces, like we discussed above
+- Mount namespaces, like we discussed above.
 - PID namespaces. Each running process in Linux gets a PID, and these start
   from 1, and go up. Each container should see it's own set of PIDs, so PID
   namespaces let us do that.
@@ -228,10 +232,8 @@ There's a couple ways of installing Docker on Linux:
 
 For Windows and Mac OS, your options are more limited. A few suggestions:
 
-- Use [Docker Desktop](https://www.docker.com/products/docker-desktop/) (a
-  closed-source product from Docker)
-- Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) (only for
-  Windows)
+- Use [Docker Desktop](https://www.docker.com/products/docker-desktop/) (a closed-source product from Docker)
+- Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) (only for Windows)
 - Use [Lima](https://github.com/lima-vm/lima)/Colima (only for MacOS)
 
 You should probably make sure you have a working docker installation before
@@ -700,7 +702,7 @@ more secure, since they generally require breaks in the hardware, rather than
 software - when isolating at the software level, it's *very* easy to make
 critical mistakes (believe me).
 
-[^2]: Yes, I know, alternatives do exist. BSD jails, Windows HCS, etc. Whie
+[^2]: Yes, I know, alternatives do exist. BSD jails, Windows HCS, etc. While
 these exist, they're not as well known as Linux containers, which are pretty
 much dominant.
 
