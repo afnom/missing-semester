@@ -2,7 +2,7 @@
 layout: lecture
 title: "#9: Getting Stuff you Download to Compile"
 date: 2024-12-02
-ready: false
+ready: true
 ---
 
 ## Interpreted vs Compiled Languages
@@ -12,13 +12,13 @@ There are two ways of running code, interpreted or compiled.
 Each language usually only uses one type, some examples below:
 
 
-### (mostly) interpreted languages:
+### (Mostly) interpreted languages:
 
 - Python
 - Ruby
 - Javscript
 
-### (mostly) compiled languages
+### (Mostly) compiled languages
 
 - Java
 - C
@@ -176,6 +176,19 @@ Before following the tutorials below, install the corresponding build systems wi
 `make -d` - Builds the project with debug info.
 
 
+#### Cmake
+
+
+**Note:** Sometimes, you might see a file called `CMakeLists.txt` in the repository root. In this case, the command `cmake` should be run with the repository directory as an argument to generate the `Makefile`.
+
+`git clone https://github.com/pyk/cmake-tutorial` - Clones the example repository from Github.
+
+`cd cmake-tutorial` - Enters the cmake-tutorial repository.
+
+`cat CMakeLists.txt` - Prints the CMakefile to read the instructions used to generate the Makefile.
+
+`cmake .` - Generates the Makefile. (Follow make instructions above to build project.)
+
 
 ### Maven
 
@@ -225,3 +238,85 @@ Before following the tutorials below, install the corresponding build systems wi
 `gradle clean` - Deletes the build directory as well as all contained files and directories, including the compiled executable.
 
 `gradle build -d` - Builds the project, logging debug information.
+
+
+## Interpreted Languages
+
+
+Although interpreter languages don't need to be compiled, they'll often require dependencies to be installed for it to run.
+
+These are usually installed with package managers that might come installed with the language, some examples are `pip` for Python, and RubyGems (`gem`) for Ruby.
+
+**Note:** for Python, it's recommended to run `pip3` to ensure that you're running pip3, to install packages for python3, and not pip2 for python2 (outdated), which may also be called `pip`.
+
+Dependencies are usually stored in a configuration file that can differs with the package manager, like `package.json` for npm (NodeJS), or `requirements.txt` for pip (Python).
+
+Searching for the details for specific languages online is a good way to understand what you have to do.
+
+
+### Examples
+
+#### pip (Python)
+
+`pip3 install [PACKAGE]` - Installs a package.
+
+`pip3 install -r requirements.txt` - Installs all dependencies from a `requirements.txt` file.
+
+`pip3 uninstall [PACKAGE]` - Uninstalls a package.
+
+`pip3 list` - Lists all packages.
+
+
+#### npm (NodeJS)
+
+`npm install [PACKAGE]` - Installs a package.
+
+`npm install` - Installs packages from a `package.json` file in the local directory.
+
+`npm uninstall [PACKAGE]` - Uninstalls a package.
+
+`npm update [PACKAGE]` - Updates a package.
+
+
+### Virtual Environments
+
+
+Installing lots of package depencencies systemwide can waste a lot of storage after downloading and running multiple app.
+
+There may also be issues with system package conflicts, and some package managers like pip might remind you of that.
+
+To solve this, you can use **virtual environments** to compartmentalise language instances with separate library dependencies installed.
+
+There are lots of different tools to create and manage virtual environments, especially for Python, such as `venv` (built-in with Python3.3+) `anaconda`, and `pipx`.
+
+
+#### Example with venv
+
+
+`echo -e 'import cowsay\ncowsawy.cow("Hello World!")' > cow.py` - Writes Python code to file.
+
+`python3 -m venv venv` - Creates virtual environment in `venv` directory (second venv argument is the directory name).
+
+`source venv/bin/activate` - Activates virtual environment, redirects python3 and pip to refer to virtual environment binaries through PATH enrivonment variable.
+
+`pip install cowsay` - Installs `cowsay` package.
+
+`python3 cow.py` - Runs Python script.
+
+`deactivate` - Deactivates virtual environmnent.
+
+
+Output:
+
+```
+  ____________
+| Hello World! |
+  ============
+            \
+             \
+               ^__^
+               (oo)\_______
+               (__)\       )\/\
+                   ||----w |
+                   ||     ||
+```
