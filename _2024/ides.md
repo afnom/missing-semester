@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#11: Introduction to IDEs"
-date: 2025-01-20
+date: 2025-02-03
 ready: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#13: Cloud Computing"
-date: 2025-02-03
+date: 2025-02-17
 ready: false
 ---
 
