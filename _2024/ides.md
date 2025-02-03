@@ -2,7 +2,7 @@
 layout: lecture
 title: "#11: Introduction to IDEs"
 date: 2025-02-03
-ready: false
+ready: true
 ---
 
 ### Context: Using IDEs
