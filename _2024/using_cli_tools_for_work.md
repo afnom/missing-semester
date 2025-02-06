@@ -154,7 +154,7 @@ sudo ufw status          # displays status of the firewall
 
 There are numerous examples of UFW configurations available online. If you are using Docker and want to expose containers to traffic, I recommend the [ufw-docker](https://github.com/chaifeng/ufw-docker) setup.
 
-Another useful tool for a single-node server is [Fail2Ban](https://github.com/fail2ban/fail2ban). This tool monitors server acces logs and restricts malicious traffic by setting iptables rules. It can be [configured to protect SSH](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04) as well as other common services.
+Another useful tool for a single-node server is [Fail2Ban](https://github.com/fail2ban/fail2ban). This tool monitors server access logs and restricts malicious traffic by setting iptables rules. It can be [configured to protect SSH](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04) as well as other common services.
 
 
 #### Hosting Applications
@@ -570,7 +570,7 @@ The complexity of Kubernetes is by design, allowing it to be (simultaneously) ex
 
 Docker has the concepts of **images** and **containers** (see the [lecture notes on virtualisation](./virtualization.md)). Terraform has the concepts of **resources** and **data sources**.
 
-Kubernetes refers to different types of units that it manages as **kinds**. A [kind]() is a type of resource that can be deployed on (and managed by) Kubernetes.
+Kubernetes refers to different types of units that it manages as **kinds**. A [kind](https://kubernetes.io/docs/concepts/overview/working-with-objects/) is a type of resource that can be deployed on (and managed by) Kubernetes.
 
 A given installation of Kubernetes is called a **cluster** and it consists of one or more **nodes**. A [Node](https://kubernetes.io/docs/concepts/architecture/nodes/) is a Kind in Kubernetes, just like all of the different Kinds discussed below! A locally deployed cluster will only have a single node, but clusters can be comprised of multiple nodes. A Node is a single physical or virtual machine, usually equivalent to a single instance of a VPS in a cloud provider e.g. EC2 instance in AWS or Droplet in DigitalOcean.
 
@@ -578,7 +578,7 @@ A given installation of Kubernetes is called a **cluster** and it consists of on
 
 Like Docker, Kubernetes works with [OCI](https://opencontainers.org/) container images. The *minimum deployable unit* for a container image is called a [Pod](https://kubernetes.io/docs/concepts/workloads/pods/). Unlike Docker, the minimum deployable unit can include one or more containers [^1].
 
-It is unlikely that you will declare Pods directly. For most applications, you will work with Kinds that can be used to manage one or more pods: Deployments, Stateful Sets, Daemon Sets and (Cron) Jobs.
+It is unusual to declare Pods directly. For most applications, you will work with Kinds that can be used to manage one or more pods: Deployments, Stateful Sets, Daemon Sets and (Cron) Jobs.
 
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) are where the scaling features of Kubernetes begin to appear. They allow a *desired number of pods* to be declared and managed automatically. This should generally be considered as the **default option** for deploying a container, as it can be scaled to one or more instances of the container both manually and [automatically](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), and can be scaled down to zero to switch it off.
 
@@ -633,17 +633,38 @@ There are numerous Kubernetes distributions available. Most of the Kinds we have
 
 If you are using Linux, I would recommend using [K3s](https://k3s.io/) as it is simple to set up and extremely lightweight. If you are in a team using Windows and macOS, I would recommend [minikube](https://docs.docker.com/desktop/features/kubernetes/). Otherwise, I would use whichever managed Kubernetes service your cloud provider offers.
 
-### YAML Hell
-
-TODO
-
-
 ### Packages (Helm + Arkade)
 
-TODO
+Kubernetes has a package manager, [Helm](https://helm.sh/), which can be used to install applications and manage version upgrades. It is a handy way of *installing stateful applications*, as it automatically creates all of the different kinds of resources e.g. StatefulSets, Services, Secrets, Ingresses based on configuration in a *values* file.
+
+Packages are provided as *charts* (yet another piece of nautical terminology!). You can download charts from numerous different repositories provided by organisations like [Bitnami](https://bitnami.com/).
+
+For example, installing [PostgreSQL](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/README.md) using a Bitnami chart:
+
+```bash
+helm install my-postgres oci://registry-1.docker.io/bitnamicharts/postgresql
+```
+
+*Be aware of the tradeoffs when installing stateful application on Kubernetes*, as management of [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) is extremely distribution-specific. You will likely find it easier to install Helm charts on cloud-managed K3s distributions which have default storage providers than to install them on a local Kubernetes distribution where you have to configure the storage providers yourself. In my experience, this is one of the biggest learning curves of Kubernetes.
+
+A useful tool for getting started with Kubernetes-native tools and applications is [arkade](https://github.com/alexellis/arkade). It allows you to quickly install Kubernetes distributions and CLI tools on your machine / in CI as well as installing applications onto your Kubernetes cluster(s).
+
+There are many useful applications that can be installed on Kubernetes - here is a few that I've found useful:
+
+- [cert-manager](https://cert-manager.io/) for automatically provisioning TLS certificates from LetsEncrypt
+- [Grafana](https://github.com/grafana/grafana) for viewing monitoring and observability dashboards
+- [ingress-nginx](https://github.com/kubernetes/ingress-nginx) for provisioning Ingress resources using NGINX as a reverse proxy
+- [inlets-operator](https://github.com/inlets/inlets-operator) for exposing local K3s distros (behind NAT) over public cloud Load Balancers
+- [Prometheus](https://prometheus.io/docs/introduction/overview/) for collecting metrics from instrumented application code
 
 
-Inlets Operator
+### YAML Hell
+
+Like many cloud-native tools, Kubernetes is primarily configured using [YAML](https://yaml.org/), an indentation-based markup language. As many of you may have found with Python, indentation makes it very difficult to automatically format code, as the indentation is important for control flow.
+
+Furthermore, tools like Helm rely on *templated YAML* whereby the file is further complicated by adding lots of `{{ }}` syntax.
+
+There are many ways of declaring Kubernetes resources without having to write YAML. I have personally found success using [Terraform](#terraform-and-opentofu) which has [Kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/latest) and [Helm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs) providers. This means that you can standardise your infrastructure and application code with [linters](https://github.com/antonbabenko/pre-commit-terraform) and [vulnerability scanners](https://github.com/bridgecrewio/checkov).
 
 
 ## Extra Sections?
