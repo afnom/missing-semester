@@ -68,7 +68,7 @@ This has replaced Makefiles for a lot of use-cases, as it is relatively simple t
 Refer to <a href="./course-shell#ssh">Lecture 1</a> for an introduction to Secure Shell (SSH).
 </div>
 
-SSH is used for logging in to remote servers, whether they are on your home network, university network or anywhere on the internet.
+SSH is used for logging in to remote servers, whether they are on your home network, university network or anywhere on the internet (e.g. a Virtual Private Server (VPS) provisioned from a cloud provider).
 
 It allows you to have a shell session on any machine and the flexibility of the Linux / UNIX design philosophy means that there is (usually) no difference between running commands on your local machine or on a server.
 
@@ -426,18 +426,114 @@ TODO
 
 ## Cloud Provider Managed Services
 
-TODO
+Increasingly, organisations are purchasing compute from *cloud providers* instead of maintaining their own physical servers.
 
-- Lambda Functions / Function Apps
-- Managed databases
-- Managed distributions (e.g. Kubernetes)
-- Container runtimes
-- Blob storage
-- Filesystems
-- RBAC
-- Networking / VPNs
-- CDNs
-- ML
+This is *almost always more expensive* than self-hosting, and you may well choose to pick *free or cheap* options for your own projects, such as [GitHub](https://pages.github.com/) or [GitLab](https://docs.gitlab.com/ee/user/project/pages/) Pages (free static web hosting), [Hetzner](https://www.hetzner.com/) (cheap VPS offerings) or [Backblaze B2](https://www.backblaze.com/) (cheap blob storage compatible with S3 protocol). However, most reasons organisations choose cloud providers have little to do with price and more to do with [compliance](https://learn.microsoft.com/en-us/compliance/assurance/assurance-risk-assessment-guide), [support](https://aws.amazon.com/premiumsupport/) and [compatibility with their existing IT estate](https://learn.microsoft.com/en-us/entra/identity/domain-services/compare-identity-solutions).
+
+In this section I'll talk about the following cloud providers, though there are many more that you can try:
+
+- Amazon Web Services ([AWS](https://aws.amazon.com))
+- Microsoft [Azure](https://portal.azure.com/)
+- Google [Cloud](https://cloud.google.com/) (GCloud)
+- Oracle [Cloud Infrastructure](https://www.oracle.com/cloud/) (OCI)
+- [Hetzner](https://www.hetzner.com/cloud/)
+- [DigitalOcean](https://digitalocean.com/)
+- [Cloudflare](https://www.cloudflare.com/en-gb/)
+
+
+### Standard Offerings
+
+Most cloud providers will provide the following:
+
+- Some form of *Virtual Private Server* ([AWS EC2](https://aws.amazon.com/ec2/), [Azure Virtual Machines](https://azure.microsoft.com/en-us/products/virtual-machines/), [DigitalOcean Droplet](https://www.digitalocean.com/products/droplets), [GCloud VPS](https://cloud.google.com/learn/what-is-a-virtual-private-server), [Hetzner VPS](https://www.hetzner.com/), [Oracle VM](https://www.oracle.com/cloud/compute/virtual-machines/))
+- Some sort of *private networking* ([AWS VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html), [Azure VNET](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview), [Digital Ocean VPC](https://docs.digitalocean.com/products/networking/), [GCloud VPC](https://cloud.google.com/vpc), [Hetzner Network](https://docs.hetzner.com/cloud/networks/getting-started/creating-a-network/) , [Oracle VCN](https://www.oracle.com/cloud/networking/virtual-cloud-network/))
+- A managed *block storage* for VPS filesystems ([AWS EBS](https://aws.amazon.com/ebs/), [Azure Disk Storage](https://azure.microsoft.com/en-us/products/storage/disks/), [DigitalOcean ??](), [GCloud ??](), [Hetzner ??](), [Oracle ??]())
+
+These all mirror the networking, compute and filesystem configurations that you could expect from an on-premises data centre (though there is significant variability between providers, e.g. [Azure VNET compared with AWS VPC](https://devblogs.microsoft.com/premier-developer/differentiating-between-azure-virtual-network-vnet-and-aws-virtual-private-cloud-vpc/)). *Be sure to follow best-practices for whichever cloud provider you are using*, as it will save you headaches in the future!
+
+These services may well be sufficient for your applications, but there are some other managed services that you may want to consider.
+
+
+### Blob Storage
+
+On Linux and UNIX machines, you may be used to *block storage* as the basis for filesystems (accessed through commands like `lsblk`, `blkid` and `mount`.
+
+Many cloud providers offer *blob storage* as a service. The most well-known example of this is [AWS S3](https://aws.amazon.com/s3/). Blob storage allows applications to store and retrieve any kind of data over a standard API. It is an excellent choice for backups and for hosting static websites, though frequently accessed, low-latency data should still be stored on a filesystem.
+
+Blob storage providers offer other features, such as *automatic expiration*, cycling to *lower-cost longer term storage*, *versioning* and *encryption-at-rest*. Amazon offers an insane *11 nines* (99.999999999%) of durability guarantee for data stored in blob storage due to the amount of redundancy they employ, yet it is still very low-cost for storing gigabytes or terabytes of data.
+
+Other cloud providers offer similar services:
+
+- [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/)
+- [Google Cloud Storage](https://cloud.google.com/storage)
+- [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces)
+- [Backblaze B2](https://www.backblaze.com/cloud-storage)
+- [Hetzner Object Storage](https://www.hetzner.com/storage/object-storage/)
+- [OCI Object Storage](https://www.oracle.com/cloud/storage/object-storage/)
+- [Cloudflare R2](https://www.cloudflare.com/en-gb/learning/cloud/what-is-blob-storage/)
+
+Again, be aware of possible *vendor lock-in* when integrating closely with managed blob storage services, though many provide an S3-compatible API. The biggest factor in migration from one provider is likely to be fees for exporting or importing data.
+
+
+### Content Delivery
+
+A useful managed service which integrates well with blob storage is a *content delivery network* (CDN). It is fundamentally a distributed set of servers spread across many data centres in different geographical locations, which speeds up access to content that it *fronts* e.g. a static website.
+
+While building your own CDN is very difficult and expensive, cloud providers offer these as services. Here are some examples available from popular cloud providers:
+
+- [AWS Cloudfront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
+- [Cloudflare CDN](https://www.cloudflare.com/en-gb/application-services/products/cdn/)
+- [Azure Front Door](https://azure.microsoft.com/en-us/products/cdn/)
+- [Google Cloud CDN](https://cloud.google.com/cdn)
+
+
+
+Another significant advantage of a CDN is the protection that it can give you from *malicious attacks*, with support for *validating HTTP requests*, *load balancing* and *origin failover*. It can be combined with a *firewall* for further protection of your network. You can leverage a CDN even if you aren't using cloud services, and it can ultimately reduce costs especially if your cloud provider *charges for egress*.
+
+
+### Managed Databases
+
+Many of the types of database discussed in [database design](#database-design) are offered directly as managed services.
+
+Cloud providers frequently offer multiple different RDBMS instances e.g. AWS Relational Database Service offers [PostgreSQL](https://aws.amazon.com/rds/postgresql/) and [MariadDB](https://aws.amazon.com/rds/mariadb/) along with MySQL, Oracle and Db2. Some even offer *severless instances* e.g. [Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/) which can free you from the limitations of a single-node database but potentially incur higher costs based on your use-cases.
+
+If you are using an RDBMS, another consideration you may make are the *expected workloads* that you are running. A transaction-based workload is better suited to e.g. AWS RDS whereas an analytical workload would run better on AWS Redshift.
+
+Managed databases are often worth the extra cost as it removes much of the burden of administrating, updating and backing up the database. By relying on an open-source engine such as PostgreSQL, you can *reduce impact of migrations* as it will most likely work on a different managed service or on-premises instance with minimal code changes. However, be aware that *extensions* can be difficult or impossible to install on managed database services.
+
+
+### Serverless Compute
+
+If you have written code that needs to run very infrequently or handle very few requests, you may wish to avoid paying for an expensive always-on VPS.
+
+Different providers give different names to this service e.g. [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html), [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview), [GCloud Functions](https://cloud.google.com/functions). They are all functionally the same: you write code in a language e.g. Python and upload it to their service, and the code runs when it is triggered, which could be from:
+
+- upload of a file to blob storage
+- a web request being received
+- on a schedule similar to Cron
+- many other things!
+
+
+They are worth considering depending on how frequently they will be called, and have some other useful features e.g. [integration with CDNs](https://aws.amazon.com/lambda/edge/).
+
+
+### Container Runtimes
+
+Many applications that you build will run in [containers](./virtualization.md), and most cloud providers offer ways to run containers without having to manage your own servers directly e.g.:
+
+- [AWS Elastic Container Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
+- [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview)
+
+
+They generally aim to be simple and developer friendly, however are another example of *vendor lock-in*, as it is difficult to migrate directly to another cloud provider's service. To avoid this, I recommend using a managed Kubernetes service which provides almost identical APIs across different cloud providers. I'll discuss Kubernetes [towards the end of these notes](#kubernetes).
+
+
+### Everything else
+
+There's a lot more to cover on the many different services available from cloud providers. There are countless specialised services for everything from real-time gaming, to machine learning, to search and indexing.
+
+I've introduced what I believe to be core, provider-agnostic services that you may wish to utilise in your work. Remember that *the more cloud services that are used, the harder a migration will be* - using *open-source cores* e.g. PostgreSQL and Kubernetes as much as possible simplifies any future migration immensely!
+
 
 
 ## Cloud Automation Tools
