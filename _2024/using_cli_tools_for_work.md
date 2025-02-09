@@ -343,26 +343,117 @@ Depending on what sort of software you are creating, a release may be the best w
 
 ## Continuous Integration and Delivery
 
-TODO
+<div class="note">
+Refer to <a href="./open_source_dev_with_git#6-cicd-and-github-actions">Lecture 7</a> for more background on CI using GitHub.
+</div>
 
-### CI
 
-- What is a pipeline?
-- Focus on Building from local components
-- Options for different providers - GitHub, GitLab, CircleCI, Travis etc.
-- Agnostic to providers - focus on reusable scripting, core principles learned in this course etc.
-- Generation of 'artefacts'
-- Security implications
-- Pre-commit (possibly in prev?)
-- Standardised (possibly in prev?)
-- Types of testing
-- Validation stages - quality gates
+As software projects scale it becomes increasingly important to check the quality of code that is being committed. Once validated, we may want to automatically deploy it to our uses. This is where Continuous Integration (CI) and Continuous Delivery (CD) enter the picture!
 
-### CD
+### Continuous Integration (CI)
 
-- Automated deployment options (could refer to Cloud Automation)
-- 'Deploy Often' vs 'Big Releases'
-- 'Deploy during off-periods' vs 'Deploy while team is working'
+You may already be used to running tests, linters etc. in your local repository (see [CLI Tools](#cli-tools-and-text-editors) and [Pre-Commit Hooks](#handling-pull-requests)). While this works well when you have a personal project used by very few people, it does not scale well when you have hundreds of commits and dozens of releases happening a week - it is very easy to forget to run the command and risk pushing code which has significant bugs!
+
+**CI** automates the process of running common tasks as part of the test and build process. It may include:
+
+- Running *unit tests*, *integration tests*, *end-to-end tests* etc. (to test for any regression in functionality)
+- Running *linters* and *auto-formatters* (to check for common language mistakes and ensure consistent code format)
+- Running *static analysis* tools (to validate behaviour without running code e.g. Python type checking with [MyPy](https://mypy.readthedocs.io/en/stable/getting_started.html) [^2])
+- Extracting *documentation* from source code (to ensure published documentation is up-to-date with source code updates)
+- Generation of *build artefacts* (to ensure that the code is transformed into the desired format, [see below](#build-artefacts)
+- Creation of *OCI container images* (to allow the code to be deployed into a runtime environment such as [Docker](./virtualization.md))
+
+
+There are countless examples of tasks that you might decide to run, and it will depends on what your project is and how it is developed and deployed. For example, see the [SQLite3 testing](https://www.sqlite.org/testing.html) page for how an extremely widely deployed library gets tested. For your projects, it may be sufficient to just run unit tests and generate a package artefact.
+
+#### How CI is run
+
+Each CI run is typically configured as part of a **pipeline** (e.g. [GitLab](https://about.gitlab.com/topics/ci-cd/cicd-pipeline/)). However, there is no standard way of configuring pipelines across CI providers, though many rely on [YAML](https://en.wikipedia.org/wiki/YAML) files (with all of the [issues](#yaml-hell) this causes!).
+
+Under the hood, any CI provider will execute pipeline tasks in a shell. It will make maintaining and debugging your pipelines much easier if you *use locally-runnable components as much as possible* - stick to easily composable tasks that can be reproduced locally. I've had some success doing this in [GitHub Actions](https://github.com/features/actions) using the [Just](https://github.com/casey/just) command runner. However, you will almost always need to use some CI provider boilerplate to setup the environment and install dependencies.
+
+Similarly to [cloud providers](#cloud-provider-managed-services), you have to be wary of *vendor lock-in* when setting up CI. The more you rely on features from a specific CI provider, the harder it will be to migrate providers in the future. By applying the core principles taught in this cause, you can set up your automations so they are as repeatable as possible which will ease any future rework or migration.
+
+
+#### CI Providers
+
+We mentioned [GitHub Actions](https://github.com/features/actions) in our [previous lecture on open-source development](./open_source_dev_with_git.md). This is a relatively simple way to get started with CI and CD and it is *free for public repositories*.
+
+Most CI providers *bill by the minute* for tasks that they run. This is usually rounded up, so a task that fails within 5 seconds will be billed as a 1 minute task.
+
+I have found the free tier of GitHub actions to be sufficient for the volume of pipelines that we run, even with the [limits](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes) (2000 minutes per month) that GitHub impose.
+
+Most providers (including GitHub and GitLab) allow use of *self-hosted runners*. These can typically be run as a Docker container that connects to the CI provider's API and receives requests to run jobs. These do *not incur CI a CI minutes quota*, but you are responsible for configuring and maintaining the machines running the runners. If you have spare hardware or a [Kubernetes cluster](#kubernetes), this can give significant savings and allow running more pipelines.
+
+There are [many other providers](https://en.wikipedia.org/wiki/Comparison_of_continuous_integration_software) of CI services. In many organisations, you won't have any control over which provider you use e.g. heavy users of Microsoft products may mandate use of [Azure DevOps Services](https://azure.microsoft.com/en-us/products/devops/). Popular CI providers such as [CircleCI](https://circleci.com/), [Jenkins](https://www.jenkins.io/) and [Travis CI](https://www.travis-ci.com/).
+
+Regardless of provider, you will want to consider the following:
+
+- Options for *self-hosting* the provider (some e.g. [Jenkins](https://www.jenkins.io/) are open-source and containerised)
+- Integration with *version control* (most providers have an integration with e.g. GitHub)
+- Cost!
+
+
+#### Build Artefacts
+
+The key outputs from CI are *build artefacts*. These could be tarballs of the source code, compiled binary executables or libraries, software packages in different package manager formats, OCI container images, or anything else you can imagine.
+
+We talked briefly about [GitHub releases](#releases) earlier. These are often generated automatically by CI pipelines to include artefacts generated for that specific Git tag. If you have ever downloaded a binary from GitHub for a given version of the package, that binary will likely have been generated using a pipeline and stored as an artefact from that pipeline.
+
+Be aware of the **security implications** of software delivery artefacts! It is very important that your CI pipelines are correctly configured and secured and that you verify any outputs that are generated e.g. by verifying [GitHub artefact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds), [signing binaries](https://joemiller.me/2019/07/signing-releases-with-a-gpg-project-key/) etc. Be sure to protect the build process itself from [poisoned pipeline execution](https://owasp.org/www-project-top-10-ci-cd-security-risks/CICD-SEC-04-Poisoned-Pipeline-Execution), as a compromised CI pipeline is a significant risk to your project and those who depend on it.
+
+
+#### Validation Stages
+
+Another use case for pipelines is in ensuring that any changed proposed to a project pass *quality gates*. This helps in streamlining *code reviews* (see [Handling Pull Requests](#handling-pull-requests)), whereby a project maintainer can refuse to review a patch unless it has e.g. full coverage by unit tests.
+
+Pipelines can also be run conditionally. You may wish to only generate artefacts for code that is pushed to `main`, or has been explicitly tagged as a release. When maintaining [multiple branches](#branch-discipline) and multiple environments, you can make clever use of pipelines to ensure that required checks are run and, in combination with [Continuous Delivery](#continuous-delivery-cd), that the artefacts get deployed in the right places with the right configuration.
+
+
+### Continuous Delivery (CD)
+
+Following the generation of artefacts, your operations team will need to deploy them to live environments. While often a manual task, the automation of this using **CD** can be used to ensure that changes are deployed in a [repeatable and reliable manner](https://www.atlassian.com/continuous-delivery/principles).
+
+Implementation of CD follows the same guidelines as that for [CI](#continuous-integration-ci) and may often run as part of the same CI tool.
+
+
+#### How and When to Automate
+
+`Fully hands-off' deployments are extremely tempting goals for DevOps teams. Depending on your project, it may (or may not) be desirable to continuously deploy any changes directly to users. This will affect which options you choose for achieving continuous delivery.
+
+Before you start considering options, *document your existing deployment process in a runbook*. By writing down all of the tasks that you need to do to get code from your Git repo into production, you will have a reference document which describes the whole process and from which you can find low handing fruit for automation.
+
+Always remember: automation of processes is great *until it goes wrong* and you have to diagnose the issue. This is why it's equally important to have a robust process to *roll back changes*.
+
+
+#### Simple applications
+
+For some applications, deployment is as simple as changing some environment variables and running `docker compose up -d`.
+
+Running Ansible (see [Server Management](#server-management-again)) in a CD pipeline can be a very effective way of updating one or more servers with simple code changes. Ansible can even be configured on a remote system to *automatically pull changes* and apply them (see [ansible-pull](https://docs.ansible.com/ansible/latest/cli/ansible-pull.html)), which can greatly simplify your deployment model.
+
+
+#### Infrastructure-as-Code (IaC)
+
+IaC tools such as [Terraform](#terraform-and-opentofu) and [Kubernetes](#kubernetes) greatly ease the burden of deploying changes to complex environments, as they are designed for *declaratively managing configurations* of infrastructure and applications. When run in CD pipelines they can be used for reporting planned changes for human approval (an additional *quality gate*) before the changes are applied to the live environment.
+
+For more complex applications, IaC tools are very effective when combined with CD pipelines, but you have to very careful in *packaging changes incrementally* so that you can safely roll back if needed e.g. don't make simultaneous changes to application code at the same time as deploying an updated infrastructure architecture.
+
+
+#### Final Thoughts
+
+There are two trade-offs that I want to leave you with when thinking about CD:
+
+- **Deploy Often** vs **Big Releases**
+- **Deploy during off-periods** vs **Deploy while team is working**
+
+Many projects make a big deal out of large releases with a lot of changes. When releasing directly to end users, you are better off ensuring that you can [make small, frequent changes](https://dafyddvaughan.uk/blog/2017/deliver-little-deliver-often-avoid-the-big-bang/). This agility will give you confidence in your processes and allow you to hone your operational capability.
+
+
+Once your deployment (and rollback) strategy is battle-tested, you may elect to push deployments back to a quieter time (e.g. during the middle of the night, when all your users are asleep) to minimise disruption. In an ideal world, your users *should not even notice when an update is applied* or can elect to download the update at their convenience. The old adage `Don't deploy on Friday' is often repeated, but [with the right migitations](https://community.aws/content/2fmLHThOhoYEONmzGUFsx1qVKKd/deploy-on-friday-devops-best-practices) it should be no difference to deploying on any day of the week.
+
+
+However, no one wants to get called in at 3am!
 
 
 ## Documentation and Project Management
@@ -768,3 +859,5 @@ There are many ways of declaring Kubernetes resources without having to write YA
 ### Observability
 
 [^1]: When getting started with Kubernetes, you will likely only be deploying pods with a single container. You may wish to use multiple containers for e.g. initialising some shared resources needed by a container (see [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/), or for exporting metrics or other data from a running container (see [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/).
+
+[^2]: For some compiled languages e.g. [Rust](https://www.rust-lang.org/), the compilation process is a form of static analysis, whereas interpreted language such as Python need separate tools for this.
