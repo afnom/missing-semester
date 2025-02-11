@@ -39,6 +39,8 @@ I will be sharing some of the experiences that have helped me in my time working
 
 While I will be relying on my experience, I am going off your feedback for what you are most interested in covering. Based on current polling results, there is most interest in CI/CD tooling, cloud automation and documentation and project management. This makes sense, as these are the areas that are least likely to be encountered until you are working in industry in a team. While there is little interest in frontend development, along with other tools that already been covered on this series, I will briefly touch on my experiences in those topics and how it fits into the overall story.
 
+If you have any feedback or suggestions that you would like to see in these notes, please [raise it here](https://github.com/afnom/missing-semester/issues/)!
+
 
 ## CLI Tools and Text Editors
 
@@ -127,7 +129,7 @@ PermitRootLogin no                   # to disable root login via SSH
 
 # ...
 
-# To disable tunneled clear text passwords, change to no here!
+# To disable tunnelled clear text passwords, change to no here!
 #PasswordAuthentication yes  # change to below
 PasswordAuthentication no    # to disable password authentication (only allowing SSH keypairs)
 ```
@@ -309,7 +311,7 @@ Another really useful way of standardising Pull Requests is to use pre-commit ho
 
 - Removing trailing whitespace
 - Preventing secrets from being committed
-- Preventing code from being comitted with syntax errors
+- Preventing code from being committed with syntax errors
 - Preventing code from being committed with merge conflict markers (`<<<<<<< HEAD` etc.)
 - Many more possibilities for whichever tools you are using
 
@@ -319,7 +321,7 @@ It is possible to [configure templates for pull request](https://docs.github.com
 - All tests running successfully
 - Relevant updates made to documentation
 - Documentation generated successfully
-- [CI pipelines completed successfuly](#continuous-integration-and-delivery)
+- [CI pipelines completed successfully](#continuous-integration-and-delivery)
 
 Finally, it comes to the review. This is the time for a human ([or a machine](https://github.com/marketplace/actions/ai-code-review-action)) to give feedback on the changes that are proposed. Many developers hate reviewing Pull Requests or waiting for their PRs to be reviewed, but it is a valuable step to ensure that changes being made are visible and that the author has *thought about the wider impact of their changes*. It is **not** a good place to nitpick about indentation, variable naming etc. These should ideally be dealt with before it gets to the review stage, and having a linter and autoformatter (e.g. [Ruff](https://docs.astral.sh/ruff/) for Python) running in pre-commit hooks is a great way to reduce the noise.
 
@@ -450,7 +452,7 @@ There are two trade-offs that I want to leave you with when thinking about CD:
 Many projects make a big deal out of large releases with a lot of changes. When releasing directly to end users, you are better off ensuring that you can [make small, frequent changes](https://dafyddvaughan.uk/blog/2017/deliver-little-deliver-often-avoid-the-big-bang/). This agility will give you confidence in your processes and allow you to hone your operational capability.
 
 
-Once your deployment (and rollback) strategy is battle-tested, you may elect to push deployments back to a quieter time (e.g. during the middle of the night, when all your users are asleep) to minimise disruption. In an ideal world, your users *should not even notice when an update is applied* or can elect to download the update at their convenience. The old adage `Don't deploy on Friday' is often repeated, but [with the right migitations](https://community.aws/content/2fmLHThOhoYEONmzGUFsx1qVKKd/deploy-on-friday-devops-best-practices) it should be no difference to deploying on any day of the week.
+Once your deployment (and rollback) strategy is battle-tested, you may elect to push deployments back to a quieter time (e.g. during the middle of the night, when all your users are asleep) to minimise disruption. In an ideal world, your users *should not even notice when an update is applied* or can elect to download the update at their convenience. The old adage `Don't deploy on Friday' is often repeated, but [with the right mitigations](https://community.aws/content/2fmLHThOhoYEONmzGUFsx1qVKKd/deploy-on-friday-devops-best-practices) it should be no difference to deploying on any day of the week.
 
 
 However, no one wants to get called in at 3am!
@@ -458,61 +460,362 @@ However, no one wants to get called in at 3am!
 
 ## Documentation and Project Management
 
-### Documentation
+<div class="note">
+Refer to <a href="./open_source_dev_with_git">Lecture 7</a> for many useful tips on managing project documentation that apply here too.
+</div>
 
-TODO
+In your own personal projects, you may be able to hold all of the information you need in your head or in a simple README file. As projects scale there is more and more information that people need to know in order to get started. Having structured documentation and processes is critical to ensuring that users and potential contributors don't feel lost, and poor documentation is a *huge barrier in adoption of open-source softwar
+e over proprietary alternatives*.
 
-- Documentation generators e.g. MkDocs
-- Markdown as standard format vs Web-based tools e.g. Confluence
-- Vendor lock-in concerns e.g. Atlassian vs text-based files
-- Publishing automatically in CI pipelines
-- Docstring extraction
-- Standardisations
-- Diagrams as Code e.g. PlantUML, MermaidJS
-- Automated generation of e.g. ERD diagrams, system architecture diagrams, Software BOM
+
+### Types of Documentation
+
+All documentation should *consider the target audience*. Very often we write documentation based on what we would want to see, and we are already intimately familiar with our own project!
+
+I recommend researching frameworks for technical documentation such as [Diátaxis](https://diataxis.fr/) / [Divio](https://docs.divio.com/documentation-system/), which breaks down documentation into four main categories:
+
+- [Tutorials](https://docs.divio.com/documentation-system/tutorials/) which target *new users or collaborators* and are entirely concerned with *learning* e.g. [Writing your first Django app](https://docs.djangoproject.com/en/5.1/intro/tutorial01/)
+- [How-to Guides](https://docs.divio.com/documentation-system/how-to-guides/) which *direct users to solve a problem* and are entirely concerned with *outcomes* e.g. [How to configure Djano logging](https://docs.djangoproject.com/en/5.1/howto/logging/)
+- [Process Explanations](https://docs.divio.com/documentation-system/explanation/) which *explain the way things work* and are entirely concerned with *understanding* e.g. [Django design philosophies](https://docs.djangoproject.com/en/5.1/misc/design-philosophies/)
+- [Reference Details](https://docs.divio.com/documentation-system/reference/) which *describe what things do* and are entirely concerned with *information* e.g. [Django Models field reference](https://docs.djangoproject.com/en/5.1/ref/models/fields/)
+
+It is very easy to end up *only writing Reference Documentation* and not write any of the other types, as you already know how to use your project!
+
+
+### Generating and Maintaining Documentation
+
+There are many ways of writing software documentation, but in general it should satisfy the following rules:
+
+- **Versioned** in [source control](./version-control.md)
+- Integrated **alongside the code**
+- **Easy to edit** so it can be kept up to date
+- **Publishable** to a variety of formats (usually HTML, but you may need to support PDF export)
+
+Many organisations use a managed service to organise their documentation such as [Atlassian Confluence](https://www.atlassian.com/software/confluence). These tend to offer sophisticated web-based editing and integration with other tools (e.g. [Jira](https://www.atlassian.com/software/jira), see [below](#project-management)).
+
+The main issue with proprietary services is *vendor lock-in*. It may be very difficult to get information back out of a managed service in a format that can be imported to a different service, or checked into version control. This is why I would recommend using **plain text formats** e.g. [Markdown](https://en.wikipedia.org/wiki/Markdown), [ReStructured Text](https://en.wikipedia.org/wiki/ReStructuredText), [Org-Mode](https://orgmode.org/) or even HTML. Plain text can be versioned easily using Git, edited using any text editor, and transformed to various output formats.
+
+
+### Publishing of Documentation
+
+It may be sufficient to save `.md` or `.org` files in a `docs/` folder in your repository and share the GitHub links directly with your team and users e.g. [Open Source Dev with Git](https://github.com/afnom/missing-semester/blob/master/_2024/open_source_dev_with_git.md). GitHub renders markdown and other common markup formats automatically.
+
+Another option is to use the built-in [Wiki](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis) feature of GitHub. This is provided as a Git repository alongside your existing repository, so you have to clone it separately.
+
+For finer control of publishing, you may elect to use a *documentation generator*. There are many of these, and they sometimes come *packaged alongside your programming language* e.g. [rustdoc](https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html) for Rust projects.
+
+A documentation generator will generally do some or all of the following:
+
+- Conversion of markdown or similar to **HTML pages**
+- Extraction of **docstrings** from program source code
+- Indexing of pages to allow **search**
+- Connecting pages together using **hyperlinks**
+
+The static side builder used for [this website](https://missingsemester.afnom.net/), [Jekyll](https://jekyllrb.com/), is an example of a documentation generator.
+
+I have made extensive use of [MkDocs](https://www.mkdocs.org/) for generating project documentation. There's lots of extra features (installable as Python packages) which integrate with it:
+
+- [mkdocstrings](https://mkdocstrings.github.io/) for extracting documentation from source code
+- [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) for themes and additional Markdown features
+- [MkDocs Gen Files](https://github.com/oprypin/mkdocs-gen-files) for automatically generating API documentation from source files
+- [MkDocs Literate Nav](https://github.com/oprypin/mkdocs-literate-nav) for automatically inferring page navigation
+- [MkDocs With PDF](https://github.com/orzih/mkdocs-with-pdf) for exporting documentation to PDF format
+
+
+You can publish these pages online using [GitHub Pages](https://pages.github.com/) or other static website hosting services such as [AWS S3](https://aws.amazon.com/s3/) (see [Blob Storage](#blob-storage)).
+
+
+### Diagrams as Code
+
+Diagrams are incredibly useful tools that help with understanding a project. While you may not always be required to produce a full set of [UML](https://en.wikipedia.org/wiki/Unified_Modeling_Language) diagrams before writing a line of code, keeping a set of diagrams up-to-date with your work is an invaluable part of your documentation.
+
+[draw.io](https://www.drawio.com/) / [Diagrams.net](https://app.diagrams.net/) is a popular choice for diagrams with a vast number of templates installed. For some diagrams, using a visual collaborative editor such as this is essential. However, the tools are usually proprietary, cannot be version-controlled alongside the code and must be updated manually.
+
+An alternative solution which you can use in parallel is to write *diagrams as code*. There are several different options, but I'm most experienced with these two:
+
+- [PlantUML](https://plantuml.com/), a Java library which can publish UML diagrams along with a whole host of others
+- [Mermaid.JS](http://mermaid.js.org/), a JavaScript library which creates flowcharts and other diagrams in a web browser
+
+Both are good for different use-cases. If you know that you will only ever want to view diagrams in a web browser, Mermaid.JS is a good choice. However, in a work environment you will frequently have to publish diagrams in *printable* formats, and PlantUML is a good choice as it can export to PNG and SVG easily.
+
+PlantUML also has many additional libraries available which you can use for many different use cases:
+
+- [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) allows you to create [C4 model](https://c4model.com/) architecture diagrams easily
+- [AWS Icons for PlantUML](https://github.com/awslabs/aws-icons-for-plantuml) allows you to create Amazon Web Services architecture diagrams using standard logos
+- There are also modules for [Kubernetes and Azure](https://crashedmind.github.io/PlantUMLHitchhikersGuide/kubernetes/kubernetes.html)
+
+
+You can run these tools in [CI pipelines](#continuous-integration-ci) alongside your documentation generation and publishing to ensure that your diagrams are always kept up-to-date!
+
+For bonus points, you can try [generating Entity-Relationship Diagrams automatically](https://jassielof.github.io/ERAssistantPlantUML/) from your data models, or even [automatically producing architecture diagrams from your infrastructure code](https://github.com/fmalk/terraform-plantuml/blob/master/README.md).
 
 
 ### Project Management
 
-- Enforced use of tools e.g. Jira vs Organic use through e.g. GitHub Issues vs Spreadsheet-based
-- Intent of Agile vs what it often ends up becoming in large industries
-- Having big teams dedicated to e.g. platform, architecture, security vs Keeping teams skilled and independent
-- Best practices for reporting on progress
-- Iteration
-- Constantly shipping
+For any larger projects it is vital to keep track of *work that needs to be done*. This usually requires two components:
 
+- An *issue / task tracker*
+- A *project plan / backlog*
+
+The exact shape of these may vary depending on whether you are using [Waterfall](https://en.wikipedia.org/wiki/Waterfall_model) or some variation of [Agile](https://en.wikipedia.org/wiki/Agile_software_development). This will depend on what sort of company or organisation you are working for - if you are working on extremely safety-critical applications such as defence, energy, aeronautics, you will almost certainly be using some form of Waterfall, whereas web application developers and data scientists frequently follow Agile in some form.
+
+You need tools for tracking bugs and tasks and for planning and allocating work that needs to be done. Many companies use [Atlassian Jira](https://www.atlassian.com/software/jira) for issue and project tracking. You can function well with [GitHub Issues](https://github.com/features/issues) and [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects). A simple spreadsheet may suffice for project planning. Regardless, it is important that *everyone is on board with using the tools*.
+
+I recommend reading [12 Steps to Better Code](https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/) which still, 25 years later, serves as a great indication of how well a project will go.
+
+Finally, many organisations have dedicated teams for different concerns e.g. a platform team for maintaining the infrastructure, an architecture team for planning changes, a security team for assessing threats, a testing team for managing software tests. For many projects, this [greatly slows down delivery](https://dafyddvaughan.uk/blog/2017/create-the-space-to-let-teams-deliver/) and we are better off resourcing and allowing teams to *work independently and communicate*. When your team is trusted to work independently, you'll be better able to deliver what you've been asked to deliver and it makes it much easier to [deploy constantly](#final-thoughts).
 
 
 ## LaTeX for Industry/Academia
 
-TODO
+<div class="note">
+Refer to <a href="./latex">Lecture 6</a> for an introduction to LaTeX.
+</div>
 
-- Converting between markup languages
-- Pandoc
-- Beamer for presentations and posters
-- Accessibility concerns
-- HTML vs PDF
+Most of industry (and a lot of academia) is still very reliant on MS Word and Excel documents, and you will almost certaintly not be able to escape them entirely in your career.
+
+However, LaTeX can still be an incredibly valuable tool in both industry and academic work.
+
+In this section I'll be focusing on *non-academic writing* use cases for LaTeX. It goes without saying that LaTeX is a great choice for writing journal and conference papers.
+
+
+### Markup Language Conversion
+
+I frequently write documents in a lightweight markup language like [Markdown](https://en.wikipedia.org/wiki/Markdown) (particularly if I'm writing [project documentation](#generating-and-maintaining-documentation)) or [Org-Mode](https://orgmode.org/).
+
+Org-Mode is particularly useful as it can be *exported* directly to numerous different output formats by entering `Ctrl-E`:
+
+- **HTML**, which can be directly published to a static website host
+- **LaTeX**, either as a plain `.tex` file which a can be pushed to [Overleaf](https://www.overleaf.com/) or as a PDF file
+- To *many formats* via [Pandoc](#pandoc)
+- To *many formats* via [Org-Ref](https://github.com/jkitchin/org-ref/blob/master/org-ref.org) (including bibliographic references)
+
+
+#### Pandoc
+
+[Pandoc](https://pandoc.org/) is an incredibly useful CLI tool which can *convert between different markup formats*.
+
+While it is not perfect, it can be incredibly useful for producing documents, especially if you are *required to produce MS Word format*. A common use case I have is to write a Python program which outputs Markdown format to standard output, which I can feed directly into Pandoc and produce a Word document or PDF. If your workplace has a consistent document format, you can even customise Pandoc with the `--reference-doc` argument to produce a consistently formatted output. Of course, this relies on the reference DOCX document having been created with [styles in mind](https://support.microsoft.com/en-gb/topic/the-styles-advantage-in-word-b4a6372f-188c-93cb-831b-c4dd0cb3a881).
+
+
+### Beamer
+
+LaTeX is also incredibly useful for making *presentations and posters*:
+
+- The [Beamer](https://ctan.org/pkg/beamer) package can create presentation slides in PDF format
+- The [Beamer Poster](https://ctan.org/pkg/beamerposter) package can create conference posters in PDF format
+
+
+This makes it very easy to create consistently themed, publication-quality presentation material.
+
+
+### Accessibility
+
+PDF is not an ideal format for those with disabilities. If you want to publish content that is usable by anyone, *stick to HTML*. Many scientific journals now publish content in HTML format which can easily be read via a screenreader.
+
+Modern tools and formats such as [Quarto](https://quarto.org/) may resolve these issues eventually!
 
 
 ## Web Application Frontends
 
-TODO
+A lot of software engineering today centres around *web development*, from online banking and government services to IDEs ([VSCode](https://code.visualstudio.com/) famously uses [Electron](https://www.electronjs.org/), which packages an entire web browser).
 
-- Simplicity (HTML/CSS/JS) vs Complexity (Frameworks)
-- 'Choose Boring Technology'
-- SPA vs Static
-- JavaScript vs TypeScript vs HTMX vs JSX
+It is easy to see why, as targeting the browser platform has significant advantages:
+
+- Immediate *cross-platform support* (browsers run on Linux, MacOS, Windows, Android and iOS, with [far less incompatibility issues than in the IE6 days](https://en.wikipedia.org/wiki/Internet_Explorer_6#Programming_interface))
+- *No installation* required by users (simply visit the website!)
+- No need to *maintain the underlying platform* (users simply need to keep their browsers up-to-date and you don't need to worry about [DLL Hell](https://en.wikipedia.org/wiki/DLL_Hell) as with server-client applications)
+
+However, there are also very significant disadvantages:
+
+- Some things are *much more difficult* to do on the web than with a native GUI framework
+- Your users *require an internet connection* [^3]
+- There are *lots of moving parts* which need careful testing
+
+
+The fundamental building block of the web is [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML), though website designers increasingly avoid writing it directly.
+
+We've already discussed [static site generators](https://www.cloudflare.com/learning/performance/static-site-generator/) in the context of [project documentation](#generating-and-maintaining-documentation). Websites generated using these tools generally *do not require JavaScript* to run and are *accessible by default*.
+
+An interesting exercise is to [install the NoScript extension](https://noscript.net/) and browse sites you commonly visit to see how they function without JavaScript enabled. Many are flat-out unusable and just show a blank screen. Always aim to make your sites *as usable as possible without JavaScript*.
+
+For many projects, you're going to need JavaScript. Before you reach for your favourite framework (React, Vue, Astro, Vite, Next etc.), first think about *whether you need a framework* for what you are trying to accomplish. The JavaScript standard library is minimal compared to e.g. Python, but you can accomplish a huge amount with the features you have available by default e.g. [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch), [DOM API](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model), [UI Events](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events) etc.
+
+Always be mindful of the *overhead to users* caused by pulling in another dependency. Adding 200 MiB of React code will increase your page load times significantly and if [you don't need React](https://davegebler.com/post/coding/why-you-probably-dont-need-react) it can make development a lot simpler.
+
+Keeping web applications *simple and boring* has great benefits for your project. Complexity can build up very quickly and the easier it is to reason about your project, the better.
+
+Some technologies worth researching:
+
+- [TypeScript](https://www.typescriptlang.org/) gives you a lot more confidence that your code will behave as you expect it to
+- [JSx](https://legacy.reactjs.org/docs/introducing-jsx.html) and [htmx](https://htmx.org/) may be useful abstractions if you need to manage the dynamic complexity of a [Single Page App](https://en.wikipedia.org/wiki/Single-page_application)
 
 
 ## Database Design
 
-TODO
+<div class="note">
+<a href="./virtualization">Lecture 8</a> introduces Docker containers, which allow you to run any of the databases discussed here on your own machine!
+</div>
 
-- Relational / Key-Value / Graph / Time-Series / ??
-- Considerations to make
-- Different providers
-- Open-Source vs Proprietary
-- 'Choose Boring Technology'
+Databases are critical when building any non-trivial applications, as they allow you to *store and persist data in a structured way*.
+
+There are many types of databases that you can consider:
+
+- [Relational databases](https://en.wikipedia.org/wiki/Relational_database) store data in *tables* orientated in rows and columns, and are typically queried using [Structured Query Language](https://en.wikipedia.org/wiki/SQL) (e.g. [PostgreSQL](https://www.postgresql.org/))
+- [Key-value stores](https://en.wikipedia.org/wiki/Document-oriented_database#) store arbitrary data in a less structured way, typically underneath *keys* (e.g. [Redis](https://redis.io/) and its alternately-licensed implementations e.g. [Valkey](https://github.com/valkey-io/valkey))
+- [Graph databases](https://en.wikipedia.org/wiki/Graph_database) store data as a series of *relationships between nodes* (e.g. [Neo4J](https://neo4j.com/))
+- [Time Series databases](https://en.wikipedia.org/wiki/Time_series_database) are optimised for managing *temporal data* (e.g. [Prometheus](https://prometheus.io/docs/introduction/overview/))
+- The [filesystem](https://en.wikipedia.org/wiki/File_system) is not always thought of as a database, but it can be a very effective one!
+- [Blob Storage](#blob-storage) can be used as a database for some use-cases e.g. big data analytics
+- There are [many other types](https://en.wikipedia.org/wiki/Category:Types_of_databases) which may be useful for specialised cases
+
+
+Depending on your education background and experience, you may have worked with some of these before on either a theoretical or practical level. I'll focus on practical use-cases for each type of DB and introduce simple one-line commands for running them locally. Many of these databases [translate well into the cloud](#managed-databases) if your project requires.
+
+I **won't** be doing into detail on how to use the databases themselves, but you can refer to the reference documentation for:
+
+- [Postgres](https://www.postgresql.org/docs/current/)
+- [Redis](https://redis.io/docs/)
+
+
+### Relational Databases
+
+Relational Database Management Systems (RDBMS) are what most people will think of when they think about a database.
+
+#### SQLite3
+
+The most widely installed database (and a candidate for the most widely installed piece of software!) is [SQLite3](https://www.sqlite.org/index.html), and many programs will create `.db` files on your computer in the SQLite3 format.
+
+It's easy to get started with by installing the `sqlite3` binary:
+
+```bash
+sudo apt install sqlite3  # on ubuntu
+sqlite3   # this will drop you into a prompt
+sqlite3 /tmp/mydatabase.db  # this will open a persistent database file at /tmp/mydatabase.db
+```
+
+
+
+For many applications, *SQLite3 is more than sufficient* and you do not need a full networked database like [PostgreSQL](https://www.postgresql.org/). SQLite3 is [robustly tested](https://www.sqlite.org/testing.html) and is relied upon by billions of applications. However, there are several reasons why you might choose Postgres:
+
+- You need to *access it over a network* (e.g. for cloud deployments)
+- You need access to *features unsupported by SQLite3* (see [key differences](https://airbyte.com/data-engineering-resources/sqlite-vs-postgresql))
+- You want to use an *extension* (e.g. [PostGIS](https://postgis.net/), [TimescaleDB](https://www.timescale.com/))
+
+#### PostgreSQL
+
+You can run PostgreSQL locally using Docker:
+
+```bash
+docker run --name my-postgres --rm -d -p 5432:5432 -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=generateasecurepassword -e POSTGRES_DB=mydb postgres:latest  # switch latest for the version you want to run
+docker exec -it my-postgres bash
+# to access psql client in the container
+PGPASSWORD=$POSTGRES_PASSWORD psql --user $POSTGRES_USER --dbname $POSTGRES_DB
+```
+
+```sql
+SELECT * FROM pg_tables;
+```
+
+The commands above will set up a PostgreSQL instance using the latest version available on Docker hub, available on port 5432 from your local machine. You will then connect to it using the command line client [psql](https://www.postgresql.org/docs/current/app-psql.html) and query the system tables using SQL.
+
+
+#### ORMs
+
+Another consideration you may make when deciding on a relational database is whether you want to use an [Object Relational Mapping](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) such as [SQLAlchemy](https://www.sqlalchemy.org/) in Python. This can be a useful abstraction which allows you to support more database implementations e.g. SQLite3 for testing / local deployment and PostgreSQL for cloud deployment, though you will almost always end up writing SQL eventually!
+
+
+#### Considerations
+
+A relational database is often the right tool for:
+
+- *Transaction processing*, handling queries and updates on a *subset of rows* filtered by indexed queries
+- *Join-heavy queries*, linking *data from different tables* together
+- *Append-heavy workloads*, which *frequently add data* and occasionally query it based on one or more indexed columns
+
+With the right approach and tools, it can also be a good tool for:
+
+- *Analytical processing*, involving entire columns of data (e.g. [DuckDB](https://duckdb.org/))
+- *Geospatial processing*, using extensions such as [PostGIS](https://postgis.net/) and [Spatialite]()
+- Many more use-cases with the right extensions!
+
+The RDBMS is a well-established, boring piece of technology, but is often the best choice for a project!
+
+
+### Key-Value Stores
+
+Unlike an [RDBMS](#relational-databases), key-value databases such as [Redis](https://redis.io/) and [MongoDB](https://www.mongodb.com/) *do not require a structured schema*.
+
+I am most familiar with Redis, and you can run the latest version locally in Docker:
+
+```bash
+docker run --name my-redis --rm -d -p 6379:6379 -e redis:latest  # switch latest for the version you want to run
+docker exec -it my-redis redis-cli  # this will give you a command-line interface
+```
+
+```
+set mykey foo
+get mykey
+```
+
+The commands above will set up a Redis instance using the latest version available on Docker, available on port 6379 from your local machine. You will then connect to it using the command line client [redis-cli](https://redis.io/docs/latest/develop/tools/cli/) and create and query a key.
+
+Key-value stores such as Redis are quite useful for *caching* commonly accessed data. You can set a [Time-to-Live](https://en.wikipedia.org/wiki/Time_to_live) value value on keys that you store, and they will be automatically removed once the timer expires.
+
+Redis supports quite a few data structures, such as [lists](https://redis.io/docs/latest/develop/data-types/lists/), [hash maps](https://redis.io/docs/latest/develop/data-types/hashes/)), [sets]() and [sorted sets](). These structures, along with their associated commands, can be very useful in working around the limitations of key-value stores. However, if you find yourself implementing complex application logic to join data together, you are *likely better off with an RDBMS*. Also, be aware that it is *not possible to expire members of these data structures* using TTL values without adding extra logic.
+
+Key-value stores excel when used to store *documents* or unstructured data, and can also be very useful for *rapid prototyping* due to their lack of enforced data requirements. A common model is to serialise data to JSON format and store it in the DB.
+
+If used correctly, key-value stores such as Redis can be valuable additions to your toolset.
+
+
+### Graph Databases
+
+Graph databases such as [Neo4J](https://neo4j.com/) excel at representing relationships within data. However, most data that we interact with is in a tabular format, so it often takes some work to put it into a graph database.
+
+They are often the right choice for representing *networks* e.g. public transport links, workplace hierarchies. If you would need to perform a [recursive join](https://www.postgresql.org/docs/current/queries-with.html#QUERIES-WITH-RECURSIVE) to retrieve your data, it would likely be more efficient to use a graph database.
+
+You can run Neo4J locally using Docker:
+
+```bash
+docker run --name my-neo4j --rm -d -p 7474:7474 -p 7687:7687 neo4j:latest   # switch latest for the version you want to run
+```
+
+You can access the database at http://localhost:7474 using the default credentials: `neo4j` / `neo4j`.
+
+Neo4J uses the [Cypher](https://neo4j.com/docs/cypher-manual/current/introduction/) language for querying databases. Once you get started you can model arbitrary properties on nodes and relations between nodes, query based on those properties, as well as running algorithms such as [breadth-first](https://neo4j.com/docs/graph-data-science/current/algorithms/bfs/) and [depth-first](https://neo4j.com/docs/graph-data-science/current/algorithms/dfs/) search.
+
+For the right use-cases, graph databases are excellent tools.
+
+### Time Series Databases
+
+Time series databases (TSDBs) maintain their records alongside a *temporal key*, usually a timestamp, and are optimised for querying based on this timestamp.
+
+Good use-cases include:
+
+- Storing high volumes of *sensor data* from remote condition monitoring
+- Storing *metrics* from instrumented code using client libraries [e.g. for Python](https://pypi.org/project/prometheus-client/)
+- Analysis of *transactions* e.g. event logs
+
+You can run [Prometheus](https://prometheus.io/), a metrics database, locally using Docker:
+
+```bash
+docker run --name my-prometheus --rm -d -p 9090:9090 prom/prometheus:latest  # switch latest for the version you want to run
+```
+
+The UI is available at http://localhost:9090.
+
+Metrics databases are typically deployed alongside *dashboarding tools* such as [Grafana](https://grafana.com/) to *visualise and alert* on values of the metrics.
+
+While metrics is a good use case on its own, TSDBs are likely to be best-in-class for any workload where time is the field most often inserted or queried on. Other TSDBs include:
+
+- [TimescaleDB](https://www.timescale.com/), built as a PostgreSQL extension
+- [InfluxDB](https://www.influxdata.com/), a standalone TSDB
+
+
+### Final Thoughts
+
+As a backend developer, your choice of database is just as important as your choice of programming language. Ensure that you *pick the right tools for the job*, and remember: *boring is often better!*
 
 
 ## Cloud Provider Managed Services
@@ -586,7 +889,7 @@ Another significant advantage of a CDN is the protection that it can give you fr
 
 Many of the types of database discussed in [database design](#database-design) are offered directly as managed services.
 
-Cloud providers frequently offer multiple different RDBMS instances e.g. AWS Relational Database Service offers [PostgreSQL](https://aws.amazon.com/rds/postgresql/) and [MariadDB](https://aws.amazon.com/rds/mariadb/) along with MySQL, Oracle and Db2. Some even offer *severless instances* e.g. [Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/) which can free you from the limitations of a single-node database but potentially incur higher costs based on your use-cases.
+Cloud providers frequently offer multiple different RDBMS instances e.g. AWS Relational Database Service offers [PostgreSQL](https://aws.amazon.com/rds/postgresql/) and [MariadDB](https://aws.amazon.com/rds/mariadb/) along with MySQL, Oracle and Db2. Some even offer *serverless instances* e.g. [Aurora PostgreSQL](https://aws.amazon.com/rds/aurora/) which can free you from the limitations of a single-node database but potentially incur higher costs based on your use-cases.
 
 If you are using an RDBMS, another consideration you may make are the *expected workloads* that you are running. A transaction-based workload is better suited to e.g. AWS RDS whereas an analytical workload would run better on AWS Redshift.
 
@@ -807,7 +1110,7 @@ For local development it is often simpler to *ignore ingress configuration* and 
 There are numerous Kubernetes distributions available. Most of the Kinds we have already discussed should work on any distribution, and you are most likely to run into issues when dealing with PersistentVolumes and Ingresses. Here is a (non-exhaustive) list of Kubernetes distributions:
 
 - [Minikube](https://minikube.sigs.k8s.io/docs/) is a local Kubernetes distribution targeting Windows, macOS and Linux
-- [Docker-Desktop](https://docs.docker.com/desktop/features/kubernetes/) includes a Kubernetes environment suitagble for local testing on Windows, macOS or Linux
+- [Docker-Desktop](https://docs.docker.com/desktop/features/kubernetes/) includes a Kubernetes environment suitable for local testing on Windows, macOS or Linux
 - Kubernetes in Docker ([KinD](https://kind.sigs.k8s.io/)) is another local Kubernetes environment supporting all three OS'es
 - [K3s](https://k3s.io/) is a lightweight Kubernetes distribution intended for resource-constrained environments
 - [Kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/) is the official tool for creating Kubernetes clusters
@@ -854,10 +1157,8 @@ Furthermore, tools like Helm rely on *templated YAML* whereby the file is furthe
 There are many ways of declaring Kubernetes resources without having to write YAML. I have personally found success using [Terraform](#terraform-and-opentofu) which has [Kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/latest) and [Helm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs) providers. This means that you can standardise your infrastructure and application code with [linters](https://github.com/antonbabenko/pre-commit-terraform) and [vulnerability scanners](https://github.com/bridgecrewio/checkov).
 
 
-## Extra Sections?
-
-### Observability
-
 [^1]: When getting started with Kubernetes, you will likely only be deploying pods with a single container. You may wish to use multiple containers for e.g. initialising some shared resources needed by a container (see [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/), or for exporting metrics or other data from a running container (see [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/).
 
 [^2]: For some compiled languages e.g. [Rust](https://www.rust-lang.org/), the compilation process is a form of static analysis, whereas interpreted language such as Python need separate tools for this.
+
+[^3]: This can be worked around using e.g. [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API), [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), but these are far more convoluted solutions than building a native application
