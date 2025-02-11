@@ -1157,6 +1157,18 @@ Furthermore, tools like Helm rely on *templated YAML* whereby the file is furthe
 There are many ways of declaring Kubernetes resources without having to write YAML. I have personally found success using [Terraform](#terraform-and-opentofu) which has [Kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/latest) and [Helm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs) providers. This means that you can standardise your infrastructure and application code with [linters](https://github.com/antonbabenko/pre-commit-terraform) and [vulnerability scanners](https://github.com/bridgecrewio/checkov).
 
 
+## Concluding Remarks
+
+When I started writing these notes, I didn't expect it to fill quite this much space! The world of systems and software engineering is *endlessly diverse* and changes constantly. [Large Language Models](https://en.wikipedia.org/wiki/Large_language_model) may be the current hot-topic, but once upon a time it was [Kubernetes](https://en.wikipedia.org/wiki/Kubernetes), [Blockchain](https://en.wikipedia.org/wiki/Blockchain), [ASP.net](https://en.wikipedia.org/wiki/ASP.NET), [Turbo Pascal](https://en.wikipedia.org/wiki/Turbo_Pascal), etc.
+
+Whatever the future looks like, you will likely set yourselves up for a productive career in technology by:
+
+- Getting proficient with the *right tools for the job*
+- Prioritising *open-source standards and code*
+- Finding *projects that interest you!*
+
+
+
 [^1]: When getting started with Kubernetes, you will likely only be deploying pods with a single container. You may wish to use multiple containers for e.g. initialising some shared resources needed by a container (see [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/), or for exporting metrics or other data from a running container (see [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/).
 
 [^2]: For some compiled languages e.g. [Rust](https://www.rust-lang.org/), the compilation process is a form of static analysis, whereas interpreted language such as Python need separate tools for this.
