@@ -11,16 +11,16 @@ Welcome! This talk covers how many of the tools and ideas that you have been int
 
 These skills have served me well since I first picked up Linux over a decade ago. I'm going to cover 10 overarching themes in this talk, with an emphasis on topics that have received a large amount of interest from course participants. These are:
 
-- CLI Tools and Text Editors
-- SSH for System Administration
-- Version Control in Industry
-- Continuous Integration and Delivery
-- Documentation and Project Management
-- LaTeX for Industry/Academia
-- Web Application Frontends
-- Database Design
-- Cloud Provider Managed Services
-- Cloud Automation Tools (Kubernetes + Terraform)
+- [CLI Tools and Text Editors](#cli-tools-and-text-editors)
+- [SSH for System Administration](#ssh-for-system-administration)
+- [Version Control in Industry](#version-control-in-industry)
+- [Continuous Integration and Delivery](#continuous-integration-and-delivery)
+- [Documentation and Project Management](#documentation-and-project-management)
+- [LaTeX for Industry/Academia](#latex-for-industry-academia)
+- [Web Application Frontends](#web-application-frontends)
+- [Database Design](#database-design)
+- [Cloud Provider Managed Services](#cloud-provider-managed-services)
+- [Cloud Automation Tools (Kubernetes + Terraform)](#cloud-automation-tools-kubernetes--terraform)
 
 This is an incredibly broad (and deep) range of topics and some of you may not end up in roles where you can make use of all of them. However, I aim to show that the ways of thinking about problems that have been introduced in this course make it easier to approach new challenges and technologies. While the landscape of software and technology changes very quickly, investment in the core skills that we've covered in this lecture series is likely to remain relevant for many years to come:
 
@@ -46,7 +46,7 @@ If you have any feedback or suggestions that you would like to see in these note
 
 Your choice of text editor is likely to be one of the most impactful decisions you make in your career.
 
-While we can all enjoy arguing about which text editor is superior, the most important thing is to allow teams freedom of choice - you should not depend on a specific editor in order to work on your project or do your job. Editors such as [Emacs](./emacs.org) and [Vim](./editors-notes.txt) allow an unlimited amount of customisation to improve your workflow whereas editors such as [VSCode](https://code.visualstudio.com/) and other IDEs tend to be more opinionated in how they are configured.
+While we can all enjoy arguing about which text editor is superior, the most important thing is to allow teams freedom of choice - you should not depend on a specific editor in order to work on your project or do your job. Editors such as [Emacs and Vim](./editors.md) allow an unlimited amount of customisation to improve your workflow whereas editors such as [VSCode](https://code.visualstudio.com/) and other IDEs tend to be more opinionated in how they are configured.
 
 Regardless of your choice, focus on tools, not editors. Have standard, easily-installable commands to run tasks on the project, such as compiling, linting, testing, and generating documentation.
 
@@ -223,9 +223,9 @@ services:
     volumes_from:
       - nginx-proxy
     volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro  # acme-companion uses the Docker UNIX Socket to monitor running containers
       - certs:/etc/nginx/certs:rw  # this stores TLS certificates when they are updated
-      - acme:/etc/acme.sh  #
-      # TODO check configuration
+      - acme:/etc/acme.sh  # stores certificate renewal information
 
   app:
     image: myapp  # this can be any image which exposes a HTTP port
@@ -958,7 +958,16 @@ Large Language Models such as Claude or ChatGPT often provide good instruction o
 **Example**: Reporting on a fleet of AWS EC2 instances (virtual machines in Amazon Web Services).
 
 ```bash
-# TODO
+aws ec2 describe-instances | jq '.Reservations[0] | keys'
+```
+
+```json
+[
+  "Groups",
+  "Instances",
+  "OwnerId",
+  "ReservationId"
+]
 ```
 
 
