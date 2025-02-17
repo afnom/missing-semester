@@ -12,10 +12,10 @@ Welcome to our session today which is about Cloud Computing.  My goals for today
 2. Give a little demo
 
 ## Before Cloud Computing
-* As far back as the 60s, "time sharing" shows how computing advances are often costly / unevenly distributed
+* As far back as the 60s, "time sharing" / client-server models show how computing advances are often costly / unevenly distributed
 * Running servers/services "on prem"
 * People / companies have to manage the infrastructure
-* Only people who could afford "big iron" could offer compute-heavy services
+* Only people/groups who could afford to buy "big iron" could perform/offer compute-heavy services
 
 ## What exactly is Cloud Computing?
 According to International Organization for Standards (ISO) [there are 5 key factors](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf):
@@ -26,7 +26,7 @@ According to International Organization for Standards (ISO) [there are 5 key fac
 5. **Measured service:** access to resources is monitored, logged and billed.
 
 ## Use Cases
-Cloud Computing is often pitched at big companies but the key point of this talk is that there's no reason you can't use them for your own personal projects or assignments (though you should never NEED to use a paid service for your coursework)!  It's nice to know it's possible to access this power / hardware on a temporary basis.
+Cloud Computing is often pitched at big companies but the key point of this talk is that there's no reason you can't use them for your own personal projects or assignments (though you should never NEED to use a paid service for your coursework!).  It's nice to know it's possible to access this power / hardware on a temporary basis.
 
 * Hosting services eg:
 	* Websites, databases
@@ -47,9 +47,11 @@ Cloud Computing is often pitched at big companies but the key point of this talk
 # Amazon, AWS, and EC2
 So how does this all work?
 
-We're going to be exploring these concepts by via Amazon's Elastic Compute Cloud (EC2) but first two notes:
-1. This is *not* an advertisement for Amazon, I promise!  Many other cloud providers (Google, [Hetzner](https://www.hetzner.com/), [Linode](https://www.linode.com/), [Azure](https://portal.azure.com/)) exist.
-2. We're mostly going to be talking about returnable virtual computers with EC2.  However, EC2 is only a part of 'cloud computing' / Amazon Web Services (AWS); AWS has over 200 other services including EBS, S3, Lambda (serverless), Cloudfront, etc etc.
+We're going to be exploring these concepts by via Amazon's Elastic Compute Cloud (EC2) but first a few notes:
+1. This is *not* an advertisement for Amazon, I promise!  Many other cloud providers (Google, [Hetzner](https://www.hetzner.com/), [Linode](https://www.linode.com/), [Azure](https://portal.azure.com/)) exist.  Amazon's is just the oldest and the one I'm most comfortable with.
+2. The interface for AWS is a bit hairy; there might be simpler solutions out there!
+3. We're mostly going to be talking about rentable virtual computers with EC2.  However, EC2 is only a part of 'cloud computing' / Amazon Web Services (AWS); AWS has over 200 other services including EBS, S3, Lambda (serverless), Cloudfront, etc etc.
+4. We're going to be working with 64-bit x86 linux instances but you can also create instances for other OSes / architectures including Windows.
 
 Anyway, EC2 has a [few different types](https://aws.amazon.com/ec2/instance-types/) of computers to rent:
 * **General Purpose:** A1, T3, T2, M5, M5a, M4, T3a
@@ -92,7 +94,7 @@ Anyway, EC2 has a [few different types](https://aws.amazon.com/ec2/instance-type
 * Free Tiers:
 	![Free Tier w/ caveats](/2024/files/free_tier.png)
 
-Remember: if something is persisting, you're paying for it.
+Remember: if something is persisting, you're probably paying for it.
 
 ---
 
@@ -116,7 +118,12 @@ Lets rent an amazon machine and crunch some numbers!
 ## Rendering example
 
 ![Blender splash screen White Lands](/2024/files/white_lands_small.jpg)
+
+Lets try to render the Blender 3.2 splash screen image, White Lands, by Oksana Dobrovolska.
+
 * A note about Quotas; might need to request access in advance!
+	* Quotas are good actually
+
 * Settings:
 	* AMI: Ubuntu
 	* Instance type: c5.4xlarge
@@ -142,6 +149,7 @@ Lets rent an amazon machine and crunch some numbers!
 
 # Final Thoughts
 * PLEASE REMEMBER TO TURN OFF YOUR INSTANCES AND ANY EBS VOLUMES YOU'RE NOT USING!
+	* Terminated instances will stick around in interface for a bit...
 * Otherwise, have fun!
 
 ![Astral Projection](/2024/files/astral_ssh.jpg)
