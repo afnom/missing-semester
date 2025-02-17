@@ -114,6 +114,8 @@ Lets rent an amazon machine and crunch some numbers!
 * Payoff for Missing Semester skills!
 
 ## Rendering example
+
+![Blender splash screen White Lands](/2024/files/white_lands_small.jpg)
 * A note about Quotas; might need to request access in advance!
 * Settings:
 	* AMI: Ubuntu
@@ -124,7 +126,7 @@ Lets rent an amazon machine and crunch some numbers!
 * Then:
 	```
 	sudo apt update
-	sudo apt install -y ubuntu-desktop blender xrdp
+	sudo apt install -y ubuntu-desktop xrdp
 	sudo adduser xrdp ssl-cert
 	sudo adduser jesse
 	```
