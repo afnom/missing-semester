@@ -66,7 +66,7 @@ Anyway, EC2 has a [few different types](https://aws.amazon.com/ec2/instance-type
 * Flexible / Scalable: CPU / RAM / GPUs on demand etc etc
 * Maintenance, power included
 * Costs: renting a super computer for a short burst or renting a small instance for months/years
-* [Scriptibility](https://github.com/heavyimage/gimme-a-gpu-box)
+* [Scriptibility](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
 
 ## Disadvantages
 * There is no cloud...
