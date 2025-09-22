@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#14: Using CLI tools at your job"
-date: 2025-02-24
+date: 2026-02-23
 ready: false
 hide: true
 ---
