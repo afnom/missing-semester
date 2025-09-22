@@ -21,7 +21,7 @@ MS is a fork or modified version of MIT's Missing Semester.  We've taken MIT's m
 
 ### Assumptions / Requirements
 
-We assume students have access to a Linux computer for MS.  Please drop by the [Linux Installfest](https://linux.afnom.net) on October 2nd, 2024 if you're interested in getting help installing Linux onto your personal computer.  Alternatively, you can use the [guide](https://linux.afnom.net), or you may use a remote linux system if you have access to one.
+We assume students have access to a Linux computer for MS.  Please drop by the [Linux Installfest](https://linux.afnom.net) on October 1st, 2025 if you're interested in getting help installing Linux onto your personal computer.  Alternatively, you can use the [guide](https://linux.afnom.net), or you may use a remote linux system if you have access to one.
 
 ### Who is this for?
 
