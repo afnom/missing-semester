@@ -1,0 +1,21 @@
+---
+layout: page
+title: "2024 / 2025 Lectures"
+permalink: /2024/
+phony: true
+excerpt: '' # work around a bug
+---
+
+<ul class="double-spaced">
+{% assign lectures = site['2024'] | sort: 'date' %}
+{% include schedule.html hideDates=false%}
+</ul>
+
+<div class="note">
+Video recordings of the original MIT lectures are available <a href="https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J">on YouTube</a> but please note that we have diverged from their structure quite a bit.
+
+</div>
+
+<h2>Previous year's lectures</h2>
+
+<p>You can find lecture notes from <a href="{{'/2023/' | relative_url}}">last year's version of this class</a>. Each year's lectures are fully self-contained, and we recommend following the most recent version of the material (i.e. the 2024 lectures). There is slight variation in the topics covered, so we continue to host notes and videos for earlier versions of this course.</p>

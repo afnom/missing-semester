@@ -32,22 +32,24 @@ Read about the [motivation behind this class](/about/).
 
 # Practicalities
 
-**Please register and join the discord!**
+**Please join the discord!**
 
-* **Registration**: [Registration form](https://forms.gle/AEEoGFv3dWq12YC59)
 * **Questions / Discussions**: Please join the [Missing Semester Discord](https://discord.gg/gwgyZQRGhV)!
 * **Time/Location**:
-    * **Semester 1**: Mondays 13:00-14:00 in [Y3-G29](https://universityofbirmingham.service-now.com/eqpublic/rooms.do?room=6cfd35974d8d6c008163baecd9deaa62)
-    * **Semester 2**: Mondays 14:00-15:00 in [SportEx LT1](https://universityofbirmingham.service-now.com/eqpublic/rooms.do?room=5ffd39974d8d6c008163baecd9deaa67)
-* **Facilitators**: MS is run by Members of AFNOM and CSS, with support from Marius Muench and Matthew Leeke.
+    * **Semester 1**: Mondays 16:00-17:00 in [Law LT2](https://campusmap.bham.ac.uk/search/5d6f49201e1f64009327a634?projectId=uob)
+    * **Semester 2**: TBD
+* **Facilitators**: MS is run by Members of AFNOM and CSS, with support from Marius Muench and Vincent Rahli.
+
 
 
 # Schedule
 
 <ul>
-{% assign lectures = site['2024'] | sort: 'date' %}
+{% assign lectures = site['2025'] | sort: 'date' | where:"hide", "false" %}
 {% include schedule.html hideDates=false %}
 </ul>
+
+**Note:** This schedule only holds the dates and sessions for term 1. We will update the schedule with session and dates for term 2 later in the year.
 
 # Related Resources
 

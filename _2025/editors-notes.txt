@@ -1,0 +1,222 @@
+I use these notes as a reference when teaching lecture 3.
+
+If you're a student who ended up here, you probably want to look at editors.md instead.
+
+
+first
+    background briefly
+    informal evening
+    holding down arrow / delete keys --> better way
+
+writing with a computer (essays) vs programming
+- We saw nano last week
+    - there are much more powerful editors for the CLI environment that are really worth learning.
+- programming: more time spent reading, navigating, editing, than writing in a long stream
+- different programs for different purposes
+- emails, latex
+
+
+
+worth mastering an editor
+- Learning a more complex piece of software is a tradeoff.
+- it will save you hundreds of hours
+- worth investing time in this
+- Challenge you to give one of these a shot for a month or two!
+- how to learn:
+    - this talk
+    - start with tutorial
+    - stick with the editor for all code (and ideally word) editing tasks
+    - avoid bad habits
+    - look things up as you go
+    - if it seems like there should be a better way, there probably is
+        - programmers care about their editors, so they're super powerful tools
+    - timeline for learning
+        - in a couple hours: will learn basic editor functions (save, quit, ...)
+        - in 20 hours: will be as fast as you were with your old editor
+        - after that: benefits start
+        - you never stop learning (these are very fancy and powerful tools)
+
+which editor to learn?
+- people have strong opinions: editor wars
+    - The two main ones are vim and emacs.
+	- Inherent silliness of various text editor debates
+	- Silly but fun!
+    - Nothing bad to say about emacs but don't really know it well
+        - Matthew'll probably show a bit of emacs next week
+- https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools
+- VS Code for GUI; vim for cli
+- Is good to have a powerful cli editor under your belt.
+
+Why command line editors?
+- vim: Originated from Vi editor (1976) and vim (1996)
+- emacs: 1970s also
+
+- Hearing that these editors are older might seem like a downside but actually it's great:
+    - Stable.  Hardened by years of use
+    - Insanely rich plugin ecosystem
+    - Popular -- lots of users and contributors
+    - Work over ssh -- HUGE
+        - so...composable
+        - will always be there for you on any computer you connect to etc.
+        - available in embeded contexts
+        - older computers
+    - start very quickly
+    - available everywhere -- vim is part of the POSIX spec
+
+- Also good to remember: editors are not IDEs;
+    - while they can be molded into them, that's not exactly where they shine.
+    - We might do a lecture later on about IDEs.
+        - focus on build tools, refactoring, intellegence around OOP
+
+why vim?
+- we are teaching you Vim
+    - I know it better and I think is slightly more popular.
+    - interesting ideas
+    - lots of tools support Vim bindings (e.g. Vim emulation for VS Code has 1.4m downloads)
+    - has a bit of a learning curve (compared to GUI editor), but worth it
+    - worth learning even if you finally choose to use another editor
+    - vim as program vs. vim as system of text manipulation
+
+Philosophy of vim (and this lecture)
+- philosophy of vim: the neat ideas of this editor
+- basics
+- demos
+- exercises, resources to learn more
+    - starting with vimtutor
+    - this lecture: focus on ideas, not details
+
+modal editing (modal ~ "modes")
+- Problem these editors solve is how to use the keyboard in many different ways:
+    - emacs: modifier keys
+    - vim: modes
+- Note about homerow / mouse
+    - some mouse stuff
+- designed around idea that a lot of time is spent reading/navigating/making small edits
+- simplified picture: normal mode <-> insert mode
+    - sometimes call normal mode command mode; different from "command line mode"
+- mode shown in bottom left
+- keystrokes have different meanings in different modes: e.g. `x`
+- gearshift metaphor; multiple keyboards metaphor
+
+- Download the vimrc:
+    - `wget missingsemester.afnom.net/2023/files/vimrc -O ~/.vimrc`
+
+basics
+- NOTE: `CTRL-V, <c-v> and ^v`
+- edit vimrc to remove relative line numbers?
+- switching between normal mode and insert mode
+- that's all you need to know to get started. insert mode works as you expect.
+- nano is basically vim in insert mode
+    - the power of vim comes from normal mode
+- buffers vs tabs vs windows
+    - buffers ~ open files
+    - every tab has one or more windows
+    - a buffer can be open in 0 or more windows
+    - unlike e.g. web browser
+- command line
+    - `:` in normal mode
+    - Quiting vim is supposedly the most commented on stack overflow question
+    - :q, :w, :wq, :e {name of file}, :ls, :help {topic} (:help :w, :help w)
+    - splits!  Tabs!
+    - set nu/nonu + wrap/nowrap
+
+vim normal mode is a programming language (most important idea in vim)
+- once you learn the primitives, you can combine them in interesting ways
+- becomes muscle memory
+- movement
+    - hjkl, w/b/e, 0/^/$, H/M/L, gg/G, :no, %, f/t/F/T, / or ?
+    - `*` operator
+- selection
+    - v, V, ctrl-V
+- edits
+    - i, o/O, d{motion}, c{motion}, x, s, u + ctrl-r, y, p, ~
+- counts
+    - 3w, 5j, 7dw
+- modifiers
+    - i/a
+
+visual mode:
+    visual block! (76p)
+
+demo (broken fizzbuzz)
+- main is never called
+  - `G` end of file
+  - `o` open new line below
+  - type in "if __name__ ..." thing
+- starts at 0 instead of 1
+  - search for `/range`
+  - `ww` to move forward 2 words
+  - `i` to insert text, "1, "
+  - `ea` to insert after limit, "+1"
+- newline for "fizzbuzz"
+  - `jj$i` to insert text at end of line
+  - add ", end=''"
+  - `jj.` to repeat for second print
+  - `jjo` to open line below if
+  - add "else: print()"
+- fizz fizz
+  - `ci'` to change fizz
+- command-line argument
+  - `ggO` to open above
+  - "import sys"
+  - `/10`
+  - `ci(` to "int(sys.argv[1])"
+
+A few other things:
+    - `vim -` eg ls -la | vim - or tree or ps...
+    - `gf`
+    - file browser
+    - spellcheck
+    - autocomplete
+    - marks
+    - ctrl z
+    - find/replace with regex
+    - MACROS
+    - writing out to shell
+    - !cmd
+    - !make
+
+customizing vim
+- ~/.vimrc
+- start with our basic config
+- look online for inspiration
+
+
+dramatic ssh reveal
+
+time for macros?
+
+Et voila!
+
+Any Questions?
+
+Promote MS4 and MS5
+
+--- end of lecture ---
+
+* vim culture
+
+* extending vim w/ plugins
+    * no plugin manager necessary: just put plugins in `~/.vim/pack/vendor/start/`
+    * recommended plugins
+        * fuzzy file finder: ctrlp.vim
+        * code search: ack.vim
+        * directory navigation: nerdtree
+        * magic motions: vim-easymotion
+    * see what your instructors use
+    * find more: https://vimawesome.com/
+
+* vim mode in other programs
+    * vim-mode in other programs
+    * shell
+    * readline
+    * others
+
+* Advanced vim
+    * Search and replace
+    * multiple windows
+    * Macros
+
+* Resources
+
+* Exercises

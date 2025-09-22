@@ -23,6 +23,8 @@ collections:
     output: true
   '2024':
     output: true
+  '2025':
+    output: true
 
 # Excludes
 exclude:
