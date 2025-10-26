@@ -14,7 +14,7 @@ Programmers have [strong opinions](https://en.wikipedia.org/wiki/Editor_war) abo
 
 Which editors are popular today? See this [Stack Overflow survey](https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools) (there may be some bias because Stack Overflow users may not be representative of programmers as a whole). [Visual Studio Code](https://code.visualstudio.com/) is the most popular editor.  [Vim](https://www.vim.org/) is the most popular command-line-based editor.
 
-Today I'll be talking about Vim - characterized in the above diagram as being a bit difficult to use, perhaps not entirely unfairly - a powerful terminal-based (and graphical!) editor.  It is perhaps one of very few exceptionally old editors - that still sees modern development.  Despite its age, it has a very capable editing paradigm and support for modern affordances such as the latest code analysis tools.
+Today I'll be talking about Vim - characterized as being a bit difficult to use, perhaps not entirely unfairly - a powerful terminal-based (and graphical!) editor.  It is perhaps one of very few exceptionally old editors - that still sees modern development.  Despite its age, it has a very capable editing paradigm and support for modern affordances such as the latest code analysis tools.
 
 <div class="note">
 Despite this, you may find Vim not to your taste.  Many people don't!  Don't fret; what is most important that you find an editor that works best for you.  Vim works best for me, and I'm advocating that you try it here because I feel that even if you do not like it, it might help you to figure out what works for you.
