@@ -1,23 +1,40 @@
 I use these notes as a reference when teaching lecture 3.
 
 If you're a student who ended up here, you probably want to look at editors.md instead.
+---
 
+# meta
+- thanks for coming out
+- informal -- please stop me and ask questions!
+- should be showing keypresses
+- Promote next session
 
-first
-    background briefly
-    informal evening
-    holding down arrow / delete keys --> better way
-
-writing with a computer (essays) vs programming
+# writing with a computer (motivation)
 - We saw nano last week
     - there are much more powerful editors for the CLI environment that are really worth learning.
 - programming: more time spent reading, navigating, editing, than writing in a long stream
 - different programs for different purposes
 - emails, latex
+- **Want a "real" editor!**
+    - holding down arrow / delete keys --> better way
+    - editor taking seconds to launch
+    - hard to move your setup somewhere else?
+    - syntax hilighting, macros, splits, tabs, CLI integration: designed for reading and writing code quickly.
 
+# Which editor to learn?
+- we're going to be talking about vim today
+- people have strong opinions: editor wars
+    - The two main ones are vim and emacs.
+	- Inherent silliness of various text editor debates
+	- Silly but fun!
+    - Not actually a vim zealot though fun to pretend
+- https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools
+- just want to show off what these tools CAN do so you know what's possible
+- Nothing actually bad to say about emacs but don't really know it well
+    - Matthew did last year's talk on emacs if you want to look it up!
+- as long as you end up learning a powerful editor and saving yourself time we're happy :-)
 
-
-worth mastering an editor
+# Learning curve
 - Learning a more complex piece of software is a tradeoff.
 - it will save you hundreds of hours
 - worth investing time in this
@@ -36,20 +53,15 @@ worth mastering an editor
         - after that: benefits start
         - you never stop learning (these are very fancy and powerful tools)
 
-which editor to learn?
-- people have strong opinions: editor wars
-    - The two main ones are vim and emacs.
-	- Inherent silliness of various text editor debates
-	- Silly but fun!
-    - Nothing bad to say about emacs but don't really know it well
-        - Matthew'll probably show a bit of emacs next week
-- https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools
-- VS Code for GUI; vim for cli
-- Is good to have a powerful cli editor under your belt.
-
-Why command line editors?
+Why vim?
 - vim: Originated from Vi editor (1976) and vim (1996)
-- emacs: 1970s also
+- meets the criteria of a powerful editor above
+- I know it better and I think is slightly more popular.
+- interesting ideas
+- lots of tools support Vim bindings (e.g. Vim emulation for VS Code has 1.4m downloads)
+- has a bit of a learning curve (compared to GUI editor), but worth it
+- worth learning even if you finally choose to use another editor
+- vim as program vs. vim as system of text manipulation
 
 - Hearing that these editors are older might seem like a downside but actually it's great:
     - Stable.  Hardened by years of use
@@ -68,24 +80,21 @@ Why command line editors?
     - We might do a lecture later on about IDEs.
         - focus on build tools, refactoring, intellegence around OOP
 
-why vim?
-- we are teaching you Vim
-    - I know it better and I think is slightly more popular.
-    - interesting ideas
-    - lots of tools support Vim bindings (e.g. Vim emulation for VS Code has 1.4m downloads)
-    - has a bit of a learning curve (compared to GUI editor), but worth it
-    - worth learning even if you finally choose to use another editor
-    - vim as program vs. vim as system of text manipulation
+# Graphical or CLI?
+- Is good to have a powerful cli editor under your belt.
+- docker, remote systems, low resource use
+- I use it in cli mode every day
+- shell integration eg pipelines
 
 Philosophy of vim (and this lecture)
 - philosophy of vim: the neat ideas of this editor
-- basics
-- demos
-- exercises, resources to learn more
-    - starting with vimtutor
-    - this lecture: focus on ideas, not details
+- today
+    - show basics (focus on ideas, not details)
+    - do demos
+    - link to exercises, resources to learn more
+        - starting with vimtutor
 
-modal editing (modal ~ "modes")
+# modal editing (modal ~ "modes")
 - Problem these editors solve is how to use the keyboard in many different ways:
     - emacs: modifier keys
     - vim: modes
@@ -98,16 +107,19 @@ modal editing (modal ~ "modes")
 - keystrokes have different meanings in different modes: e.g. `x`
 - gearshift metaphor; multiple keyboards metaphor
 
+# basic .vimrc
 - Download the vimrc:
     - `wget missingsemester.afnom.net/2023/files/vimrc -O ~/.vimrc`
 
-basics
+# basics
 - NOTE: `CTRL-V, <c-v> and ^v`
-- edit vimrc to remove relative line numbers?
-- switching between normal mode and insert mode
-- that's all you need to know to get started. insert mode works as you expect.
-- nano is basically vim in insert mode
-    - the power of vim comes from normal mode
+- inserting text
+    - i and ESC
+    - practice switching between normal mode and insert mode
+    - nano is basically vim in insert mode
+        - the power of vim comes from normal mode
+    - that's all you need to know to get started. insert mode works as you expect.
+    - demo: edit vimrc to remove relative line numbers?
 - buffers vs tabs vs windows
     - buffers ~ open files
     - every tab has one or more windows
@@ -120,7 +132,8 @@ basics
     - splits!  Tabs!
     - set nu/nonu + wrap/nowrap
 
-vim normal mode is a programming language (most important idea in vim)
+# Vim's interface is a programming language
+- (most important idea in vim)
 - once you learn the primitives, you can combine them in interesting ways
 - becomes muscle memory
 - movement
@@ -138,7 +151,9 @@ vim normal mode is a programming language (most important idea in vim)
 visual mode:
     visual block! (76p)
 
-demo (broken fizzbuzz)
+
+
+# demo (broken fizzbuzz)
 - main is never called
   - `G` end of file
   - `o` open new line below
@@ -162,37 +177,34 @@ demo (broken fizzbuzz)
   - `/10`
   - `ci(` to "int(sys.argv[1])"
 
-A few other things:
-    - `vim -` eg ls -la | vim - or tree or ps...
-    - `gf`
-    - file browser
-    - spellcheck
-    - autocomplete
-    - marks
-    - ctrl z
-    - find/replace with regex
-    - MACROS
-    - writing out to shell
-    - !cmd
-    - !make
+# A few other things:
+- `:sp` / `:vsp` to split windows
+	- Can have multiple views of the same buffer.
+- `vim -` eg ls -la | vim - or tree or ps...
+- `gf`
+- file browser
+- spellcheck
+- autocomplete
+- marks
+- ctrl z
+- find/replace with regex
+- macros (see below)
+- writing out to shell
+- !cmd
+- !make
 
-customizing vim
-- ~/.vimrc
-- start with our basic config
-- look online for inspiration
+---
 
 
 dramatic ssh reveal
 
-time for macros?
-
-Et voila!
-
 Any Questions?
 
-Promote MS4 and MS5
+More resources below, including some resources and exercises!
 
 --- end of lecture ---
+
+* Any of the 'few other things' above
 
 * vim culture
 
@@ -214,8 +226,12 @@ Promote MS4 and MS5
 
 * Advanced vim
     * Search and replace
-    * multiple windows
     * Macros
+
+* customizing vim
+    * ~/.vimrc
+    * start with our basic config
+    * look online for inspiration
 
 * Resources
 

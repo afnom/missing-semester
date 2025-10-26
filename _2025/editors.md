@@ -2,587 +2,372 @@
 layout: lecture
 title: "#4: Text Editors"
 date: 2025-10-27
-ready: false
+ready: true
 hide: false
 ---
 
-# Writing and Manipulating Text
-
-As programmers, we spend most of our time editing code, so it's worth
-investing time mastering an editor that fits your needs. Here's how you
-learn a new editor:
-
--   Start with a tutorial (i.e. this lecture, plus resources that we
-    point out)
--   Stick with using the editor for all your text editing needs (even if
-    it slows you down initially)
--   Look things up as you go: if it seems like there should be a better
-    way to do something, there probably is
-
-If you follow the above method, fully committing to using the new
-program for all text editing purposes, the timeline for learning a
-sophisticated text editor looks like this. In an hour or two, you'll
-learn basic editor functions such as opening and editing files,
-save/quit, and navigating buffers. Once you're 20 hours in, you should
-be as fast as you were with your old editor. After that, the benefits
-start: you will have enough knowledge and muscle memory that using the
-new editor saves you time. Modern text editors are fancy and powerful
-tools, so the learning never stops: you'll get even faster as you learn
-more.
+# Writing with a computer
+As programmers, we spend most of our time editing code, so it's worth investing time mastering an editor that fits your needs.
 
 # Which editor to learn?
+Programmers have [strong opinions](https://en.wikipedia.org/wiki/Editor_war) about their text editors.
 
-Programmers have [strong
-opinions](https://en.wikipedia.org/wiki/Editor_war) about their text
-editors.
+Which editors are popular today? See this [Stack Overflow survey](https://insights.stackoverflow.com/survey/2019/#development-environments-and-tools) (there may be some bias because Stack Overflow users may not be representative of programmers as a whole). [Visual Studio Code](https://code.visualstudio.com/) is the most popular editor.  [Vim](https://www.vim.org/) is the most popular command-line-based editor.
 
-Also, not all text editors are equal:
+Today I'll be talking about Vim - characterized in the above diagram as being a bit difficult to use, perhaps not entirely unfairly - a powerful terminal-based (and graphical!) editor.  It is perhaps one of very few exceptionally old editors - that still sees modern development.  Despite its age, it has a very capable editing paradigm and support for modern affordances such as the latest code analysis tools.
 
-![A selection of \"editor learning curves\", that presumably graph
-complexity over time. Emacs\' line spirals
-nonsensically.](../files/editor_curves.png)
+<div class="note">
+Despite this, you may find Vim not to your taste.  Many people don't!  Don't fret; what is most important that you find an editor that works best for you.  Vim works best for me, and I'm advocating that you try it here because I feel that even if you do not like it, it might help you to figure out what works for you.
+</div>
 
-Today I\'ll be talking about Emacs - characterised in this diagram as
-being a little esoteric, perhaps not entirely unfairly - a powerful
-graphical and terminal-based editor. It is perhaps one of very few
-exceptionally old editors - first released in 1984 - that still sees
-modern development. Despite its age, it has a very capable editing
-paradigm and support for modern affordances such as the latest code
-analysis tools.
+## Learning curve
 
-Despite this, you may find Emacs not to your taste. Many people don\'t!
-Do not fret; what is most important that you find an editor that works
-best for you. Emacs works best for me, and I\'m advocating that you try
-it here because I feel that even if you do not like it, it might help
-you to figure out what works for you.
+![A selection of \"editor learning curves\", that presumably graph complexity over time.](../files/editor_curves.png)
 
-## Why Emacs? Why not something shiny and modern?
+Regardless of which editor you pick, here's how you can become an expert:
 
-![A comic showing people arguing over text editors. One describes
-flipping bits manually through an absurd process, before another remarks
-that Emacs has that functionality built
-in.](../files/real_programmers.png)
+- Start with a tutorial (i.e. this lecture, plus resources that we point out)
+- Stick with using the editor for all your text editing needs (even if it slows you down initially)
+- Look things up as you go: if it seems like there should be a better way to do something, there probably is
 
-You\'re probably wondering why I\'m talking about Emacs here; certainly
-it is less popular than the venerable (and also excellent!) Vim, whose
-advocates will extol the virtues of efficient modal editing and a
-minimal interface. Emacs has neither of these things. You might have
-heard of or used Visual Studio Code, arguably one of the most popular
-text editors currently in use, with a real, shiny graphical interface
-and the financial backing of Microsoft; certainly Emacs has neither of
-these things either.
+If you follow the above method, fully committing to using the new program for all text editing purposes, the timeline for learning a sophisticated text editor looks like this.  In an hour or two, you'll learn basic editor functions such as opening and editing files, save/quit, and navigating buffers.  Once you're 20 hours in, you should be as fast as you were with your old editor.  After that, the benefits start: you will have enough knowledge and muscle memory that using the new editor saves you time.  Modern text editors are fancy and powerful tools, so the learning never stops: you'll get even faster as you learn more.
 
-The fundamental strength of Emacs comes in two parts:
 
--   Buffer oriented interaction. This may seem unusual to anyone with
-    experience in a graphical tabbed editor, but Emacs\' focus on
-    buffers as the fundamental unit of organisation in the interface
-    allows you to manage exceptional amounts of information with ease.
--   Flexibility and extensibility. Above all, this is Emacs \"killer
-    feature\", if you look for such a thing. Emacs is designed in all
-    aspects to be moulded to fit - you, the user; the task you are
-    performing; the constraints you are performing it under. With enough
-    experience you can bend Emacs into the needed or desired shape.
+## Why Vim? Why not something shiny and modern?
 
-There is a reason that there are people that started using Emacs in the
-order of decades ago and still use it today. Its long history means that
-has become an exceptionally powerful tool to read, write, and manipulate
-text - any text - especially code. It has many features that I will not
-touch on here, but be assured that almost any task that demands you
-manipulate textual data can be done efficiently in Emacs. Of course,
-this presentation was prepared *entirely* within Emacs itself.
+![A comic showing people arguing over text editors. One describes flipping bits manually through an absurd process, before another remarks that Emacs has that functionality built in.](../files/real_programmers.png)
 
-# A note on Emacs\' Odd-ness
+Vim has a rich history; its based on the vi editor written by Bill Joy in 1976(!) which was written to run on ancient UNIX computers without any sort of Graphical User Interface.  Because a terminal is in effect "low resolution" lots of the power of Vi/Vim is hidden from the interface letting you focus on text at hand.  Vim (or 'Vi iMproved') is an extension to vi written by Bram Moolenaar (who recently passed away) first released in 1991.
 
-Emacs is several decades old, and not making drastic changes to core
-behaviour is highly prioritised by its developers. You will find many of
-its keyboard shortcuts to differ from what you expect; they were decided
-upon before the ones you know existed. Some of its defaults may seem
-strange - there is a wealth of functionality that remains disabled by
-default. I encourage you to try to familiarise yourself with these
-oddities before you set about changing them; with time you may become
-comfortable with them.
+Vim has some really neat ideas behind it, and for this reason, lots of tools support a Vim emulation mode (for example, 1.4 million people have installed [Vim emulation for VS code](https://github.com/VSCodeVim/Vim)).  Vim is probably worth learning even if you finally end up switching to some other text editor.
 
-Emacs is exceptionally big: certainly I am not aware of all of its
-functionality. Please try not to feel overwhelmed as you prod at it.
-Even as someone who uses it very, very extensively, it is not unusual
-for me to discover new functionality.
+It's not possible to teach all of Vim's functionality in 50 minutes, so we're going to focus on explaining the philosophy of Vim, teaching you the basics, showing you some of the more advanced functionality, and giving you the resources to master the tool.
 
-# Graphical or Textual
+# Graphical or CLI?
+We're mostly going to be using the command line version of vim today but note that there is a graphical version (GVim) which is available with better integration into windowing or desktop environments.  But just to say: command line vim is just as powerful. In fact, running vim in the terminal is one of a few ways you might to choose to edit files remotely.
 
-Hopefully you have now launched a copy of Emacs. Likely you are looking
-at a graphical interface, with a menubar and toolbar full of buttons.
-You might be looking at a purely textual application running within your
-terminal, depending on the copy of Emacs you installed and how you ran
-it.
 
-The graphical interface has some niceties - the menubar and toolbar can
-help you to discover functionality, and it supports images, mixed font
-faces and sizes, etc. - things that a terminal is not capable of. Worry
-not if you are looking at Emacs in a terminal, however - it is just as
-powerful. In fact, running Emacs in the terminal is one of a few ways
-you might to choose to use Emacs to edit files remotely.
+# Philosophy of Vim
 
-# \"Basics\"
+When programming, you spend most of your time reading/editing, not writing. For this reason, Vim is a _modal_ editor: it has different modes for inserting text vs manipulating text. Vim is programmable (with Vimscript and also other languages like Python), and Vim's interface itself is a programming language: keystrokes (with mnemonic names) are commands, and these commands are composable. Vim avoids the use of the mouse, because it's too slow; Vim even avoids using the arrow keys because it requires too much movement.
 
-## Keyboard Shortcuts and Notation
+The end result is an editor that can match the speed at which you think.
 
-Emacs relies heavily on the use of modifier keys to input commands.
-Mostly, this is the CTRL key and META key (which you may better know as
-\"ALT\"). Here we also use the Emacs format for representing key
-sequences: successive strokes are space-separated, and if a modifier key
-is used in a keystroke then it is prefixed with an abbreviation of that
-modifier and a dash. For example:
+# Modal editing
 
--   `C-x b` means that you should hold the CTRL key while
-    pressing `x`, and then release it before pressing
-    `b`.
--   `C-x C-b` means that you should hold the CTRL key while
-    pressing `x` and then press `b` before
-    releasing it.
--   `M-b` means that you should hold the META key (remember,
-    you may know this as the ALT key) while pressing `b`.
+Vim's design is based on the idea that a lot of programmer time is spent reading, navigating, and making small edits, as opposed to writing long streams of text. For this reason, Vim has multiple operating modes.
 
-Some keys are represented by short sequences of letters:
-`SPC` is the space bar, `RET` is the return key,
-and `ESC` is the escape key.
+Main modes:
+- **Normal**: for moving around a file and making edits 
+	- also sometimes called **Command** mode
+- **Insert**: for inserting text
+- **Visual** (plain, line, or block): for selecting blocks of text
 
-Most shortcuts you will use will be preceded by `C-x` or
-`C-c`, or consist of `M-<key>`. This is one of the
-general rules that is followed by convention. Many shortcuts in Emacs in
-mnemonic; this might help you to remember them.
+![visualization of different Vim modes](/2023/files/vim_modes.png "Vim modes")
 
-## Don\'t Panic!
+Vim has some other less extensive modes as well that we'll talk about:
+- **Replace**: for replacing text
+- **Command-line**: for running a command (not to be confused with **Command** mode)
 
-Sometimes you might get Emacs into a state that you don\'t understand,
-especially when you are starting out. To cancel the current operation,
-use `C-g`. You may need to press it several times to exit
-nested operations. You can also use `ESC ESC ESC` to cancel
-operations. This is a slightly \"stronger\" option than
-`C-g`, so pressing your escape key a few times is an easy way
-to exit some state and return to the main editing loop. Don\'t panic!
+Keystrokes have different meanings in different operating modes. For example, the letter `x` in Insert mode will just insert a literal character 'x', but in Normal mode, it will delete the character under the cursor, and in Visual mode, it will delete the selection.
 
-## Opening and Saving Files
+In its default configuration, Vim shows the current mode in the bottom left.  The initial/default mode is Normal mode. You'll generally spend most of your time between Normal mode and Insert mode.
 
-Let\'s start by creating a new file. Press `C-x C-f`. You
-should now see a prompt at the bottom of Emacs. Here you can open an
-existing file, but we will create a new file. Enter \"test.txt\" at the
-prompt. You should now see your blank file in front of you. Enter some
-text and press `C-x C-s` to save it. You will soon learn more
-about how you manage the files you have opened in Emacs.
+You change modes by pressing `<ESC>` (the escape key) to switch from any mode back to Normal mode. From Normal mode, enter Insert mode with `i`, Replace mode with `R`, Visual mode with `v`, Visual Line mode with `V`, Visual Block mode with `<C-v>` (Ctrl-V, sometimes also written `^V`), and Command-line mode with `:`.
 
-## The Tutorial
+# Basic .vimrc
+If you want to follow along exactly, we're going to use a very minimal Vim config file called a .vimrc that sets some sane defaults and fixes some quirky behavior that is there for legacy reasons.  To download this file, run the following in your shell: `wget missingsemester.afnom.net/2023/files/vimrc -O ~/.vimrc`) You read through this well-commented file (using Vim!), and observe how Vim looks and behaves slightly differently with the new config.
 
-Emacs has a nice (if quaintly antiquated) tutorial built in. Consider
-using it; you can access it by pressing `C-h t`. Open it now;
-we will navigate around it in the following sections.
+# Basics
+## Inserting text
+
+From Normal mode, press `i` to enter Insert mode. Now, Vim behaves like any other text editor, until you press `<ESC>` to return to Normal mode. This, along with the basics explained above, are all you need to start editing files using Vim (though not particularly efficiently, if you're spending all your time editing from Insert mode).
+
+## Buffers, tabs, and windows
+
+Vim maintains a set of open files, called "buffers". A Vim session has a number of tabs, each of which has a number of windows (split panes). Each window shows a single buffer. Unlike other programs you are familiar with, like web browsers, there is not a 1-to-1 correspondence between buffers and windows; windows are merely views. A given buffer may be open in _multiple_ windows, even within the same tab. This can be quite handy, for example, to view two different parts of a file at the same time.
+
+By default, Vim opens with a single tab, which contains a single window.
+
+## Command-line
+
+Command mode can be entered by typing `:` in Normal mode. Your cursor will jump to the command line at the bottom of the screen upon pressing `:`. This mode has many functionalities, including opening, saving, and closing files, and [quitting Vim](https://twitter.com/iamdevloper/status/435555976687923200).
+
+- `:q` quit (close window)
+- `:w` save ("write")
+- `:wq` save and quit
+- `:e {name of file}` open file for editing
+- `:ls` show open buffers
+- `:help {topic}` open help
+    - `:help :w` opens help for the `:w` command
+    - `:help w` opens help for the `w` movement
+
+
+![Quitting Vim](/2023/files/quitting_vim.png "Qutting Vim")
+
+# Vim's interface is a programming language
+
+The most important idea in Vim is that Vim's interface itself is a programming language. Keystrokes (with mnemonic names) are commands, and these commands _compose_. This enables efficient movement and edits, especially once the commands become muscle memory.
 
 ## Movement
 
-Emacs has an extensive set of movement commands, but many of the ones
-you are familiar with will already work. Try using the arrow keys; Page
-Up and Down; Home and End; and holding control with the arrow keys.
-These should all behave how you expect them to. There are movement
-commands that perform all of these actions without you having to reach
-away to that side of your keyboard; of course there are also many more
-movement commands. I touch on these here because they will make you able
-to navigate documents quickly: do not worry about these for now. You
-should be able to move through documents without too much difficulty
-using the bindings you already know. Additionally, in graphical Emacs
-(and terminal Emacs with some configuration), you can use the mouse as
-you expect.
-
--   `C-a` will move to the start of the line.
--   `C-e` will move to the end.
--   `C-p` will move to the previous line.
--   `C-n` will move to the next.
--   `C-b` will move backwards one character.
--   `C-f` will move forwards one character.
--   `M-b` will move backwards one word.
--   `M-f` will move forwards one word.
--   `C-v` will move down one page.
--   `M-v` will move up one page.
--   `M-<` will move to the top of the document.
--   `M->` will move to the bottom.
--   `C-l` will recenter the window, adjusting what part of
-    the document you can see. Try pressing it multiple times in
-    sequence.
-
-Many of these will also work in your shell by default, along with any
-program that uses readline, such as many programming language REPLs. Try
-it out!
-
-## Buffers, Windows, and Frames
-
-If you\'ve been following along, you should be looking at a single Emacs
-\"frame\". This is the Emacs term for what you might call a \"window\".
-Multiple frames can be associated with the same running copy of Emacs;
-documents open in one are also accessible from another.
-
-Inside this frame, perhaps confusingly, is a \"window\". You might be
-more familiar with the idea of \"splits\" or \"panes\". Try opening a
-second window with `C-x 3`. Now, within your single frame you
-can see two windows, laid side-by-side.
-
-Notice that when you did this you can see the same document in each
-window. These documents are, in Emacs-speak, \"buffers\". Try scrolling
-one of these windows and notice that the other does not scroll with it.
-Here is a central insight into this user interface: frames contain
-windows, and windows are view into a buffer. Windows can be views into
-different buffers, or different views into the same buffer. Perhaps you
-want to write some code and keep a view of a different part of that file
-for reference, or perhaps there is a function taller than your screen
-that you can see in its entirety when you have two windows.
-
-When you use Emacs as a text editor, many of your buffers are
-\"visiting\" files. This means that saving the buffer saves your changes
-into that file. You will soon encounter buffers that are not visiting
-files; for example, when you interrogate Emacs about what a key does
-with `C-h k <key>`, it will tell you what that key does by
-displaying a buffer that describes it. That buffer is not visiting any
-file.
-
-### Managing Buffers
-
-To change the buffer that the current window is displaying, you can use
-`C-x b` - think, `b` for buffers. You can see by
-default it will toggle to the last used buffer if you were to just hit
-`RET`. Hit `TAB` to see completions; entering one
-of these and hitting `RET` will switch to it. Finally, if you
-would like an overview of all of your buffers, use `C-x C-b`.
-This will show a list you can navigate and you can use `RET`
-to switch to the buffer under the point.
-
-You will also want to \"kill\" buffers, which you may better know as
-\"closing\". This can be done with `C-x k`. The default
-behaviour is to kill the current buffer, which can be done by hitting
-`RET`. As above, you can complete and kill other buffers too.
-
-### Managing Windows
-
-Emacs has a set of less intuitive bindings for managing windows:
-
--   `C-x 1` will close all windows except the current one.
--   `C-x 2` will split the current window, opening a new one
-    below it.
--   `C-x 3` will split the current window, opening a new one
-    to the right of it.
--   `C-x 0` will close the current window.
--   `C-x o` will cycle the currently active window. In
-    Emacs-speak, it selects the \"other\" window.
-
-Remember: windows are only views into buffers. If you want to kill a
-buffer, you do that with `C-x k`.
-
-## Point, Mark, and Region
-
-You are likely familiar with the \"cursor\" - this is where text will be
-inserted. In Emacs-speak, this is the \"point\". There exists another
-marker in every buffer, the \"mark\". The mark is not visible but many
-commands will place it. The part of the buffer that is between the point
-and mark is known as the \"region\". When you manually place the mark
-with `C-SPC`, Emacs will interactively highlight the region,
-which is now \"active\"; this is similar to highlighting text in other
-editors. Many commands will operate on the active region as you might
-expect. We will touch on commands later, but the command
-`downcase-region` - for example - will make all uppercase
-characters in the current region lowercase.
-
-Try this out: set the mark with `C-SPC`, then \"deactivate\"
-it with `C-g`. The mark is still set, but no longer active.
-Move elsewhere in the document and then press `C-u C-SPC`.
-The point will jump immediately to the mark you placed. Many of the
-movement commands above also set the mark. Try hitting `M-<`
-and then jump back to where you were with `C-u C-SPC`.
-
-## The Minibuffer and Echo Area
-
-At the bottom of the current frame, you can see the echo area. Emacs
-will surface messages to you here to notify you of events. Some commands
-will turn this area into the minibuffer. Here you can enter text into
-the minibuffer as the command requires. With it open, use
-`TAB` to trigger completion. When you opened a file earlier,
-you used the minibuffer. Let\'s take a look at one of the most important
-commands that makes use of the minibuffer.
-
-## execute-extended-command
-
-Try pressing `M-x`. Here you are being prompted for a command
-to execute. Let\'s try running `beginning-of-buffer`. Wait a
-second - isn\'t that what `M-<` does? Yes!
-
-Every shortcut you have seen is actually bound to a command with a name.
-Some commands are not given a shortcut; the only way to execute them is
-with `M-x`. Why is this section called
-`execute-extended-command`? Because `M-x` is
-itself also bound to a command; this command is
-`execute-extended-command`. If you forget a shortcut, you can
-try running the command it is associated with. Often if you are
-instructed to run a command it may be written
-`M-x beginning-of-buffer`. This instructs you to press
-`M-x` and then enter the command
-`beginning-of-buffer`.
-
-## Modes
-
-Emacs has a concept of \"modes\". Every buffer has a \"major\" mode. The
-major mode governs the broad behaviours of Emacs for that buffer. For
-example, if you were writing some C, you would want to use the
-`c-mode` major mode. This tells Emacs how to highlight,
-indent, comment, etc. the code you are writing. Were you writing a shell
-script, `sh-mode` would be more appropriate. A buffer can
-only be in a single major mode.
-
-There are also \"minor\" modes - some buffer-local, and some that modify
-the global behaviour of Emacs. Many minor modes can be active at once.
-For example, `flyspell-mode` checks your spelling on the fly;
-there is also `flyspell-prog-mode` for only checking strings
-and comments as defined by the current major mode. Notice how these
-things compose. One global minor mode - if you have Emacs 28.1 or
-newer - is `fido-vertical-mode`. Try executing the
-`fido-vertical-mode` command with `M-x` and then
-hit `M-x` again. The entire minibuffer selection interface is
-now fuzzy-matching and live-updating, and not just for `M-x`!
-Try `C-x C-f`!
-
-## Kill and Yank
-
-In a typical editor, you may be familiar with \"copying\" and
-\"pasting\". Of course Emacs has these ideas, and of course they work
-differently to how you may expect. In Emacs there exists the \"kill
-ring\" - you may better know it as the \"clipboard\". When you \"kill\"
-text, it is copied to the kill ring. You may then \"yank\" text from the
-kill ring into the current buffer, which is analogous to pasting.
-
--   `C-w` will kill the current region. This is similar to
-    the \"cut\" operation you may be familiar with.
--   `M-w` will save the current region to the kill ring
-    without actually killing it. This is similar to the \"copy\"
-    operation.
--   `C-y` will yank the most recently killed text from the
-    kill ring and insert it into the current buffer. This is similar to
-    the \"paste\" operation. Wait a second-- most recent?
--   `M-y` will allow you to yank previously killed text from
-    the kill ring; the kill ring in Emacs is not just a clipboard but
-    also stores history.
-
-In graphical Emacs, the kill ring and system clipboard are kept
-synchronised, so interacting with other applications works as you
-expect.
-
-## The Modeline
-
-At the bottom of each window is the Modeline. It describes the current
-state of the buffer that window is showing: it\'s name, if it modified
-from the content on-disk, the encoding, its major mode, and active minor
-modes. It can be extensively customised.
-
-## isearch
-
-Emacs has a powerful in-buffer incremental search. Invoke it with
-`C-s`. you may enter your search term, and move to matches by
-pressing `C-s` again. `C-r` may be used in the
-place of `C-s` to search in reverse. Note how it is
-case-insensitive unless you enter any uppercase character. Exit with
-`C-g`.
-
-While you are in isearch, there are various ways to modify the the
-behaviour of the search. If you would like to use regex, use
-`M-s r`. Emacs can also helpfully display an overview of all
-occurrences of your search term. Hit `M-s o` and an occur
-buffer will appear; use `RET` to jump to the location of the
-match under point in the source buffer.
-
-It is also possible to isearch across multiple buffers, where this
-behaviour also works.
-
-## Completion
-
-Emacs has a completion system built in, called
-`completion-at-point`. You can invoke it with
-`M-TAB` or `C-M-i`, although `M-TAB`
-may not work with the textual interface depending on your terminal
-emulator. It can pull from many sources; one of these is the LSP
-mentioned below.
-
-## LSP
-
-I touch here briefly on LSP (Language Server Protocol) support in Emacs.
-LSP powers modern code analysis in editors such as VSCode, and Emacs 29
-ships with support for communicating with the very same LSP servers,
-achieving the same level of code analysis within Emacs. It is accessible
-with `M-x eglot`; upon running this command Emacs will use
-the major mode of the current buffer to choose and run an appropriate
-language server. You will need to install these language servers
-separately, preferably with your system package manager, before Emacs
-can run them.
-
-## Remote Editing
-
-One thing that Emacs, like Vim, excels at is remote editing.
-
-![A figure from a book, captioned \"Remote login is a lot like astral
-projection\". It depicts a person at a computer magically projected to
-be sitting in front of another.](../files/astral_ssh.jpg)
-
-### With the textual interface
-
-As mentioned, Emacs can run inside of the terminal. Launching while you
-are connected to a remote over ssh, for example, will automatically
-select the terminal interface. Here you can use it exactly as if it were
-on your own computer. Unlike Vim, however, Emacs is not ubiquitously
-installed. You may find it available, or you may have to install it.
-Additionally, it will run with its default configuration; you would have
-to copy your own configuration over if you need your changes to be able
-to use Emacs well. This is a reliable way to use Emacs remotely, and you
-may choose to combine it with a terminal multiplexer too.
-
-### With \"Transparent Remote Access\"
-
-Emacs itself also has the ability to transparently work on remote
-systems as if they were local. You can list and edit files as if they
-were on your own computer, and you can use the graphical interface
-should you prefer it. This is an excellent option, but only if you on a
-fairly fast connection to the remote. On a slow connection, Emacs will
-unhelpfully multiply these performance issues and make them quite
-frustrating.
-
-Emacs uses a system of \"transports\" to implement this behaviour. The
-most useful will likely be the \"ssh\" transport, which - as you would
-expect - will connect to a remote over ssh. Emacs has no need to install
-anything on the remote in this operation - it needs only a few
-essentials which will almost certainly be installed. I am yet to connect
-to a system that didn\'t have them.
-
-Additionally, there are many other transports. Would you like to edit a
-system file with `sudo`? Instead consider the \"sudo\"
-transport. Update your website over FTP? Use the \"ftp\" transport.
-Manipulate data within a Docker container with all the luxury of your
-regular Emacs configuration? Use the \"docker\" transport. Best of all,
-you can combine these transports. Want to edit a system file on a remote
-host, but root login is disabled? Combine the \"ssh\" and \"sudo\"
-transports to pull it directly into your graphical Emacs running on your
-own computer.
-
-You can interact with this system with a slightly odd syntax in the file
-picker. Let\'s ssh into the remote \"pwnie\" by hitting
-`C-x C-f` and entering:
-
-    /ssh:pwnie:
-
-Now we can see a directory listing. Let\'s open our
-`.bashrc`. We could also combine these transports.
-`/etc/sudoers` is not readable by us normally:
-
-    /ssh:pwnie:/etc/sudoers
-
-But if we combine it with the \"sudo\" transport:
-
-    /ssh:pwnie|sudo::/etc/sudoers
-
-It\'s right here for us!
-
-# \"The self-documenting editor\"
-
-Emacs is surrounded by a pervasive documentation culture. The core
-editor and the massive number of packages available for it are often
-thoroughly documented. Most importantly of all, Emacs is designed to be
-\"self-documenting\" - you can use Emacs to learn more about Emacs. Once
-you are comfortable enough with Emacs to use it in this way, you will
-find that you can often learn the information you need without leaving
-your editor.
-
-## `C-h`
-
-Behind the `C-h` prefix there are a wealth of commands to
-help you interrogate Emacs.
-
--   `C-h t` will open the tutorial.
--   `C-h f` will describe any function (including commands,
-    which are simply interactive functions).
--   `C-h v` will do the same for variables, which are often
-    control configuration.
--   `C-h o` will do the same for functions and variables
-    simultaneously. One name can have both a variable part and function
-    part; this is a consequence of Emacs\' lisp-y nature that we touch
-    on later.
--   `C-h k <key>` will describe the key sequence
-    `<key>`. Want to know more about the command executed
-    when you hit a keyboard shortcut? Use this!
--   `C-h b` will describe the currently active key bindings.
-    This isn\'t just a fixed list - it will show you which modes are
-    responsible for which bindings.
--   `C-h C-h` will show you help-about-help, just in-case you
-    get very lost!
-
-## Info
-
-Sometimes you need more than descriptions of individual bits of
-functionality - you want a structured guide. Emacs is documented with
-the GNU `info` system, and does of course come with an info
-viewer that you can use to read it. Open it with `C-h i`.
-Here you have extensive documentation for Emacs and its many components
-alongside other info pages you have installed. Later I will talk about
-Emacs Lisp, for which there is a full, guided introduction in this info
-system.
-
-## Emacs is Introspective
-
-Finally, I\'d like to emphasise the most important quality of
-interrogating Emacs to explain Emacs: it is introspective. If you
-install a new package, you can interrogate Emacs about it as if it were
-part of Emacs itself. These packages can also install their own info
-pages. Your copy of Emacs doesn\'t just document Emacs; it documents
-*your copy* of Emacs.
-
-# \"The extensible editor\"
-
-## Packages
-
-Emacs has a very, very long legacy of packages. It has shipped with a
-built-in package manager for some time now, and you can use this to
-install new packages. Emacs can be used as much more than just an editor
-if you find it comfortable - for me, it is also a git client, mail
-client, RSS reader, chat client, terminal,
-organiser/agenda/calendar/todo manager, notification centre, calculator,
-PDF viewer, music player, web browser, hex editor, debugger interface,
-and more. If there is something that you would like Emacs to do,
-somebody has probably written a package to do it. If not, then you can
-extend Emacs yourself!
-
-Perhaps you like the modal editing of Vim? Try evil-mode, or another
-modal-editing package! I have not touched here on some of the excellent
-packages that keep people using Emacs even if they prefer editor: Magit,
-an excellent interface to git; org-mode, a very powerful combined
-document system, agenda, TODO manager, literate programming environment,
-and more; and dired, a file manager that also allows you to manipulate
-files like text; and more! Two of these three are already built-in to
-Emacs!
-
-## Emacs Lisp
-
-Emacs Lisp - or \"elisp\" in short - is the language in which most of
-Emacs is implemented in. It is the language that every package is
-written in, and it is the language that, should you want to extend Emacs
-yourself, you would write in. Importantly, Emacs does not really
-distinguish between elisp that is used to implement itself and your
-elisp. Unlike, say, VSCode, you are not limited to some \"extension
-interface\" - your elisp is just as important as core editor
-functionality. If you want some behaviour, it may only be a few lines of
-elisp away. Unless you have written some Lisp before, you will probably
-find it quite strange; this isn\'t unusual!
-
-I will not discuss elisp here in detail - that would require another
-session entirely! If you choose to use Emacs more, it is not required
-that you learn how to write elisp. However, it is an exceptionally
-powerful way to manipulate Emacs, and for me, what gives it its staying
-power. You should be able to find a tutorial within the info viewer.
-
-# Wrapping up
-
-Sadly, there is a quite a bit of Emacs functionality that has not been
-touched on here. However, I hope that with a glimpse into this deep pit
-that you are equipped to try and learn more about Emacs by yourself. Of
-course, if you have questions I encourage you to reach out! Emacs has
-been an excellent tool for me and I\'m happy to help if you think it
-might work for you too.
+You should spend most of your time in Normal mode, using movement commands to navigate the buffer. Movements in Vim are also called "nouns", because they refer to chunks of text.
+
+- Basic movement: `hjkl` (left, down, up, right)
+- Words: `w` (next word), `b` (beginning of word), `e` (end of word)
+- Lines: `0` (beginning of line), `^` (first non-blank character), `$` (end of line)
+- Screen: `H` (top of screen), `M` (middle of screen), `L` (bottom of screen)
+- Scroll: `Ctrl-u` (up), `Ctrl-d` (down)
+- File: `gg` (beginning of file), `G` (end of file)
+- Line numbers: `:{number}<CR>` or `{number}G` (line {number})
+- Misc: `%` (corresponding item)
+- Find: `f{character}`, `t{character}`, `F{character}`, `T{character}`
+    - find/to forward/backward {character} on the current line
+    - `,` / `;` for navigating matches
+- Search: `/{regex}`, `n` / `N` for navigating matches
+
+## Selection
+
+Visual modes:
+
+- Visual: `v`
+- Visual Line: `V`
+- Visual Block: `Ctrl-v`
+
+Can use movement keys to make selection.
+
+## Edits
+
+Everything that you used to do with the mouse, you now do with the keyboard using editing commands that compose with movement commands. Here's where Vim's interface starts to look like a programming language. Vim's editing commands are also called "verbs", because verbs act on nouns.
+
+- `i` enter Insert mode
+    - but for manipulating/deleting text, want to use something more than
+    backspace
+- `o` / `O` insert line below / above
+- `d{motion}` delete {motion}
+    - e.g. `dw` is delete word, `d$` is delete to end of line, `d0` is delete
+    to beginning of line
+- `c{motion}` change {motion}
+    - e.g. `cw` is change word
+    - like `d{motion}` followed by `i`
+- `x` delete character (equal do `dl`)
+- `s` substitute character (equal to `cl`)
+- Visual mode + manipulation
+    - select text, `d` to delete it or `c` to change it
+- `u` to undo, `<C-r>` to redo
+- `y` to copy / "yank" (some other commands like `d` also copy)
+- `p` to paste
+- Lots more to learn: e.g. `~` flips the case of a character
+
+## Counts
+
+You can combine nouns and verbs with a count, which will perform a given action a number of times.
+
+- `3w` move 3 words forward
+- `5j` move 5 lines down
+- `7dw` delete 7 words
+
+## Modifiers
+
+You can use modifiers to change the meaning of a noun. Some modifiers are `i`, which means "inner" or "inside", and `a`, which means "around".
+
+- `ci(` change the contents inside the current pair of parentheses
+- `ci[` change the contents inside the current pair of square brackets
+- `da'` delete a single-quoted string, including the surrounding single quotes
+
+
+# Demo
+
+Here is a broken [fizz buzz](https://en.wikipedia.org/wiki/Fizz_buzz) implementation:
+
+```python
+def fizz_buzz(limit):
+    for i in range(limit):
+        if i % 3 == 0:
+            print('fizz')
+        if i % 5 == 0:
+            print('fizz')
+        if i % 3 and i % 5:
+            print(i)
+
+def main():
+    fizz_buzz(10)
+```
+
+We will fix the following issues:
+
+- Main is never called
+- Starts at 0 instead of 1
+- Prints "fizz" for multiples of 5
+- Prints "fizz" and "buzz" on separate lines for multiples of 15
+- Uses a hard-coded argument of 10 instead of taking a command-line argument
+
+See the lecture video for the demonstration. Compare how the above changes are made using Vim to how you might make the same edits using another program.  Notice how very few keystrokes are required in Vim, allowing you to edit at the speed you think.
+
+# A few other things
+- `:sp` / `:vsp` to split windows
+	- Can have multiple views of the same buffer.
+- Vim pipelines eg `ps -ef | vim -`
+- `gf`
+- file browser
+- spellchecking
+- omnicomplete
+- marks
+- `^z`
+- find/replace with regex
+- macros (see below)
+- writing out to shell
+- !cmd
+- !make
+
+
+---
+
+That concludes the material we'll probably have time for.  However a few other things of note / interest:
+
+# Vim Culture
+* If you are curious, some of these [vim koans](https://blog.sanctum.geek.nz/vim-koans/) are great.
+
+# Extending Vim
+
+There are tons of plugins for extending Vim. Contrary to outdated advice that
+you might find on the internet, you do _not_ need to use a plugin manager for
+Vim (since Vim 8.0). Instead, you can use the built-in package management
+system. Simply create the directory `~/.vim/pack/vendor/start/`, and put
+plugins in there (e.g. via `git clone`).
+
+Here are some of our favorite plugins:
+
+- [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): fuzzy file finder
+- [ack.vim](https://github.com/mileszs/ack.vim): code search
+- [nerdtree](https://github.com/scrooloose/nerdtree): file explorer
+- [vim-easymotion](https://github.com/easymotion/vim-easymotion): magic motions
+
+We're trying to avoid giving an overwhelmingly long list of plugins here. You
+can check out the (MIT) instructors' dotfiles
+([Anish](https://github.com/anishathalye/dotfiles),
+[Jon](https://github.com/jonhoo/configs),
+[Jose](https://github.com/JJGO/dotfiles)) to see what other plugins we use.
+Check out [Vim Awesome](https://vimawesome.com/) for more awesome Vim plugins.
+There are also tons of blog posts on this topic: just search for "best Vim
+plugins".
+
+# Vim-mode in other programs
+
+Many tools support Vim emulation. The quality varies from good to great;
+depending on the tool, it may not support the fancier Vim features, but most
+cover the basics pretty well.
+
+## Shell
+
+If you're a Bash user, use `set -o vi`. If you use Zsh, `bindkey -v`. For Fish,
+`fish_vi_key_bindings`. Additionally, no matter what shell you use, you can
+`export EDITOR=vim`. This is the environment variable used to decide which
+editor is launched when a program wants to start an editor. For example, `git`
+will use this editor for commit messages.
+
+## Readline
+
+Many programs use the [GNU
+Readline](https://tiswww.case.edu/php/chet/readline/rltop.html) library for
+their command-line interface. Readline supports (basic) Vim emulation too,
+which can be enabled by adding the following line to the `~/.inputrc` file:
+
+```
+set editing-mode vi
+```
+
+With this setting, for example, the Python REPL will support Vim bindings.
+
+## Others
+
+There are even vim keybinding extensions for web
+[browsers](http://vim.wikia.com/wiki/Vim_key_bindings_for_web_browsers) - some
+popular ones are
+[Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en)
+for Google Chrome and [Tridactyl](https://github.com/tridactyl/tridactyl) for
+Firefox. You can even get Vim bindings in [Jupyter
+notebooks](https://github.com/lambdalisue/jupyter-vim-binding).
+Here is a [long list](https://reversed.top/2016-08-13/big-list-of-vim-like-software) of software with vim-like keybindings.
+
+
+# Advanced Vim
+
+Here are a few examples to show you the power of the editor. We can't teach you
+all of these kinds of things, but you'll learn them as you go. A good
+heuristic: whenever you're using your editor and you think "there must be a
+better way of doing this", there probably is: look it up online.
+
+## Search and replace
+
+`:s` (substitute) command ([documentation](http://vim.wikia.com/wiki/Search_and_replace)).
+
+- `%s/foo/bar/g`
+    - replace foo with bar globally in file
+- `%s/\[.*\](\(.*\))/\1/g`
+    - replace named Markdown links with plain URLs
+
+## Macros
+- `q{character}` to start recording a macro in register `{character}`
+- `q` to stop recording
+- `@{character}` replays the macro
+- Macro execution stops on error
+- `{number}@{character}` executes a macro {number} times
+- Macros can be recursive
+    - first clear the macro with `q{character}q`
+    - record the macro, with `@{character}` to invoke the macro recursively
+    (will be a no-op until recording is complete)
+- Example: convert xml to json ([file](/2023/files/example-data.xml))
+    - Array of objects with keys "name" / "email"
+    - Use a Python program?
+    - Use sed / regexes
+        - `g/people/d`
+        - `%s/<person>/{/g`
+        - `%s/<name>\(.*\)<\/name>/"name": "\1",/g`
+        - ...
+    - Vim commands / macros
+        - `Gdd`, `ggdd` delete first and last lines
+        - Macro to format a single element (register `e`)
+            - Go to line with `<name>`
+            - `qe^r"f>s": "<ESC>f<C"<ESC>q`
+        - Macro to format a person
+            - Go to line with `<person>`
+            - `qpS{<ESC>j@eA,<ESC>j@ejS},<ESC>q`
+        - Macro to format a person and go to the next person
+            - Go to line with `<person>`
+            - `qq@pjq`
+        - Execute macro until end of file
+            - `999@q`
+        - Manually remove last `,` and add `[` and `]` delimiters
+
+# Customizing Vim
+Vim is customized through a plain-text configuration file in `~/.vimrc` (containing Vimscript commands). There are probably lots of basic settings that you want to turn on.
+
+As said above, we are providing a well-documented basic config that you can use as a starting point. We recommend using this because it fixes some of Vim's quirky default behavior. **Download our config [here](/2023/files/vimrc) and save it to `~/.vimrc`.**
+
+Vim is heavily customizable, and it's worth spending time exploring customization options. You can look at people's dotfiles on GitHub for inspiration, for example, your instructors' Vim configs ([Anish](https://github.com/anishathalye/dotfiles/blob/master/vimrc), [Jon](https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim) (uses [neovim](https://neovim.io/)), [Jose](https://github.com/JJGO/dotfiles/blob/master/vim/.vimrc)). There are lots of good blog posts on this topic too. Try not to copy-and-paste people's full configuration, but read it, understand it, and take what you need.
+
+# Resources
+- `vimtutor` is a tutorial that comes installed with Vim - if Vim is installed, you should be able to run `vimtutor` from your shell
+- [Vim Adventures](https://vim-adventures.com/) is a game to learn Vim
+- [Vim Tips Wiki](http://vim.wikia.com/wiki/Vim_Tips_Wiki)
+- [Vim Advent Calendar](https://vimways.org/2019/) has various Vim tips
+- [Vim Golf](http://www.vimgolf.com/) is [code golf](https://en.wikipedia.org/wiki/Code_golf), but where the programming language is Vim's UI
+- [Vi/Vim Stack Exchange](https://vi.stackexchange.com/)
+- [Vim Screencasts](http://vimcasts.org/)
+- [Practical Vim](https://pragprog.com/titles/dnvim2/) (book)
+
+# Exercises
+- Complete `vimtutor`. Note: it looks best in a [80x24](https://en.wikipedia.org/wiki/VT100) (80 columns by 24 lines) terminal window.
+- Download our [basic vimrc](/2023/files/vimrc) and save it to `~/.vimrc`. Read through the well-commented file (using Vim!), and observe how Vim looks and behaves slightly differently with the new config.  
+- Set a colorscheme to customize your setup either from one of the builtin ones or one from [here](https://vimcolorschemes.com/)
+- Install and configure a plugin: [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim).
+   - Create the plugins directory with `mkdir -p ~/.vim/pack/vendor/start`
+   - Download the plugin: `cd ~/.vim/pack/vendor/start; git clone https://github.com/ctrlpvim/ctrlp.vim`
+   - Read the [documentation](https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md) for the plugin. Try using CtrlP to locate a file by navigating to a project directory, opening Vim, and using the Vim command-line to start `:CtrlP`.
+   - Customize CtrlP by adding [configuration](https://github.com/ctrlpvim/ctrlp.vim/blob/master/readme.md#basic-options) to your `~/.vimrc` to open CtrlP by pressing Ctrl-P.
+- To practice using Vim, re-do the [Demo](#demo) from lecture on your own machine.
+- Use Vim for _all_ your text editing for the next month. Whenever something seems inefficient, or when you think "there must be a better way", try Googling it, there probably is. If you get stuck, ask about it in the discord!
+- Configure your other tools to use Vim bindings (see instructions above).
+- Further customize your `~/.vimrc` and install more plugins.
+- (Advanced) Convert XML to JSON ([example file](/2023/files/example-data.xml)) using Vim macros. Try to do this on your own, but you can look at the [macros](#macros) section above if you get stuck.
