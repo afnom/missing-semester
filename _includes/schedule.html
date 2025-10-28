@@ -10,7 +10,7 @@
         {% if lecture.ready %}
             <a href="{{ lecture.url | relative_url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}
-          {{ lecture.title }} [no class]
+        <span style="font-weight:bold">{{ lecture.title }} [no session!]</span>
         {% else %}
           {{ lecture.title }}
         {% endif %}
