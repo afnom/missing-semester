@@ -3,7 +3,7 @@ layout: lecture
 title: "#10: Debugging and Profiling"
 date: 2026-02-02
 ready: false
-hide: false
+hide: true
 ---
 
 ### Context: Debugging with Print Statements
