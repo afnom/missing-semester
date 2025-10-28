@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#7: Introduction to LaTeX"
-date: 2025-11-17
+date: 2025-11-24
 ready: false
 hide: false
 ---

@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#8: Git for Open Source Development"
-date: 2025-11-24
+date: 2025-12-01
 ready: false
 hide: false
 ---

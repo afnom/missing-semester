@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#10: Debugging and Profiling"
-date: 2025-12-08
+date: 2025-02-02
 ready: false
 hide: false
 ---
