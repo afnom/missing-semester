@@ -1,13 +1,14 @@
 ---
 layout: lecture
-title: "#5: Containers and Virtualization + 🍕"
+title: "#5: Containers and Virtualisation + 🍕"
 date: 2025-11-10
-ready: false
+ready: true
 hide: false
 ---
 
 <div class="note">
 This lesson is a UoB original and has been completely written from scratch by @jedevc.
+The section on bind mounts was added by @flaberpengu.
 </div>
 
 ## 1. Introduction
@@ -20,9 +21,9 @@ software:
 Pretty much all developer tooling aims to solve one or both of these issues -
 e.g. git aims to make it easier to have multiple developers working on one
 codebase (improving velocity), the cloud aims to make it easy to balance to any
-number of users (improving scale). The general ideas of containerization +
-virtualization (we'll look at docker, since it's the most common tool for this)
-aims to help solve both.
+number of users (improving scale). The general ideas of containerisation +
+virtualisation (we'll look at docker, since it's the most common tool for this)
+aim to help solve both.
 
 What specific problems are we trying to solve?
 
@@ -61,16 +62,16 @@ In doing this:
 - We don't have to worry about different dev+prod environments. This also helps
   break down the barrier between development and operations (called DevOps).
 
-### Containerization vs Virtualization
+### Containerisation vs Virtualisation
 
 While both of these technologies are about splitting up a big computer into
 lots of little ones, with lots of similar principles, there are some
-difference.
+differences.
 
 To cover the similarities:
 
 - We create containers/VMs from reproducible templates (which we call "images")
-- Each container/VM sees itself at the center of the world - even though there
+- Each container/VM sees itself at the centre of the world - even though there
   are other containers/VMs alongside them, they are isolated from each other.
 - Both can be resource-limited to less than the amount that the host
   machine actually has.
@@ -97,15 +98,15 @@ looking like:
   splitting less out, and we don't need to run multiple operating systems, so
   we generally have a lot less overhead.
 - Container images tend to be a lot smaller. We don't need to ship things like
-  drivers or whole kernels and bootloaders systems around (which can be massive).
+  drivers or whole kernels and bootloader systems around (which can be massive).
 - Because of these, it's really easy to spin up *tons* of containers - this is
   nice for creating local dev environments, but also for facilitating entirely
   new modes of engineering. We can split all of our services into separate
   components, and manage them all separately - which we call **microservices**.
 
-Some common software for virtualization:
+Some common software for virtualisation:
 - VirtualBox, VMWare, QEMU, firecracker
-vs some common software for containerization:
+vs some common software for containerisation:
 - Docker, podman, containerd, systemd
 
 ## 2. Technical details
@@ -114,7 +115,7 @@ vs some common software for containerization:
 >
 > Feel free to skip this section, I got carried away.
 
-### Virtualization
+### Virtualisation
 
 Generally, operating systems rely on features of the underlying hardware to
 protect themselves and isolate their processes from each other. For example,
@@ -139,16 +140,16 @@ So how is this enforced?
 - The supervisor maps memory, etc, and then transfers control to the
   applications (usually with a `jmp` instruction or something).
 - The application gets to do whatever it wants - until a trigger happens, and
-  then it's forcible stopped, and control is returned to the supervisor - which
-  gets put back in it's elevated priviledge.
+  then it's forcibly stopped, and control is returned to the supervisor - which
+  gets put back in its elevated priviledge.
 
-Virtualization just extends this by adding *more levels* (or virtual levels).
+Virtualisation just extends this by adding *more levels* (or virtual levels).
 Now, the supervisor is managed by the *hypervisor*, in *exactly* the same way
 really.
 
-### Containerization
+### Containerisation
 
-Containerization occurs just at the supervisor level, managing applications.
+Containerisation occurs just at the supervisor level, managing applications.
 But to provide isolation, we need to use capabilities built into the Linux
 kernel, called namespaces.
 
@@ -291,7 +292,7 @@ Now that we've got our container image, we can run something in it using
 [`docker run`](https://docs.docker.com/engine/reference/commandline/container_run/)!
 Let's try running an simple `echo` command:
 
-    $ docker run alpine "Hello, world!"
+    $ docker run alpine echo "Hello, world!"
     Hello, world!
 
 Let's do something a little bit more complicated - we'll start a shell `sh`,
@@ -613,6 +614,47 @@ CMD /bin/app
 
 Only the final stage in the multi-stage build is actually stored and uploaded -
 this saves speed and our precious internet bandwidth.
+
+### Bind mount
+You may encounter a situation in which you want to change some files that are being used by a container whilst the container is still running. Previously, we saw that you'd need to rebuild your image every time you wanted to make such a change, and while caching can help deal with this, it can be cumbersome. In this scenario, a useful docker feature to be aware of is a bind mount.
+
+Bind mounts are not the only type of mount available in docker - there is also the volume mount, for example - but it is what I'll mention here since it is simple to use, yet quite powerful. A bind mount simply mounts a file or directory from the host into the container. This can be as read-only, or read-write, which means this is also a useful tool if you want some generated files from the container to persist on your host filesystem. This is also how docker provides DNS resolution to containers by default (mounting `/etc/resolv.conf` into the container from the host).
+
+If we wanted to mount our own `index.html` file for an nginx instance, as we saw earlier, we could alternatively do this by running the following:
+
+    $ docker run -d -p 8000:80 --mount type=bind,src="./my-content",dst="/usr/share/nginx/html",readonly nginx:latest
+    96343e524432ec7ef82828592aed5d471a94edb0fad99d711ef7002152aff2f
+    $ curl http://localhost:8000
+    <html>
+      <body>
+        <h1>Hello, world!</h1>
+        <p>This is a test page</p>
+      </body>
+    </html>
+
+Now, if we want to update `index.html` without restarting our nginx server, we can simple edit the file on our host as follows:
+
+    $ cat index.html
+    <html>
+	    <body>
+		    <h1>Hello, world!</h1>
+    		<p>This is a test page</p>
+    		<p>This is a second paragraph!</p>
+    	</body>
+    </html>
+
+Then, if we try curl again:
+
+    $ curl http://localhost:8000
+    <html>
+    	<body>
+    		<h1>Hello, world!</h1>
+    		<p>This is a test page</p>
+    		<p>This is a second paragraph!</p>
+    	</body>
+    </html>
+
+We can see that our new file is being hosted by nginx *without* the need for restarting our container. Fantastic!
 
 ### Moooore
 
