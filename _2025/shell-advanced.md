@@ -125,7 +125,7 @@ Sometimes when running a program, some jobs may be run in the background of a sh
 
 To run processes in the background, the `&` (ampersand) character can be appended to a command to run it in the background. This turns it into a *job*. The current job number, as well as system process ID should be printed after running the command, for example `[1] 381`. Try running `sleep 5 &` and `sleep 5` and notice the former allows you to still use the shell while it runs. Running `ps` soon after the backgrounded command should also show the `sleep` process in the shell process list.
 
-**Note**: Even if processes are run backgrounded, output may be sent to the terminal, if you don't want to see the output consider hiding STDOUT and STDERR by using `&>/dev/null` to redirect the program's output.
+**Note**: Even if processes are run backgrounded, output may be sent to the terminal. If you don't want to see the output, consider hiding STDOUT and STDERR by using `&>/dev/null` to redirect the program's output.
 
 To background a currently running process, we can suspend and background it. As an example. Let's run `sleep 15`, enter `Ctrl+Z` to suspend the program (there should be an output of the job ID, for example `[1]+`), then run `bg [JOB ID]` (usually 1). Run `ps` again to see the process running in the background. A better way to monitor jobs in the shell is by running `jobs`, which should list any currently running jobs alongside their IDs.
 
@@ -224,7 +224,7 @@ false ; echo "This will always run"
 ```
 
 Another common pattern is wanting to get the output of a command as a variable. This can be done with _command substitution_.
-Whenever you place `$( CMD )` it will execute `CMD`, get the output of the command and substitute it in place.
+Whenever you place `$( CMD )` it will execute `CMD`, get the output of the command, and substitute it in place.
 For example, if you do `for file in $(ls)`, the shell will first call `ls` and then iterate over those values.
 A lesser known similar feature is _process substitution_, `<( CMD )` will execute `CMD` and place the output in a temporary file and substitute the `<()` with that file's name. This is useful when commands expect values to be passed by file instead of by STDIN. For example, `diff <(ls foo) <(ls bar)` will show differences between files in dirs  `foo` and `bar`.
 
@@ -251,7 +251,7 @@ done
 
 In the comparison we tested whether `$?` was not equal to 0.
 Bash implements many comparisons of this sort - you can find a detailed list in the manpage for [`test`](https://www.man7.org/linux/man-pages/man1/test.1.html).
-When performing comparisons in bash, try to use double brackets `[[ ]]` in favor of simple brackets `[ ]`. Chances of making mistakes are lower although it won't be portable to `sh`. A more detailed explanation can be found [here](http://mywiki.wooledge.org/BashFAQ/031).
+When performing comparisons in bash, try to use double brackets `[[ ]]` in favor of simple brackets `[ ]`. Chances of making mistakes are lower, though it won't be portable to `sh`. A more detailed explanation can be found [here](http://mywiki.wooledge.org/BashFAQ/031).
 
 When launching scripts, you will often want to provide arguments that are similar. Bash has ways of making this easier, expanding expressions by carrying out filename expansion. These techniques are often referred to as shell _globbing_.
 - Wildcards - Whenever you want to perform some sort of wildcard matching, you can use `?` and `*` to match one or any amount of characters respectively. For instance, given files `foo`, `foo1`, `foo2`, `foo10` and `bar`, the command `rm foo?` will delete `foo1` and `foo2` whereas `rm foo*` will delete all but `bar`.
@@ -310,13 +310,13 @@ Some differences between shell functions and scripts that you should keep in min
 
 # GNU Parallel
 
-GNU `parallel` is an very useful, customisable tool that uses threads to split multiple commands into threads to speeding up script execution, while preserving the initial command order. `parallel` can be used as a quick and intuitive replacement for `for` loops and `xargs`.
+GNU `parallel` is a very useful, customisable tool that uses threads to split multiple commands into threads to speed up script execution, while preserving the initial command order. `parallel` can be used as a quick and intuitive replacement for `for` loops and `xargs`.
 
-The typical syntax for a `parallel` command looks like `parallel [COMMAND] ::: [INPUT LIST]`, for example, `parallel echo ::: {1..100}`. To repeat a command a certain number of times without passing the number as an argument, the flag `-N0` can be used after `parallel` to pass 0 arguments into the command, letting the command to run the same every time.
+The typical syntax for a `parallel` command looks like `parallel [COMMAND] ::: [INPUT LIST]`, for example, `parallel echo ::: {1..100}`. To repeat a command a certain number of times without passing the number as an argument, the flag `-N0` can be used after `parallel` to pass 0 arguments into the command, letting the command run the same every time.
 
 As well as using `{1..100}` to expand a list of numbers up to 100, any other list of arguments can be used to iterate over. For example, `parallel ls -la ::: *.txt` lists file metadata for all `.txt` files in the current directory. `parallel` also allows data to be piped into the command, such as `cat /etc/passwd | cut -d ':' -f 1 | parallel id` listing the ID info for all users. Another way of using `parallel` is with the syntax `parallel [COMMAND] :::: [FILE]`, for example with the command `parallel which > paths.txt :::: commands.txt`, which reads all command names in `command.txt` and saves their full paths to `paths.txt`.
 
-One way of stepping up your `parallel` using is by utilising replacement strings. These function as ways to modify arguments given to the command. A couple examples are:
+One way of stepping up your `parallel` usage is by utilising replacement strings. These function as ways to modify arguments given to the command. A couple examples are:
 
 - `{}`   - The argument
 - `{#}`  - The index of the argument (starting from 1)
