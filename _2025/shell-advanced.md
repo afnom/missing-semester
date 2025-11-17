@@ -2,7 +2,7 @@
 layout: lecture
 title: "#6: Advanced Shell"
 date: 2025-11-17
-ready: false
+ready: true
 hide: false
 ---
 
