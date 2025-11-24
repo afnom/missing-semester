@@ -660,6 +660,7 @@ Here are some interesting things that didn't fit in the document.
 If we want to create a presentation whilst still keeping the power of LaTeX's typesetting, we can use the document class `beamer`.
 
 ## The Basics
+---
 Here is a minimal example showing the basics of `beamer`.
 
 ```latex
@@ -690,6 +691,7 @@ We then create a new `frame` using the `\begin{frame}...\end{frame}` environment
 While it may seem that a `frame` is just the `beamer` term for a slide, they are different - one `frame` can contain more than one slide, as we'll see shortly.
 
 ## Themes
+---
 We can change the style and look of a presentation using the `\usetheme` command in the preamble. An example of this is the Copenhagen theme:
 
 ```latex
@@ -713,6 +715,7 @@ Welcome to Beamer in \LaTeX! It is useful for creating great looking presentatio
 For a list of other themes available, see [here](https://latex-beamer.com/tutorials/beamer-themes/). I also like [this site](https://deic.uab.cat/~iblanes/beamer_gallery/) where you can see examples in the browser before pasting any code in to your `.tex` file.
 
 ## Table of Contents
+---
 We can use the `\tableofcontents` command to create a table of contents near the start of the presentation, which can be useful if you have a long presentation with many sections and subsections.
 
 ```latex
@@ -721,7 +724,8 @@ We can use the `\tableofcontents` command to create a table of contents near the
 \end{frame}
 ```
 
-## Visual Effect
+## Visual Effects
+---
 We can reveal parts of the frame in turn, displaying as separate slides, in a couple of ways. The simpler way is to use the `\pause` command. The following example is one frame, but displays as multiple slides.
 
 ```latex
@@ -752,6 +756,7 @@ If we want more control, we can instead use the `< >` syntax:
 In this example, our first slide will only contain the basic text, with subsequent slides revealing each bullet point in turn.
 
 ## Highlighting
+---
 We may sometimes way to highlight or otherwise draw attention to a key point on a given slide, e.g. an important remark or warning. In `beamer`, this can be done with a `block`. There are various types of blocks, a list of which can be found [here](https://latex-beamer.com/tutorials/blocks/). A short example of some of the most common blocks:
 
 ```latex
