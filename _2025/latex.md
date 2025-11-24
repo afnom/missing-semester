@@ -2,7 +2,7 @@
 layout: lecture
 title: "#7: Introduction to LaTeX"
 date: 2025-11-24
-ready: false
+ready: true
 hide: false
 ---
 # Introduction to LaTeX
@@ -12,14 +12,14 @@ LaTeX is a document preparation system for high-quality typesetting, most often 
 
 LaTeX encourages authors to focus on the content of what they're writing rather than how it should appear in the document or how the document should be designed^[1].
 
-In many ways, LaTeX is similar to HTML where the author specifies the document structure and content, and the styling is handled by CSS}.
+In many ways, LaTeX is similar to HTML where the author specifies the document structure and content, and the styling is handled by CSS.
 
 Like some programming languages, we write LaTeX code which exists in a `.tex` file which we then compile using a LaTeX engine to produce a final output (e.g. a PDF).
 
 # When to use LaTeX
 LaTeX is a useful tool when you're:
-- Writing a research paper, dissertation, presentation or letter
-- Typesetting content with mathematical equations, tables or graphs
+- Writing a research paper, dissertation, presentation or letter.
+- Typesetting content with mathematical equations, tables or graphs.
 - Writing large documents (thesis or book) which has chapters, citations, cross-references etc.
     
 It's **amazing** for maths!
@@ -34,7 +34,7 @@ There are lots of LaTeX compilers and editors available:
 - [TeX Maker](https://www.xm1math.net/texmaker/)
 - [MacTeX](https://www.tug.org/mactex/)
 
-We'll be focusing on [Overleaf](https://www.overleaf.com) which we have access to through the University (log in through your institution)!
+We'll be focusing on [Overleaf](https://www.overleaf.com) which we have (premium!) access to through the University (log in through your institution's SSO).
 
 # Let's make a document!
 ## The basics
@@ -56,6 +56,8 @@ Hello, World!
 The first part (between `\documentclass{}` and `\begin{document}`) is the preamble which allows us to define the document configuration (and like many programming languages) include any external packages we use in the document.
 
 Everything between `\begin{document}` and `\end{document}` is the content which will be rendered. 
+
+Like in other languages, we can add comments to our code by using the `%` symbol - anything after this symbol on a given line will not be rendered.
 
 ## Document classes
 ---
@@ -232,7 +234,7 @@ We'll work on this document:
 \end{document}
 ```
 
-The skeleton of a table (which overleaf automatically adds for us) is in the code block below:
+The skeleton of a table is in the code block below:
 ```latex
 \begin{table}[]
     \centering
@@ -320,7 +322,7 @@ Here's a single-line embed
 That's quick!
 ```
 
-The full capabilities of `minted` can be found [here](https://tug.ctan.org/macros/latex/contrib/minted/minted.pdf).
+The full capabilities of `minted` can be found [here](https://tug.ctan.org/macros/latex/contrib/minted/minted.pdf). The list of supported languages in `minted` can be found [here](https://pygments.org/docs/lexers).
 
 `listings` is another package that is available for use for code embedding. It's more customisable than `minted`, but this leads to greater complexity! `listings` documentation is [here](https://mirror.apps.cam.ac.uk/pub/tex-archive/macros/latex/contrib/listings/listings.pdf).
 
@@ -596,22 +598,28 @@ The really great thing about LaTeX is that it keeps track of our references and 
 
 LaTeX also makes it very easy to cite other people's work. To do this we add a `.bib` file to the project (at the same level as the `.tex` file) and add bibliography entries there. Most websites which serve research papers should have an option to export a bibtex reference, which should look something like this:
 ```biblatex
-@inproceedings{attention2017vaswani,
-	author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, \L ukasz and Polosukhin, Illia},
-	booktitle = {Advances in Neural Information Processing Systems},
-	editor = {I. Guyon and U. Von Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
-	pages = {},
-	publisher = {Curran Associates, Inc.},
-	title = {Attention is All you Need},
-	url = {https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf},
-	volume = {30},
-	year = {2017}
+@inproceedings{geometry07shacham,
+author = {Shacham, Hovav},
+title = {The geometry of innocent flesh on the bone: return-into-libc without function calls (on the x86)},
+year = {2007},
+isbn = {9781595937032},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1315245.1315313},
+doi = {10.1145/1315245.1315313},
+abstract = {We present new techniques that allow a return-into-libc attack to be mounted on x86 executables that calls no functions at all. Our attack combines a large number of short instruction sequences to build gadgets that allow arbitrary computation. We show how to discover such instruction sequences by means of static analysis. We make use, in an essential way, of the properties of the x86 instruction set.},
+booktitle = {Proceedings of the 14th ACM Conference on Computer and Communications Security},
+pages = {552–561},
+numpages = {10},
+keywords = {turing completeness, return-into-libc, instruction set},
+location = {Alexandria, Virginia, USA},
+series = {CCS '07}
 }
 ```
 
 We then include the package `biblatex` and use the command `\addbibresource{references.bib}`. Then we can cite the paper:
 ```latex
-Here is the paper which introduced the concept of a Transformer network \cite{attention2017vaswani}. This is the technology powering the latest explosion of Large Language Models. Did you know one of the authors Llion Jones is a UoB alum?
+Here is the paper that introduced the concept of a return-into-libc attack without using any function calls \cite{geometry07shacham}. This is a fundamental paper in the field of cybersecurity!
 ```
 The bibliography can then be rendered with `\printbibliography`. A minimal example is:
 ```latex
@@ -628,7 +636,7 @@ The bibliography can then be rendered with `\printbibliography`. A minimal examp
 
 \section{Papers}
 
-Here is the paper which introduced the concept of a Transformer network \cite{attention2017vaswani}. This is the technology which powers the latest explosion of Large Language Models. Did you know one of the authors Llion Jones is a UoB alum?
+Here is the paper that introduced the concept of a return-into-libc attack without using any function calls \cite{geometry07shacham}. This is a fundamental paper in the field of cybersecurity!
 
 \printbibliography
 
@@ -637,15 +645,139 @@ Here is the paper which introduced the concept of a Transformer network \cite{at
 
 Some of this work may already be done for you depending on the document class you're using, so it's always good to check!
 
+It is also worth noting that you can use the `style=` parameter with the `biblatex` package to change the referencing style. Further examples of these can be found in the [biblatex documentation](https://linorg.usp.br/CTAN/macros/latex/contrib/biblatex/doc/biblatex.pdf).
+
 ## Misc.
 ---
 Here are some interesting things that didn't fit in the document.
 - A lot of things can be wrapped in a figure environment, so if you want to be able to reference your proof tree or add a caption, just wrap it in `\begin{figure} ... \end{figure}`.
 - While [Google Scholar](https://scholar.google.com/) is a great way to find papers, the citations can sometimes be incorrect or incomplete, so make sure to double-check your sources!
 - If you have any LaTeX, like a large table, complex proof, or busy diagram, you can offload it to another `.tex` file (e.g. `extra_file.tex`) and add it to your main document using `\input{extra_file}`, which will include the LaTeX code as if it was a part of the main document at that position (a bit like C includes).
-- You can add comments to LaTeX using the `%` symbol. If you actually want to use the % symbol, you need to escape it `\%`.
 - If you have a mathematical equation with brackets that aren't large enough, use `\left( ... \right)`.
 - You can add bulleted lists in LaTeX using `\begin{itemize} \item ... \item ... \end{itemize}` and numbered lists using `\begin{enumerate} \item ... \item ... \end{enumerate}`
+
+# Beamer
+If we want to create a presentation whilst still keeping the power of LaTeX's typesetting, we can use the document class `beamer`.
+
+## The Basics
+Here is a minimal example showing the basics of `beamer`.
+
+```latex
+\documentclass{beamer}
+\title{Beamer Demo}
+\author{Missing Semester}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Introduction}
+Welcome to Beamer in \LaTeX! It is useful for creating great looking presentations whilst keeping the powerful typesetting features we've seen previously.
+\end{frame}
+
+\end{document}
+```
+
+As with an `article`, we start with the `\documentclass` and then the preamble, specifying the title of the presentation and the author. Any imported packages would also go here.
+
+We then begin the document as before, and use `\frame{\titlepage}` to create the title frame of our presentation - think of this as the `beamer` equivalent of `\maketitle` in an article.
+
+We then create a new `frame` using the `\begin{frame}...\end{frame}` environment. Within this, we define the title using `\frametitle{...}` and then enter some text. This gives us a very basic second frame to our presentation.
+
+**Note that we can simply put the frame's title in `{...}` after the `\begin{frame}` commmand to save typing out `\frametitle` every time.**
+
+While it may seem that a `frame` is just the `beamer` term for a slide, they are different - one `frame` can contain more than one slide, as we'll see shortly.
+
+## Themes
+We can change the style and look of a presentation using the `\usetheme` command in the preamble. An example of this is the Copenhagen theme:
+
+```latex
+\documentclass{beamer}
+\title{Beamer Demo}
+\author{Missing Semester}
+\usetheme{Copenhagen}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Introduction}
+Welcome to Beamer in \LaTeX! It is useful for creating great looking presentations whilst keeping the powerful typesetting features we've seen previously.
+\end{frame}
+
+\end{document}
+```
+
+For a list of other themes available, see [here](https://latex-beamer.com/tutorials/beamer-themes/). I also like [this site](https://deic.uab.cat/~iblanes/beamer_gallery/) where you can see examples in the browser before pasting any code in to your `.tex` file.
+
+## Table of Contents
+We can use the `\tableofcontents` command to create a table of contents near the start of the presentation, which can be useful if you have a long presentation with many sections and subsections.
+
+```latex
+\begin{frame}{Table of Contents}
+\tableofcontents
+\end{frame}
+```
+
+## Visual Effect
+We can reveal parts of the frame in turn, displaying as separate slides, in a couple of ways. The simpler way is to use the `\pause` command. The following example is one frame, but displays as multiple slides.
+
+```latex
+\begin{frame}{Pausing}
+In \LaTeX, we can pause. \pause
+
+This will show different parts of the slide one after the other. \pause
+
+As such!
+
+\end{frame}
+```
+
+If we want more control, we can instead use the `< >` syntax:
+
+```latex
+\begin{frame}{Controlled pauses}
+    Here is some filler text for the demo.
+
+    \begin{itemize}
+        \item <2-> Here is the first line.
+        \item <3-> And here is the second line!
+        \item <4-> Surprise, there's a third too.
+    \end{itemize}
+\end{frame}
+```
+
+In this example, our first slide will only contain the basic text, with subsequent slides revealing each bullet point in turn.
+
+## Highlighting
+We may sometimes way to highlight or otherwise draw attention to a key point on a given slide, e.g. an important remark or warning. In `beamer`, this can be done with a `block`. There are various types of blocks, a list of which can be found [here](https://latex-beamer.com/tutorials/blocks/). A short example of some of the most common blocks:
+
+```latex
+\begin{frame}{Blocks}
+
+We may find a key remark we want to highlight in the slide.
+
+\begin{block}{Remark}
+Missing Semester rules!
+\end{block}
+
+\begin{alertblock}{Alerting you}
+Become familiar with \LaTeX for your own benefit
+\end{alertblock}
+
+\begin{examples}
+You might (should) use \LaTeX for:
+\begin{itemize}
+    \item Team project
+    \item Final year project
+    \item Literature reviews
+    \item Any other presentations or submitted work
+\end{itemize}
+\end{examples}
+\end{frame}
+```
 
 # Git Integration
 ---
