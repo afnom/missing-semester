@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#12: Constructive Generative AI use"
-date: 2026-02-16
+date: 2026-02-23
 ready: false
 hide: true
 ---

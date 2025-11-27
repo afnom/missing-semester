@@ -1,9 +1,9 @@
 ---
 layout: lecture
-title: "#10: Debugging and Profiling"
-date: 2026-02-02
+title: "#8: Debugging and Profiling"
+date: 2025-12-01
 ready: false
-hide: true
+hide: false
 ---
 
 ### Context: Debugging with Print Statements

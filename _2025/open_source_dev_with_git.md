@@ -1,13 +1,13 @@
 ---
 layout: lecture
-title: "#8: Git for Open Source Development"
-date: 2025-12-01
+title: "#9: Git for Open Source Development"
+date: 2026-02-02
 ready: false
-hide: false
+hide: true
 ---
 
 ## 1. Introduction
-This talk assumes knowledge of [Abi's Git talk](https://missingsemester.afnom.net/2024/version_control/) from earlier
+This talk assumes knowledge of [Jacob's Git talk](https://missingsemester.afnom.net/2025/version_control/) from earlier
 this semester - prior to the talk, I would highly recommend refreshing your knowledge on Git itself just to make following
 along easier.
 
