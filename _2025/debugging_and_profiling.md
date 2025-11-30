@@ -352,10 +352,6 @@ what we want. Let's continue in our new future:
 Great! With this you can walk backwards through time to find your root cause and
 use all the power of `gdb` to fix it.
 
-#### Demo 4 - Debugging an Operating System
-
-Jacqui is going to demo how you can use `gdb` to debug a running OS.
-
 ---
 
 ### Commands Reference
