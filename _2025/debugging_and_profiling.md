@@ -349,8 +349,68 @@ what we want. Let's continue in our new future:
 13              cout << "you win" << endl;
 ```
 
-Great! With this you can walk backwards through time to find your root cause and
-use all the power of `gdb` to fix it.
+Great! With this you can walk backwards through time to find your root cause!
+
+#### Demo 4 - jump around!
+
+You may not always want to go through an entire program, setting all the correct values or working out the relevant inputs. You may even want to run part of the program which it would not be possible to run otherwise. At the end of the day the program counter/instruction pointer is just another register that can be edited.
+
+This could be done by manually editing the value of the registere (e.g. `set $rip = 0xdeadbeef`), but `gdb` also exposes this with its `jump`.
+
+To demonstrate this, here is a simple C program:
+
+```c
+#include <stdio.h>
+
+void main() {
+    printf("This is the main function!\n");
+}
+
+void anotherFunc() {
+    printf("Hey! Another function!\n");
+}
+```
+
+Here we can see this program has a function `anotherFunc` that is never called and so will never run. Let's see if we can get it to run!
+
+For this demo we will compile without the `-g` debug flag so we can see a more typical debugger view, such as if you didn't have the original source code. The command used is `gcc demo4.c -o demo4`.
+
+Now instead of showing us and executing the program by lines of the source code, we are looking at the assembly instructions that are actually be run. The `pwnbdg` `DISASM` output is shown below so you can see how the main function looks.
+
+```
+ ► 0x55555555513d <main+4>            lea    rax, [rip + 0xec0]     RAX => 0x555555556004 ◂— 'This is the main function!'
+   0x555555555144 <main+11>           mov    rdi, rax               RDI => 0x555555556004 ◂— 'This is the main function!'
+   0x555555555147 <main+14>           call   puts@plt                    <puts@plt>
+ 
+   0x55555555514c <main+19>           nop    
+   0x55555555514d <main+20>           pop    rbp
+   0x55555555514e <main+21>           ret
+```
+
+First lets see how it runs normally:
+
+```
+$ ./demo4
+This is the main function!
+```
+
+Now lets break on main:
+
+```
+pwndbg> break main
+Breakpoint 1 at 0x113d
+pwndbg> run
+```
+
+Then we can jump to the other function instead of running main!:
+
+```
+pwndbg> jump anotherFunc 
+Continuing at 0x555555555153.
+Hey! Another function!
+[Inferior 1 (process 14727) exited with code 027]
+```
+
 
 ---
 
