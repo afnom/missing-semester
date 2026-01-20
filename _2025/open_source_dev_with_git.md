@@ -1,9 +1,9 @@
 ---
 layout: lecture
-title: "#9: Git for Open Source Development"
-date: 2026-02-02
+title: "#13: Git for Open Source Development"
+date: 2026-03-09
 ready: false
-hide: true
+hide: false
 ---
 
 ## 1. Introduction

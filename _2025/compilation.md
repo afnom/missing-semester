@@ -1,9 +1,9 @@
 ---
 layout: lecture
-title: "#10: Getting Stuff you Download to Compile"
-date: 2026-02-09
+title: "#9: Getting Stuff you Download to Compile"
+date: 2026-01-26
 ready: false
-hide: true
+hide: false
 ---
 
 ## Interpreted vs Compiled Languages

@@ -1,9 +1,9 @@
 ---
 layout: lecture
-title: "#11: Introduction to IDEs"
-date: 2026-02-16
+title: "#10: Introduction to IDEs"
+date: 2026-02-02
 ready: false
-hide: true
+hide: false
 ---
 
 ### Context: Using IDEs
