@@ -2,7 +2,7 @@
 layout: lecture
 title: "#9: Getting Stuff you Download to Compile"
 date: 2026-01-26
-ready: false
+ready: true
 hide: false
 ---
 
@@ -62,6 +62,7 @@ Building consists of compilation and linking:
 
 Downloading source code instead of compiled executables is much safer as the source code can be read through to ensure no malware is packaged with the files. This also allows source code to be read and edited to fit requirements before building, also can edited for debugging.
 
+It's also possible that there may not be a compiled executable available that works for your system. It may not be compiled for the correct OS (Windows, Linux Mac, etc.) or the correct architecture (x86, ARM, RISCV, etc.) so you will need to compile it with the correct options for your machine.
 
 ## Build Systems
 
@@ -148,6 +149,14 @@ Version errors occur when there is a mismatch between versions for the compiler,
 
 Most compilers will provide an error code along with the error, and googling this will most likely lead you to documentation, or other recommended solutions online.
 
+## Containerisation
+Larger projects with more complex build processes (or just if the devs are nice) often have some sort of containerisation setup (e.g. `Dockerfile`) to make it easier to compile and run their code.
+
+These containers are set up by the developers to have all of the dependencies and correct versions to compile the program as well as having all the commands and options set up for you
+
+This way you don't need to clutter your computer with random packages or different versions of libraries, making and running a program as easy as one command
+
+As an example, the [Missing Semester site](https://missingsemester.afnom.net) is run with `jekyll`, a ruby based static site server. We don't want to install ruby, jekyll, and any other dependancies on a machine just to test updates to the site locally. Instead we have a Dockerfile that can grab, build and run the local site with `docker-compose up --build`
 
 
 ## Tutorial Example Projects
@@ -281,7 +290,6 @@ Searching for the details for specific languages online is a good way to underst
 
 ### Virtual Environments
 
-
 Installing lots of package depencencies systemwide can waste a lot of storage after downloading and running multiple app.
 
 There may also be issues with system package conflicts, and some package managers like pip might remind you of that.
@@ -290,15 +298,20 @@ To solve this, you can use **virtual environments** to compartmentalise language
 
 There are lots of different tools to create and manage virtual environments, especially for Python, such as `venv` (built-in with Python3.3+) `anaconda`, and `pipx`.
 
+Newer versions of pip/python do not allow you to `pip install` outside of a venv to prevent breaking system packages. So you either *have* to use a venv or some can be installed as system packages from apt/pacman/dnf/etc. generally called `python-xyz`.
+
 
 #### Example with venv
 
+```python
+#cow.py
+import cowsay
+cowsay.cow("Hello World!")
+```
 
-`echo -e 'import cowsay\ncowsawy.cow("Hello World!")' > cow.py` - Writes Python code to file.
+`python3 -m venv .venv` - Creates virtual environment in `.venv` directory (second venv argument is the directory name).
 
-`python3 -m venv venv` - Creates virtual environment in `venv` directory (second venv argument is the directory name).
-
-`source venv/bin/activate` - Activates virtual environment, redirects python3 and pip to refer to virtual environment binaries through PATH enrivonment variable.
+`source .venv/bin/activate` - Activates virtual environment, redirects python3 and pip to refer to virtual environment binaries through PATH enrivonment variable.
 
 `pip install cowsay` - Installs `cowsay` package.
 
