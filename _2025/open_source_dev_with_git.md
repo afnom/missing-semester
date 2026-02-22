@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "#13: Git for Open Source Development"
-date: 2026-03-09
+date: 2026-03-23
 ready: false
 hide: false
 ---
