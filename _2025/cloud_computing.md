@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#11: Cloud Computing + 🍕"
+title: "#13: Cloud Computing + 🍕"
 date: 2026-03-9
 ready: true
 hide: false
