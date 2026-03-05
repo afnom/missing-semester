@@ -17,6 +17,7 @@ These skills have served me well since I first picked up Linux over a decade ago
 - [Version Control in Industry](#version-control-in-industry)
 - [Continuous Integration and Delivery](#continuous-integration-and-delivery)
 - [Documentation and Project Management](#documentation-and-project-management)
+- [Generative AI Uses](#generative-ai-uses)
 - [LaTeX for Industry/Academia](#latex-for-industry-academia)
 - [Web Application Frontends](#web-application-frontends)
 - [Database Design](#database-design)
@@ -300,8 +301,6 @@ There are several things that make this process much easier for everyone:
 - Making sure that *your branch has passed pre-commit hooks*
 - Making sure that *you have covered everything in the checklist*
 - Making sure that *your branch has been reviewed*
-
-
 Rebasing is one of the most powerful features of Git and it is sadly underused and misunderstood. In my opinion, the best way of using it is within [Emacs](./emacs.org) using the [Magit](https://magit.vc/) package. Rebasing can get you out of a lot of trouble that you may find yourself in when using Git. (for anything else, there's [git-reflog](https://git-scm.com/docs/git-reflog)!) By rebasing your branch when your PR is ready it ensures that all conflicts are dealt with.
 
 Adding lots of commits at once from a branch pollutes the history. You can [use Magit to clean up small commits](https://systemcrafters.net/mastering-git-with-magit/using-interactive-rebase/) via interactive rebasing, which is helpful for combining tiny changes together. In general, *each commit should be a small, easily-reversible change*. Ideally a PR should be a single commit, but this isn't always a good idea. You can also choose to [squash commits on merge](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests) instead of making a merge commit, but this results in losing information that may be present in the commit message that could be valuable to someone looking through the history later.
@@ -465,8 +464,7 @@ However, no one wants to get called in at 3am!
 Refer to <a href="./open_source_dev_with_git">Lecture 7</a> for many useful tips on managing project documentation that apply here too.
 </div>
 
-In your own personal projects, you may be able to hold all of the information you need in your head or in a simple README file. As projects scale there is more and more information that people need to know in order to get started. Having structured documentation and processes is critical to ensuring that users and potential contributors don't feel lost, and poor documentation is a *huge barrier in adoption of open-source softwar
-e over proprietary alternatives*.
+In your own personal projects, you may be able to hold all of the information you need in your head or in a simple README file. As projects scale there is more and more information that people need to know in order to get started. Having structured documentation and processes is critical to ensuring that users and potential contributors don't feel lost, and poor documentation is a *huge barrier in adoption of open-source software over proprietary alternatives*.
 
 
 ### Types of Documentation
@@ -565,6 +563,88 @@ You need tools for tracking bugs and tasks and for planning and allocating work 
 I recommend reading [12 Steps to Better Code](https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/) which still, 25 years later, serves as a great indication of how well a project will go.
 
 Finally, many organisations have dedicated teams for different concerns e.g. a platform team for maintaining the infrastructure, an architecture team for planning changes, a security team for assessing threats, a testing team for managing software tests. For many projects, this [greatly slows down delivery](https://dafyddvaughan.uk/blog/2017/create-the-space-to-let-teams-deliver/) and we are better off resourcing and allowing teams to *work independently and communicate*. When your team is trusted to work independently, you'll be better able to deliver what you've been asked to deliver and it makes it much easier to [deploy constantly](#final-thoughts).
+
+
+## Generative AI Uses
+
+You will all likely be familiar by now with *generative AI* e.g. Claude, ChatGPT, Gemini. Many of you may have used it to help with University assignments or to learn more about a topic.
+
+Large language models (LLMs) have been proven to be powerful tools when applied to software engineering. As they work directly with plain text they are capable of transforming natural language descriptions directly into snippets of source code and documentation. State-of-the-art models like Claude Opus 4.6 and GPT-5.2 have been trained via [reinforcement learning from human feedback](https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback) to be very good at writing code even for languages which have more limited training data. This has already allowed [people with no coding experience to create software](https://www.tomsguide.com/ai/ive-been-making-apps-for-months-with-no-coding-experience-at-all-using-ai-heres-how-you-can-too), a process derogatively referred to as "vibe coding".
+
+In this section, I hope to set out practical guidance for effectively using LLMs in an industrial environment. While this remains a controversial topic for engineers, I believe in giving you the knowledge to leverage these tools effectively throughout your careers.
+
+
+### Regulatory Requirements
+
+When working in industry, your organisation will likely have policies on permissible usage of LLMs.
+
+If you end up working for a startup or small company there may be limited or no restrictions on what you can use. For those in larger companies, there will likely be *significant restrictions* on LLM providers and tools that are available.
+
+In the University of Birmingham we have access to [M365 Copilot](https://copilot.cloud.microsoft/) through our University login. If your organisation is also a Microsoft shop it is possible that this is the only tool you are able to use. Unfortunately for us as engineers, M365 Copilot only offers a basic web UI and chat functionality and cannot be integrated directly into coding agents. While there are [several APIs available](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/copilot-apis-overview) Microsoft do not provide a [chat completions API](https://developers.openai.com/api/reference/chat-completions/overview) which can be integrated into an application such as a coding agent.
+
+This severely limits the potential of M365 Copilot compare to e.g. Claude Code, but it is still not a useless tool. I've used file uploads and careful prompting to do the following:
+
+- Generate commit messages and changelogs from Git diffs
+- Generate explanatory documentation of what a change is doing or what a source file does
+- Tracing execution through a series of source files
+- Reviewing code changes in a Git diff to verify that they meet a specification
+- Formatting tasks, issues or feature requests to comply with a template
+- Generating diagrams as code using PlantUML from Terraform module source or state
+- Generating synthetic data
+
+
+There are many more use cases that you might be able to find if this is the only generative AI tool you have access to!
+
+
+### Agent Harnesses
+
+If you are working in a less restrictive organisation you may be able to utilise an *agent harness*. In simple terms, this is a computer program that queries an LLM in a loop and allows the use of *tools*, the output of which gets fed into the LLM as part of the session. Examples of agent harnesses include [Claude Code](https://claude.com/product/claude-code), [Codex CLI](https://developers.openai.com/codex/cli) and [OpenCode](https://opencode.ai/).
+
+Agent harnesses have been utilised to [build a web browser from scratch](https://emsh.cat/one-human-one-agent-one-browser/) and to [build a C compiler from scratch](https://www.anthropic.com/engineering/building-c-compiler), both enormously complex tasks!
+
+Agent harnesses work because they create *instant feedback loops*. This is the key driver of value over copy-pasting into a web interface. The LLM can receive the output from e.g. [unit test or static analysis output](#continuous-integration-ci) and can iteratively modify files and get more feedback until a specific issue is resolved or a feature is implemented.
+
+Where, then, does this leave a human engineer?
+
+In agentic coding the focus shifts from *writing code* towards *specifying exactly what code needs to be written*. This new way of working further underlines the importance of having [robust documentation](#documentation-and-project-management) which must cover the following:
+
+- How to interact with the codebase and get feedback ([CLI tools](#cli-tools-and-text-editors))
+- What (components of) the software must do ([functional](https://www.joelonsoftware.com/2000/10/02/painless-functional-specifications-part-1-why-bother/) and technical specifications)
+- Which style to use (coding standards, design patterns)
+- Where to find more information
+
+Incidentally, this information is also useful for humans. The biggest surprise of the current trend is that engineers are finally starting to think about documentation!
+
+
+
+### Data Exfiltration
+
+The term **[lethal trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/)** has been coined to describe an emerging risk which LLMs and associated tools are vulnerable to:
+
+- Access to *private data* (source code, credentials, commercial information)
+- Exposure to *untrusted content* (which forms part of the prompt)
+- Ability to *communicate externally* (through making web requests)
+
+
+Chat sessions with an LLM (e.g. through an agent harness or a web UI) build up **context** over time. When bringing in external data e.g. from running a Bash script, the output from this script becomes *part of the context*. Similarly to [SQL Injection](https://xkcd.com/327/), which causes a database to interpret additional commands, [Prompt Injection](https://simonwillison.net/2022/Sep/12/prompt-injection/) causes LLMs to interpret additional instructions which were not intended. This can come from the user or from a malicious actor if *untrusted input* is allowed into the prompt.
+
+The recent popularity of OpenClaw, an agent harness which many users run with full access to emails, credentials and even bank accounts, has led to [numerous documented attacks](https://adversa.ai/blog/openclaw-attacks-real-scenarios-owasp-mitre-csa-defense-guide/), has brought these issues to attention once more!
+
+In a workplace environment you should take extra care to secure your organisation's data and follow its [regulatory requirements](#regulatory-requirements).
+
+
+### Software and System Complexity
+
+Finally, another key consideration is the *complexity* of industry code bases.
+
+Industry software often has many individuals working on it over a long period of time. There are many systems in use in my organisation which have been in operation for over 50 years! As software becomes more complex it becomes harder and harder to reason about the impact of any change.
+
+If you are fortunate, your organisation will have robust [automation for checking and validating any changes](#continuous-integration-and-delivery). This, however, is rarely the case for many large organisations which have legacy code without test cases and high-quality documentation. Bringing LLMs into these environments can make your job (and those of your colleagues) much more difficult.
+
+When utilising LLMs to assist with making [pull requests](#handling-pull-requests), think about the individual who will be reviewing your code. Reading code is always harder than writing it and, if LLMs are assisting with the writing part, you and your colleagues will be spending more time reviewing changes that the LLM has generated. This is where thinking about the *big picture impact of changes* becomes more and more important.
+
+If your team isn't careful, you will quickly get a system which is difficult to reason about. Be as disciplined as possible about maintaining **good taste** and *consistency* in your projects!
+
 
 
 ## LaTeX for Industry/Academia
