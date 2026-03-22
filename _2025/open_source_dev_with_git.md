@@ -2,950 +2,162 @@
 layout: lecture
 title: "#15: Git for Open Source Development"
 date: 2026-03-23
-ready: false
+ready: true
 hide: false
 ---
 
-## 1. Introduction
-This talk assumes knowledge of [Jacob's Git talk](https://missingsemester.afnom.net/2025/version_control/) from earlier
-this semester - prior to the talk, I would highly recommend refreshing your knowledge on Git itself just to make following
-along easier.
-
-This talk covers a bit more about using Git for contributing to open source, one of its most popular uses to date. Sites
-like GitHub and Gitlab have connected millions of developers and nourished numerous open-source projects that have shaped
-the software landscape that we know today. According to GitCharts (https://gitcharts.com/), a site that tracks GitHub's 
-statistics, there are over 220 million public repositories, with 150,000 created each day and 450,000 forks created each 
-day too. On June 4th 2018, Microsoft announced its acquisition of GitHub for $7.5 billion dollars (in stock), reinforcing 
-the company's stance on open source development - without GitHub's impact, it's entirely possible that a competitor like 
-Gitlab would've taken the torch GitHub currently holds and ran with it, but it's also not out of the question for the 
-software landscape we know today to look incredibly different.
-
-Due to its prosperity, this lecture will focus largely on GitHub and the tools it provides to developers, which should
-help put into perspective how it's shaped open-source development throughout its reign. Thus, if you choose to follow
-along, be sure to have a GitHub account, and if you're a student, you can take advantage of GitHub's education pack, a
-pack that gives you access to JetBrain's innovative IDEs, free domain names provided by Namecheap, name.com or .TECH, and
-if you choose to go down the route of payment processing for a project you have, waived transaction fees on Stripe.
-
-You can read more about the Education pack here: https://github.com/education
-
-We'll be focusing on both ends of open-source development, from making contributions to open source projects to maintaining
-your own repository for contributions. As a demo, we'll open a pull request to our MS repository, writing our name to
-the guestbook.
-
-### Ways of Contributing and How to Start
-First of all, let's start off with how contributions look on GitHub. Perhaps contrary to common belief, contributions on
-GitHub are not limited to contributing code through PRs - you can submit issues, review other developers' code or even
-contributing to documentation if you're not very confident with coding.
-
-Some repositories will make use of a "good first issue" label, which will indicate what issues may be good for first-time
-contributors to tackle. You can filter by that label and see what issue stands out to you, or has not been resolved yet.
-
-Whilst the Missing Semester repository (UoB's version) doesn't make use of issues, other repositories like CSS' website
-use them, so if you're looking to start somewhere, don't be afraid to take a look :)
-
-## 2. Creating a fork
-Creating a fork is relatively simple on GitHub and even other sites. There'll often be a "fork" button that you can
-simply press:
-
-![A screenshot of the fork button on Github, of which is the middle of three buttons in the top-right corner of the site.](/static/media/2024/git_os/create_fork.png)
-
-
-Once you click on this button, you'll be presented with a screen to name your fork, a description of it and whether it
-copies the main branch or not. Generally, this is fine to keep enabled, unless you look to contribute to a different 
-branch on the main repository.
-
-Once created, you'll then be able to clone your fork to work on it locally like a repository you've created yourself.
-
-### Updating your fork with upstream
-If you're updating software that has been abandoned, it's unlikely that you'd need to update your fork to be up to date 
-with the original repository. However, if the original repository is still being maintained and updated, you may choose 
-to update your fork with it. In this context, the original repository you forked from is known as "upstream".
-
-GitHub and some other sites may have a simple "sync" button to do the update work for you, but it's good to know how to
-manually do this, in case upstream commits break things in your fork. Some forks will have PRs opened to bring them up 
-to date with their upstream.
-
-In the command line, add a new remote called `upstream`:
-```commandline
-git remote add upstream https://github.com/afnom/missing-semester 
-<<<<<<< HEAD
-=======
-```
-From there, fetch from upstream to ensure you're up to date:
-```commandline
-git fetch upstream
-> remote: Counting objects: 75, done.
-> remote: Compressing objects: 100% (53/53), done.
-> remote: Total 62 (delta 27), reused 44 (delta 9)
-> Unpacking objects: 100% (62/62), done.
-> From https://github.com/afnom/missing-semester
->  * [new branch]      main     -> upstream/main
-```
-Switch to your fork's main branch (with main being the name of your main branch - it may vary):
-```commandline
-git checkout main
-```
-Then, you can merge with upstream:
-```commandline
-git merge upstream/main
-> Updating 34e91da..16c56ad
-> Fast-forward
->  README.md                 |    5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-```
-There, you've updated your fork!
-
-## 3. Committing Code with Visual Tools
-You've been able to learn the foundations of Git itself, but it may be difficult to remember individual commands, or exercise
-more control over what code you commit - thus, you may choose to use more visual tools to commit code.
-
-A lot of modern IDEs will have some kind of integration with Git, such as IntelliJ or VSCode. However, there may be other
-visual tools that you choose to use instead. For example, I used [GitHub Desktop](https://github.com/apps/desktop) when
-I first started out. There's also the `gitk` command, which is provided with Git itself. If you run the command within a
-folder hosting a repository, it'll open up a window that looks like this:
-
-![A screenshot of gitk.](files/gitk.png)
-
-`gitk` is only for viewing commits rather than making them, and is very verbose - so it may be better for reviewing the
-finer details of commits in a GUI.
-
-## 4. Submitting a Pull Request
-As mentioned prior, you'll often make a fork to contribute to the original work - and that's where pull requests come in.
-They tend to have different names across different sites, since it's not necessarily a Git feature - Gitlab calls them
-merge requests and Bit Bucket also calls them pull requests. Sometimes developers only address them as PRs as a shorthand, 
-which I will do as well.
-
-Once you've pushed your code, go to the main page of your fork, and check the "Contribute" button where it mentions your
-branch being ahead of your upstream repository:
-
-![The prompt to open a pull request to the original repository.](files/open-pr.png)
-
-Then, click the "Open pull request" button. GitHub will then prompt you for the title of the PR, a description of what
-the PR does, and the branches to merge into/from.
-
-![The menu for opening a pull request.](files/open-pr-screen.png)
-
-If you see the small dropdown arrow next to "Create pull request" too, you can create a pull request as a draft, meaning
-that you've not completed your work yet, but can accept early review from maintainers or other contributors. 
-
-### Best Practices
-When making pull requests, different projects will have different ideals or requirements - and it extends to more than 
-just making a good title and description. Here's a quick list of what you may find:
-- Some repositories will not allow you to merge from your main branch. 
-  - Ideally, it would come from a non-main branch where all of your work for that PR is focused.
-- Some repositories may also not let you make a PR from a fork under an organisation.
-  - You may remember the "Allow edits and access to secrets by maintainers" option? It doesn't apply to organisation forks.
-  By consequence, project maintainers who want to edit your PRs to rebase or resolve nitpicks will ask for you to do them
-  instead.
-- PRs need a specific scope, e.g. if you intend on fixing a bug, it's only that bug you fix, rather than some formatting 
-changes too.
-- In addition to the above, depending on what is covered, PRs would ideally not be too big. Otherwise, they become too
-cumbersome for maintainers to review.
-  - They also increase the likelihood of complex merge conflicts that are a headache to resolve.
-- Some repositories may require an issue to be opened before making a PR, which the PR then can link back to. This is
-often for maintainers to give their stance on the issue and what can be done next.
-
-### Merge Conflicts
-After submitting your pull request, it's likely that other PRs will be accepted and merged in, or the main codebase is
-changed over time. If those changes alter what your PR covers, that can result in merge conflicts, which maintainers may
-request for you to resolve in order for them to accept the PR. Some simple ones can be resolved within GitHub - however,
-more complex ones will have to be resolved locally.
-
-Let's not only take an example, but *make* a merge conflict. I have the guestbook, and it currently looks like this after
-switching to main:
-```commandline
-git checkout main
-```
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project.
-```
-And I have a branch (`add-holly-to-guestbook`) to add myself:
-```commandline
-git branch add-holly-to-guestbook
-git checkout add-holly-to-guestbook
-```
-With the guestbook content being:
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project.
-- Holly, 4th Year MSci Computer Science
-```
-However, let's say someone else makes some changes to the guestbook content, and it ends up in main:
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
-```
-Once I attempt to merge `add-holly-to-guestbook` into `main`:
-```commandline
-git checkout add-holly-to-guestbook
-git merge main
-```
-It results in something that looks like this:
-![How a merge conflict looks in text.](files/merge_conflict.png)
-> Note: The conflicting branch here is `merge-conflict-test-2` - in our example, this would be `main`. `HEAD` is also a
-> stand-in for `add-holly-to-guestbook` - it's just a slight difference in how I produced the conflict.
-
-This is a merge conflict. This may look scary at first, and there is reason behind the chaos it spits out - here's the 
-output we want to focus on:
-```markdown
-<<<<<<< add-holly-to-guestbook
-demonstrate opening a pull request and contributing to an open-source project.
-- Holly, 4th Year MSci Computer Science
-=======
-  demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
->>>>>>> main
->>>>>>> upstream/master
-```
-From there, fetch from upstream to ensure you're up to date:
-```commandline
-git fetch upstream
-> remote: Counting objects: 75, done.
-> remote: Compressing objects: 100% (53/53), done.
-> remote: Total 62 (delta 27), reused 44 (delta 9)
-> Unpacking objects: 100% (62/62), done.
-> From https://github.com/afnom/missing-semester
->  * [new branch]      main     -> upstream/main
-```
-Switch to your fork's main branch (with main being the name of your main branch - it may vary):
-```commandline
-git checkout main
-```
-Then, you can merge with upstream:
-```commandline
-git merge upstream/main
-> Updating 34e91da..16c56ad
-> Fast-forward
->  README.md                 |    5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-```
-There, you've updated your fork!
-
-<<<<<<< HEAD
-## 3. Committing Code with Visual Tools
-You've been able to learn the foundations of Git itself, but it may be difficult to remember individual commands, or exercise
-more control over what code you commit - thus, you may choose to use more visual tools to commit code.
-
-A lot of modern IDEs will have some kind of integration with Git, such as IntelliJ or VSCode. However, there may be other
-visual tools that you choose to use instead. For example, I used [GitHub Desktop](https://github.com/apps/desktop) when
-I first started out. There's also the `gitk` command, which is provided with Git itself. If you run the command within a
-folder hosting a repository, it'll open up a window that looks like this:
-
-![A screenshot of gitk.](/static/media/2024/gitk.png)
-
-`gitk` is only for viewing commits rather than making them, and is very verbose - so it may be better for reviewing the
-finer details of commits in a GUI.
-
-## 4. Submitting a Pull Request
-As mentioned prior, you'll often make a fork to contribute to the original work - and that's where pull requests come in.
-They tend to have different names across different sites, since it's not necessarily a Git feature - Gitlab calls them
-merge requests and Bit Bucket also calls them pull requests. Sometimes developers only address them as PRs as a shorthand, 
-which I will do as well.
-
-Once you've pushed your code, go to the main page of your fork, and check the "Contribute" button where it mentions your
-branch being ahead of your upstream repository:
-
-![The prompt to open a pull request to the original repository.](/static/media/2024/open-pr.png)
-
-Then, click the "Open pull request" button. GitHub will then prompt you for the title of the PR, a description of what
-the PR does, and the branches to merge into/from.
-
-![The menu for opening a pull request.](/static/media/2024/open-pr-screen.png)
-
-If you see the small dropdown arrow next to "Create pull request" too, you can create a pull request as a draft, meaning
-that you've not completed your work yet, but can accept early review from maintainers or other contributors. 
-
-### Best Practices
-When making pull requests, different projects will have different ideals or requirements - and it extends to more than 
-just making a good title and description. Here's a quick list of what you may find:
-- Some repositories will not allow you to merge from your main branch. 
-  - Ideally, it would come from a non-main branch where all of your work for that PR is focused.
-- Some repositories may also not let you make a PR from a fork under an organisation.
-  - You may remember the "Allow edits and access to secrets by maintainers" option? It doesn't apply to organisation forks.
-  By consequence, project maintainers who want to edit your PRs to rebase or resolve nitpicks will ask for you to do them
-  instead.
-- PRs need a specific scope, e.g. if you intend on fixing a bug, it's only that bug you fix, rather than some formatting 
-changes too.
-- In addition to the above, depending on what is covered, PRs would ideally not be too big. Otherwise, they become too
-cumbersome for maintainers to review.
-  - They also increase the likelihood of complex merge conflicts that are a headache to resolve.
-- Some repositories may require an issue to be opened before making a PR, which the PR then can link back to. This is
-often for maintainers to give their stance on the issue and what can be done next.
-
-### Merge Conflicts
-After submitting your pull request, it's likely that other PRs will be accepted and merged in, or the main codebase is
-changed over time. If those changes alter what your PR covers, that can result in merge conflicts, which maintainers may
-request for you to resolve in order for them to accept the PR. Some simple ones can be resolved within GitHub - however,
-more complex ones will have to be resolved locally.
-
-Let's not only take an example, but *make* a merge conflict. I have the guestbook, and it currently looks like this after
-switching to main:
-```commandline
-git checkout main
-```
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project.
-```
-And I have a branch (`add-holly-to-guestbook`) to add myself:
-```commandline
-git branch add-holly-to-guestbook
-git checkout add-holly-to-guestbook
-```
-With the guestbook content being:
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project.
-- Holly, 4th Year MSci Computer Science
-```
-However, let's say someone else makes some changes to the guestbook content, and it ends up in main:
-```markdown
----
-layout: lecture
-title: "Guestbook"
----
-
-This guestbook was made for those participating in the "Git for Open Source Development" lecture in November 2024, to
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
-```
-Once I attempt to merge `add-holly-to-guestbook` into `main`:
-```commandline
-git checkout add-holly-to-guestbook
-git merge main
-```
-It results in something that looks like this:
-![How a merge conflict looks in text.](/static/media/2024/merge_conflict.png)
-> Note: The conflicting branch here is `merge-conflict-test-2` - in our example, this would be `main`. `HEAD` is also a
-> stand-in for `add-holly-to-guestbook` - it's just a slight difference in how I produced the conflict.
-
-This is a merge conflict. This may look scary at first, and there is reason behind the chaos it spits out - here's the 
-output we want to focus on:
-```markdown
-<<<<<<< add-holly-to-guestbook
-demonstrate opening a pull request and contributing to an open-source project.
-- Holly, 4th Year MSci Computer Science
-=======
-  demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
->>>>>>> main
-```
-
-The conflict itself is encapsulated within the `<<<<<<<` and `>>>>>>>` arrows - but we may also choose to look outside of
-this to gather further context about the conflict. Then, the two conflicting changes are separated by the equal signs
-(`=======`). The first bit of code will often belong to the branch you're currently in (`add-holly-to-guestbook`, or 
-when handling conflicts locally, `HEAD`), and the second bit will belong to the branch you're trying to merge with (`main`). 
-There's a few things you can do with this information:
-- Ditch the bottom code (`main`) and replace it with the code in `add-holly-to-guestbook`.
-  - For example, you may choose to do this if you're working on a feature that makes the changes being conflicted with 
-  redundant.
-- Do the opposite and ditch the top code (`add-holly-to-guestbook`), replacing it with the code in `main`.
-  - You may also choose to do this when you've made changes that are no longer needed, e.g. a fix in a function that was 
-  deleted.
-- Merge both changes together.
-
-Let's say that the screaming at the end was unnecessary, but the "Pls be nice" was an important part of the change made.
-However, the whole point of the `add-holly-to-guestbook` branch was to add my name to the guestbook, so we want to keep
-it. Ultimately, we just change the content to mix the both together:
-  
-```markdown
-<<<<<<< add-holly-to-guestbook
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-- Holly, 4th Year MSci Computer Science
-======= 
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
->>>>>>> main
-```
-Then, you can remove the arrows and equal signs that a part of the conflict, including the old bit of the conflict that
-is now redundant:
-```markdown
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-- Holly, 4th Year MSci Computer Science
-```
-From there, you can commit and push your changes. Git will allow you to push as long as all conflicts are resolved.
-
-If you're struggling with visualising conflicts and how to resolve them, IDEs will often try to help you along the way. 
-For context, IntelliJ will often try to visualise merge conflicts by placing either content side by side, with your
-final changes in the middle, then letting you choose which part of the conflict you want to merge in with.
-
-### Code Reviews
-After you've made a pull request, it will often be the case that maintainers will review it and suggest either code changes
-or make general comments.
-
-If you're a maintainer, you may get prompted for a review on each PR made to your project. To add a review, just switch
-to the "Files changed" tab, then you can conduct a review:
-
-![An overview of how code review in GitHub looks.](/static/media/2024/code_review.png)
-
-As you go through each file, you can tick the "viewed" box to the right of the file, which will collapse it. If you need 
-to make comments on certain lines, you can hover over the line numbers and click on the + icon that shows up, typing in
-your thoughts. You can either add it as a single comment or start a review - if you want the comment to be a part of the
-review, then use "Start a review", and the comment will appear once you click "Review changes" at the top, at which point
-you can either approve the changes, comment on them without an explicit decision, or request changes.
-
-When reviewing changes, it's good to be constructive if changes are required - if there are formatting-specific issues,
-they should be verified as part of the CI/CD process. 
-
-## 5. Setting up a Repository for Contributions
-Now, let's move onto the maintainer's side of open source. GitHub has a community standards page in the Insights tab
-of your project, which you can treat as a todo list for setting up a project for open-source contributions. Not all of
-these are required for effective contribution, but some are vital, which I will go over below.
-
-![An overview of community standards that GitHub lists.](/static/media/2024/community_standards.png)
-
-### README
-A README file is often the very first file that someone will see when visiting your repository. It will often give a
-quick overview of what the repository is, how to build/use it in development, and any other important links/bits of
-information that would be useful to know. 
-
-This file will often be called `README` or `README.md`.
-
-### Code of Conduct
-A code of conduct is used as a set of rules how to treat other developers working on a project. It's important to make
-sure everyone who participates in contributing to a project doesn't feel ostracised or bullied. [As per Open Source Guide's 
-guidance on code of conducts](https://opensource.guide/code-of-conduct/), It covers what is considered unacceptable 
-behaviour, who it applies to, what happens when violations occur and how someone can report a violation.
-
-GitHub will provide you with two default code of conducts if you're not sure how to write you own, which are the Contributor
-Covenant (best for projects of all sorts of sizes), and the Citizen Code of Conduct (for large communities and events).
-
-The code of conduct will often go into the root folder of your repository, called `CODE_OF_CONDUCT.md`.
-
-### License
-A license is one of the most important components of your project, since it legally dictates what other developers can
-do with your work. There's a lot of licenses to choose from, but copyleft licenses tend to be found the most, which
-require its derivative works (such as forks) to have the same rights as its own.
-
-The three most common licenses that GitHub tend to push first are:
-- Apache License 2.0 (this is what CSS' website is under)
-- GNU General Public License v3
-- MIT License
-
-To put these three into perspective, MIT allows you to create forks or derivatives under different terms and without
-publishing source code, GPLv3 requires derivatives to keep the same terms and have source code published, whilst the
-Apache License focuses on the preservation of copyright. 
-
-It's highly important to stress that none of this is legal advice - if in doubt, seek advice from an actual lawyer. Before
-choosing a license too, I would highly recommend reading through each license to decide if it's the license you want to
-use for your repository, and make your own choice.
-
-The license will often go into the root folder of your repository, under the name `LICENSE`.
-
-### Security Policy
-Security policies are important for when users need to report security vulnerabilities, but want to report them 
-responsibly - thus, only you know about the vulnerability, and you're given time to fix it. A security policy will often
-consist of the following:
-- Versions supported for security updates
-- How to report security vulnerabilities
-
-The security policy will often go into the root folder of your repository, named as `SECURITY.md`.
-
-### Issue Templates and Forms
-Issues can be immensely useful, but sometimes, you'll need additional information from those who submit those issues -
-and sometimes, it will require the same information over and over, such as the version of the software being used, the
-device it is used on, etc. - you can use issue templates for that.
-
-Issue templates can be written in markdown, which will then be used as a template for anyone filling out an issue. These
-go into the `.github/ISSUE_TEMPLATE` folders, and suffixed with a `.md`, e.g. `bug_report.md`. GitHub also provides
-examples for bugs and features.
-
-However, issue templates can be deleted be users reporting bugs, much to developers' demises - which is when issue forms
-come in. These are a development in GitHub pretty much seen in every mainstream repository, enforcing you to fill out
-certain fields and structure your report in a certain way. Instead of using .md files, issue forms are configured as
-YAML /static/media/2024 (i.e. `bug_report.yaml`). These are a bit too complex for us to cover this lecture, but I've linked the 
-official documentation for [creating an issue form](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
-from GitHub's documentation.
-
-### Pull Request Template
-Like with issue templates, you may choose to have pull request templates that require developers to fill out certain
-information about their pull requests. However, unlike issue templates, these are far less common, presumably to be less
-cumbersome for contributors to make PRs. PR templates may request the issue number that is resolved by the PR, a summary
-or description of the PR, and tested environments.
-
-Pull request templates go into the `.github/PULL_REQUEST_TEMPLATE` folders, and end with the `.md` suffix to signify
-markdown.
-
-### Repository Admin Accepts Content Reports
-This is a simple toggle option that allows repository maintainers or administrators to receive reports from users about
-content within the repository, and act on it accordingly. This is only particularly effective for larger projects, so
-this may not be of particular concern for smaller projects you have.
-
-## 6. CI/CD and GitHub Actions
-If you're maintaining a repository, you'll often find occasions where someone contributes code to your repository, you
-merge the changes in, just to find it completely breaks everything and the program no longer builds. Or even, another
-maintainer pushes directly to main, but it breaks everything for everyone else, even if it works on their machine. If 
-you're also building a website, you may want it to deploy automatically after each commit so that it's always up to date.
-CI/CD can be used for all of this, 
-
-CI/CD stands for continuous integration and development. GitHub allows for this quite easily, and additionally provides
-pre-made workflows known as "Actions" for different checks or things you may want to do with your repository. For example,
-let's say we want to test a Java project's compilation.
-
-> For context, [this is a personal repository that I am using as an example.](https://github.com/Thatsmusic99/ItemsAPI)
-
-Let's go into the Actions tab in the repository. When we go into the page, we're greeted with workflows that are suggested
-for the repository:
-![A list of actions that GitHub suggests for the repository.](/static/media/2024/actions.png)
-However, as we scroll, we also happen to find workflow categories, such as:
-- Deployment
-- Security
-- Continuous Integration
-- Automation
-- Pages
-
-Generally, each workflow will have a target language, so not all of them may work for you.
-
-Because our Java project uses Gradle for its dependency management, let's select the "Java with Gradle" workflow. When
-we select it, this is the file generated:
-
-```yaml
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
-
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
-
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-    # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-```
-Let's go over this bit by bit:
-- We have a name specified for the workflow, this being "Java CI with Gradle" - this name will come up when you check
-the Actions tab again.
-- We've got the events for the workflow to be triggered listed, alongside the branches they should apply to. In this case,
-the workflow should attempt to build the repository whenever pushes are made to the master branch, or pull requests 
-targeting the master branch are made.
-- We've got two jobs, one running the build step, the other generating a dependency graph of the project.
-  - The build job has an environment configured, and requires permission to read the contents of the repository.
-  - It checkouts the repository locally first before setting up JDK 17 and Gradle.
-  - After that point, a build with the Gradle wrapper is attempted.
-  - A lot of the steps for the dependency graph are the same - however, instead of setting up Gradle, it cuts straight
-  to the dependency graph.
-
-> There is a note in the workflow about using the Gradle wrapper - this is present in the repository, so we do not need
-> the commented-out portion of the workflow.
-
-=======
-The conflict itself is encapsulated within the `<<<<<<<` and `>>>>>>>` arrows - but we may also choose to look outside of
-this to gather further context about the conflict. Then, the two conflicting changes are separated by the equal signs
-(`=======`). The first bit of code will often belong to the branch you're currently in (`add-holly-to-guestbook`, or 
-when handling conflicts locally, `HEAD`), and the second bit will belong to the branch you're trying to merge with (`main`). 
-There's a few things you can do with this information:
-- Ditch the bottom code (`main`) and replace it with the code in `add-holly-to-guestbook`.
-  - For example, you may choose to do this if you're working on a feature that makes the changes being conflicted with 
-  redundant.
-- Do the opposite and ditch the top code (`add-holly-to-guestbook`), replacing it with the code in `main`.
-  - You may also choose to do this when you've made changes that are no longer needed, e.g. a fix in a function that was 
-  deleted.
-- Merge both changes together.
-
-Let's say that the screaming at the end was unnecessary, but the "Pls be nice" was an important part of the change made.
-However, the whole point of the `add-holly-to-guestbook` branch was to add my name to the guestbook, so we want to keep
-it. Ultimately, we just change the content to mix the both together:
-  
-```markdown
-<<<<<<< add-holly-to-guestbook
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-- Holly, 4th Year MSci Computer Science
-======= 
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-
-aaaaaa
-a
-a
->>>>>>> main
-```
-Then, you can remove the arrows and equal signs that a part of the conflict, including the old bit of the conflict that
-is now redundant:
-```markdown
-demonstrate opening a pull request and contributing to an open-source project. Pls be nice
-- Holly, 4th Year MSci Computer Science
-```
-From there, you can commit and push your changes. Git will allow you to push as long as all conflicts are resolved.
-
-If you're struggling with visualising conflicts and how to resolve them, IDEs will often try to help you along the way. 
-For context, IntelliJ will often try to visualise merge conflicts by placing either content side by side, with your
-final changes in the middle, then letting you choose which part of the conflict you want to merge in with.
-
-### Code Reviews
-After you've made a pull request, it will often be the case that maintainers will review it and suggest either code changes
-or make general comments.
-
-If you're a maintainer, you may get prompted for a review on each PR made to your project. To add a review, just switch
-to the "Files changed" tab, then you can conduct a review:
-
-![An overview of how code review in GitHub looks.](files/code_review.png)
-
-As you go through each file, you can tick the "viewed" box to the right of the file, which will collapse it. If you need 
-to make comments on certain lines, you can hover over the line numbers and click on the + icon that shows up, typing in
-your thoughts. You can either add it as a single comment or start a review - if you want the comment to be a part of the
-review, then use "Start a review", and the comment will appear once you click "Review changes" at the top, at which point
-you can either approve the changes, comment on them without an explicit decision, or request changes.
-
-When reviewing changes, it's good to be constructive if changes are required - if there are formatting-specific issues,
-they should be verified as part of the CI/CD process. 
-
-## 5. Setting up a Repository for Contributions
-Now, let's move onto the maintainer's side of open source. GitHub has a community standards page in the Insights tab
-of your project, which you can treat as a todo list for setting up a project for open-source contributions. Not all of
-these are required for effective contribution, but some are vital, which I will go over below.
-
-![An overview of community standards that GitHub lists.](files/community_standards.png)
-
-### README
-A README file is often the very first file that someone will see when visiting your repository. It will often give a
-quick overview of what the repository is, how to build/use it in development, and any other important links/bits of
-information that would be useful to know. 
-
-This file will often be called `README` or `README.md`.
-
-### Code of Conduct
-A code of conduct is used as a set of rules how to treat other developers working on a project. It's important to make
-sure everyone who participates in contributing to a project doesn't feel ostracised or bullied. [As per Open Source Guide's 
-guidance on code of conducts](https://opensource.guide/code-of-conduct/), It covers what is considered unacceptable 
-behaviour, who it applies to, what happens when violations occur and how someone can report a violation.
-
-GitHub will provide you with two default code of conducts if you're not sure how to write you own, which are the Contributor
-Covenant (best for projects of all sorts of sizes), and the Citizen Code of Conduct (for large communities and events).
-
-The code of conduct will often go into the root folder of your repository, called `CODE_OF_CONDUCT.md`.
-
-### License
-A license is one of the most important components of your project, since it legally dictates what other developers can
-do with your work. There's a lot of licenses to choose from, but copyleft licenses tend to be found the most, which
-require its derivative works (such as forks) to have the same rights as its own.
-
-The three most common licenses that GitHub tend to push first are:
-- Apache License 2.0 (this is what CSS' website is under)
-- GNU General Public License v3
-- MIT License
-
-To put these three into perspective, MIT allows you to create forks or derivatives under different terms and without
-publishing source code, GPLv3 requires derivatives to keep the same terms and have source code published, whilst the
-Apache License focuses on the preservation of copyright. 
-
-It's highly important to stress that none of this is legal advice - if in doubt, seek advice from an actual lawyer. Before
-choosing a license too, I would highly recommend reading through each license to decide if it's the license you want to
-use for your repository, and make your own choice.
-
-The license will often go into the root folder of your repository, under the name `LICENSE`.
-
-### Security Policy
-Security policies are important for when users need to report security vulnerabilities, but want to report them 
-responsibly - thus, only you know about the vulnerability, and you're given time to fix it. A security policy will often
-consist of the following:
-- Versions supported for security updates
-- How to report security vulnerabilities
-
-The security policy will often go into the root folder of your repository, named as `SECURITY.md`.
-
-### Issue Templates and Forms
-Issues can be immensely useful, but sometimes, you'll need additional information from those who submit those issues -
-and sometimes, it will require the same information over and over, such as the version of the software being used, the
-device it is used on, etc. - you can use issue templates for that.
-
-Issue templates can be written in markdown, which will then be used as a template for anyone filling out an issue. These
-go into the `.github/ISSUE_TEMPLATE` folders, and suffixed with a `.md`, e.g. `bug_report.md`. GitHub also provides
-examples for bugs and features.
-
-However, issue templates can be deleted be users reporting bugs, much to developers' demises - which is when issue forms
-come in. These are a development in GitHub pretty much seen in every mainstream repository, enforcing you to fill out
-certain fields and structure your report in a certain way. Instead of using .md files, issue forms are configured as
-YAML files (i.e. `bug_report.yaml`). These are a bit too complex for us to cover this lecture, but I've linked the 
-official documentation for [creating an issue form](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
-from GitHub's documentation.
-
-### Pull Request Template
-Like with issue templates, you may choose to have pull request templates that require developers to fill out certain
-information about their pull requests. However, unlike issue templates, these are far less common, presumably to be less
-cumbersome for contributors to make PRs. PR templates may request the issue number that is resolved by the PR, a summary
-or description of the PR, and tested environments.
-
-Pull request templates go into the `.github/PULL_REQUEST_TEMPLATE` folders, and end with the `.md` suffix to signify
-markdown.
-
-### Repository Admin Accepts Content Reports
-This is a simple toggle option that allows repository maintainers or administrators to receive reports from users about
-content within the repository, and act on it accordingly. This is only particularly effective for larger projects, so
-this may not be of particular concern for smaller projects you have.
-
-## 6. CI/CD and GitHub Actions
-If you're maintaining a repository, you'll often find occasions where someone contributes code to your repository, you
-merge the changes in, just to find it completely breaks everything and the program no longer builds. Or even, another
-maintainer pushes directly to main, but it breaks everything for everyone else, even if it works on their machine. If 
-you're also building a website, you may want it to deploy automatically after each commit so that it's always up to date.
-CI/CD can be used for all of this, 
-
-CI/CD stands for continuous integration and development. GitHub allows for this quite easily, and additionally provides
-pre-made workflows known as "Actions" for different checks or things you may want to do with your repository. For example,
-let's say we want to test a Java project's compilation.
-
-> For context, [this is a personal repository that I am using as an example.](https://github.com/Thatsmusic99/ItemsAPI)
-
-Let's go into the Actions tab in the repository. When we go into the page, we're greeted with workflows that are suggested
-for the repository:
-![A list of actions that GitHub suggests for the repository.](files/actions.png)
-However, as we scroll, we also happen to find workflow categories, such as:
-- Deployment
-- Security
-- Continuous Integration
-- Automation
-- Pages
-
-Generally, each workflow will have a target language, so not all of them may work for you.
-
-Because our Java project uses Gradle for its dependency management, let's select the "Java with Gradle" workflow. When
-we select it, this is the file generated:
-
-```yaml
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
-
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
-
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-    # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-```
-Let's go over this bit by bit:
-- We have a name specified for the workflow, this being "Java CI with Gradle" - this name will come up when you check
-the Actions tab again.
-- We've got the events for the workflow to be triggered listed, alongside the branches they should apply to. In this case,
-the workflow should attempt to build the repository whenever pushes are made to the master branch, or pull requests 
-targeting the master branch are made.
-- We've got two jobs, one running the build step, the other generating a dependency graph of the project.
-  - The build job has an environment configured, and requires permission to read the contents of the repository.
-  - It checkouts the repository locally first before setting up JDK 17 and Gradle.
-  - After that point, a build with the Gradle wrapper is attempted.
-  - A lot of the steps for the dependency graph are the same - however, instead of setting up Gradle, it cuts straight
-  to the dependency graph.
-
-> There is a note in the workflow about using the Gradle wrapper - this is present in the repository, so we do not need
-> the commented-out portion of the workflow.
-
->>>>>>> upstream/master
-However, if we want to test with multiple versions of Java, we can set up a matrix of versions to test against:
-```yaml
-jobs:
-  build:
-    name: Build on ${{ matrix.java-version }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    strategy:
-      matrix:
-        java-version: ['17', '21']
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK ${{ matrix.java-version }}
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ matrix.java-version }}
-        distribution: 'temurin'
-```
-From there, the workflow will loop through each version and run the job with each one. You can then use the matrix
-placeholder to represent each run.
-
-You can also choose to run different jobs or steps depending on certain outcomes. For example, let's say we only want
-our dependency graph job to run if the build job succeeded:
-```yaml
-jobs:
-  # ...
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: jobs.build.result == 'success'
-
-```
-
-GitHub has a full list of contexts that can be used in conditional statements 
-[here](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs).
-
-Once you commit a workflow file, it will have to be on the main branch in order to run - workflow files in an alternative
-branch will not run, including in PRs. 
-
-You can read more about GitHub Actions [here](https://docs.github.com/en/actions).
-
-## 7. Alternatives to GitHub
-There are plenty of alternatives to GitHub itself, and there may be several reasons why you choose to not host your code
-on GitHub. On some occasions it's down to preference, but there is also a movement to [give up GitHub entirely](https://giveupgithub.org)
-due to concerns about Copilot being trained on GitHub projects without developers' consent, ties to the ICE in the USA, 
-and the site itself being proprietary software that people have to rely on rather than being able to choose for themselves.
-
-Although still proprietary, some alternatives you may have heard of include:
-- [Gitlab](https://about.gitlab.com/)
-- [BitBucket](https://bitbucket.org)
-
-You can also self-host your Git hosts:
-- [Gitlab Community Edition](https://gitlab.com/rluna-gitlab/gitlab-ce) - this one isn't proprietary.
-- [Gitea](https://about.gitea.com/)
-
-## 8. Final Thoughts
-There's numerous features part of sites like GitHub and Gitlab that make contributing to open source projects far easier
-and more streamlined. However, there's still plenty of things I haven't gone over - feel free to explore them in your own
-time:
-- Documentation for software, either using GitHub's wiki feature, [Gitbook](https://www.gitbook.com/) and many others.
-- Adding maintainers to a repository, or requiring code reviewers through the CODEOWNERS file.
+# Introduction
+
+So what is Open Source all about? Is it significant, why would you want to contribute, and if so, how can you contribute?
+
+Before getting into the details of all of this, it's worth pointing out that you'll want to have gone over the Git Basics covered in [Jacob's talk](https://missingsemester.afnom.net/2025/version-control/) this year. Otherwise, it's going to be tricky to understand what we're trying to achieve here.
+
+Open source software (OSS) is software where users have the right to change and distribute the software and its source code to anyone for any purpose. Usually, this means that development is done in public, versus proprietary software where the code is developed by a company or individual and kept private. A large proportion of the most used software in the world is either open source or built on an open source base. Perhaps the most obvious success in OSS is Linux, which powers everything from the world's biggest websites to smart fridges. Try going to the "3rd party licenses" or "Legal notices" section in your phone settings and see how long the page is.
+
+When people talk about contributing to open source, what exactly do they mean? Generally, they're talking about any work on or around open source software. This doesn't just mean code, it could be documentation, managing open issues and bugs, planning the future of the project and more.
+
+So there's many reasons you might want to contribute. Maybe there's a piece of software written that you'd like to share. Maybe there's a really annoying bug in some software you use that you'd like to help report, diagnose, or fix. Maybe there's some project you find really cool and you want to help it succeed in its vision.
+
+Most open source projects are very welcoming to new contributors. Often, everyone already working on the project is also a volunteer and so they're happy to see new people interested in the project. Be careful about starting by trying to contribute to the biggest projects. They usually have a well defined (and often non-obvious) process for most things due to their size, and it can be very difficult to get it right. However this is not the case the vast majority of the time, I only mention this as trying to get started with open source by contributing to the Linux kernel would be a real trial by fire.
+
+Also, occasionally you will come across projects where the source code is open, but it is developed mostly by a corporate entity or similar where external contributors are less welcome.
+
+# Git forges
+
+When you have a project that multiple people are working on, it's useful to have a collaborative version control system that stores code and (usually) documentation. For this most projects use Git, which you hopefully are vaguely familiar with from previous sessions. Having a bare Git repository that you only interact with on the command line is not the best user experience however. Most projects will want a website which provides an interface to view the code repository, which often also serves as a landing page for the project that others can view in their web browser to learn a bit about what the project is.
+
+When you combine a Git repository web interface with features designed around collaboration, you have what's called a Git forge. Key features include the ability to track issues on the project, track proposed code changes from other developer's branches (often called pull requests or merge requests), create releases with additional notes around what's changed, CI/CD pipeline support and management of what users have write access to the repository.
+
+By far, the most popular Git forge in use today is GitHub, which provides a featureful and easy to use interface. You may have also heard of other forges such as GitLab or Codeberg. If you like self hosting, there are many options for running your own Git forge (cgit, Forgejo, Gitea).
+
+## Mirrors
+
+Git forges are a single point of failure, but Git repositories are just a collection of files. Therefore quite often you will find software mirrored to other forges. Mirroring is where an up to date copy of the repository is maintained at another location (usually another forge). The important thing to know about mirrors is that if you want to contribute, you need to locate the original source. Pull requests or issues submitted against a mirror repository will usually be ignored, or if you're lucky, closed with a message telling you where to go. Mirrors almost always have a note in the description letting you know where the original source is.
+
+![An example of a mirror to GitHub](/2025/files/git-mirror-example.png)
+
+
+
+# Operating in open source projects
+
+Open source projects all have their own community feel and conventions, but there are a few common bits of etiquette which are important to appreciate.
+
+The most important point is that everyone is a volunteer. You didn't pay anything for this software, or for support on it, and everyone working on it is doing so purely as a volunteer. Maybe the project author receives a few £s a month of donations, but it's almost never a significant amount that allows them to take away time from working a normal job. Since nobody owes you anything, it's incredibly important to be polite and respectful of everyone's time. For example, if you're asked to go and debug an issue yourself, it's not because the project maintainer doesn't want to help you. They could look into it themselves, but they won't have the time to do that for every issue reported. So give it your best honest attempt and report back with exactly how it went. Always feel free to ask questions, but don't expect to sit back and have someone else do all the work for you.
+
+Likewise, when you report an issue or send off some code for review, remain patient. It's likely that it will be a while before someone has the free time to look at it, especially if there are higher priority issues with the project that need to be resolved first. If the project has a sole author, it might be as simple as them being on holiday for a few weeks.
+
+As part of taking care when contributing, it's also important to take some time to understand how the project maintainers want people to contribute. Most projects with more than a few contributors will have a contributors guide or wiki which will guide you on the process to follow as well as smaller things such as coding conventions. It's also worth taking a look around existing issues and pull requests that are open or recently closed. This will give you an idea of how other people are contributing; you probably want to do something similar.
+
+## A.I...
+
+Unfortunately at this point I am forced to mention generative AI. I strongly suggest against using "Agents" to find or solve issues and then sending their changes as a pull request. If they succeed at solving the problem, they usually do so in a way that's incompatible with the rest of the project in terms of style and/or structure. AI generated issue reports and pull requests waste a lot of maintainer time. The rule of thumb: if you can't be bothered to write it, why should a maintainer bother to read it?
+
+If you do solve a problem using a model and you've manually reviewed it yourself to be sure of quality, I would still recommend disclosing the source of change in the description of your pull request. This is important context for maintainers, as the kind of mistakes models make are often not things you'd usually need to look out for when reviewing. If attributing code to the model which wrote it personally bothers you, you should consider why you feel uncomfortable about it. Your personal moral framework is in need of review.
+
+# Contributing to open source projects    
+
+## Issues
+
+Issues are where problems are tracked in open source projects. This most often takes the form of specific bugs in the software. However, issues are also often used for support tickets (help, I don't know how to use/do this) and feature requests (Can you add this please?). If you're in either of those categories, have a look around the project on the forge to see where the right place to report them are. Some projects use the "Discussions" feature for this, and some prefer you to bring them up externally e.g. in a chat channel or on a separate forum. You may also see issues being used to track longer term goals within a project.
+
+A good issue report makes all the difference. As mentioned, most maintainers are busy and short on time. So if you take the time to write a good report and make it easy for the maintainer to respond, the chance you get a response is much better.
+
+### Anatomy of a good issue
+
+If the project provide an issue reporting template, make sure to read this first and stick to it. It will include all the important fields that the maintainers want to see.
+
+- State exactly what the problem is
+    - State exactly what you're observing
+- State exactly what you need to do to make the problem happen
+    - If you don't know, try to see if you can make it happen again yourself and figure out what it is
+    - If you can't figure out a specific cause but the issue still continues to occur, it's still worth reporting the issue but note that you don't have a clear way to reproduce it
+- If the problem only started happening recently, determine exactly what version of the software the problem started happening in
+    - To do this try older versions until the problem resolves
+    - This is annoying and time consuming, but it saves the maintainer that same time
+- Include all relevant factual information you can think of
+    - Anything that seemed strange or unusual behaviourally is worth mentioning
+- If the software crashes and generates crash dumps or logs, make sure to attach these to the report
+- Include screenshots or video recordings of the issue if possible
+    - The cause of the issue might be something you don't realise is significant and don't note down, but is clear to a project maintainer watching a recording
+- Try to avoid speculating on possible causes unless you're sure that it's relevant
+    - Unless you know the project well, it's likely there's context you're missing
+
+## Pull requests
+
+Pull (or merge) requests are for when you have a change you want to "pull" or "merge" into the repository. If this was a project you were working on by yourself, you'd probably choose to push it straight to the main branch. There's two reasons why you can't do this in collaborative projects. The first being that unless you're a project maintainer, you won't have the permission to. The second is that you'll want to give other people working on the project (and automated checks) a chance to review your changes so you can discuss and improve them.
+
+To submit a PR, you first need to have your own copy of the repository on the Git forge you're using. This is usually referred to as "forking" the repository, and your own copy is called the "fork". The reason behind is that when you make your own copy, this copy is a static snapshot of the repository. Any changes you make afterward form an alternative history to the future commits in the original repository. So in that sense, the timeline of Git commits has forked into two, one in the original repository and one in yours. Another consequence is that any changes made in the future in the original repository won't appear in yours, unless you specifically pull them in. 
+
+Once you've got a fork, you can push your changes to it (since the fork is yours, you have full access to it). Then, you can use the Git forge web interface to create a pull request. Here you choose the branch you want to merge in (the one you just pushed to), and the branch you want to merge it into (probably the main branch). The name of your branch doesn't matter and can be anything. I'd recommend creating a new branch on your fork for every change you want to make. It will be much easier to manage things.
+
+At this point, you've got to write the PR description. Here you want to lay out what your changes achieve. The maintainers will read the code, so you don't to describe it, though if the change is large, an overview of the architecture might be useful. The most important part to include is what decisions you made and why you made them; it's very useful to see what other options someone considered when implementing a new feature or fixing a bug.
+
+## Review
+
+The next part of making a change to a project is review. If there are automated tests, you'll be able to see what's passing and failing. You'll want to resolve all the failing tests, and usually if you've tested your solution locally it will be easy things to fix e.g. the automatic code formatter needs to be run.
+
+Generally you'll receive two kinds of feedback. First, an overall response to what you've proposed. If the reviewer isn't happy with the overall approach to solving the problem they'll note it here, and you can use their feedback to further revise your solution. Secondly, you'll receive comments on specific lines of the code with questions or suggestions. You'll want to consider each suggestion and integrate it if you think it's a good idea. Review is a two way street and all maintainers know this too, so if you disagree with a suggestion, push back and explain why (politely of course). Once you've made changes you think are needed, you can make another commit and push it to your branch. The pull request will automatically update with the changes you've made.
+
+Once a reviewer is happy with your PR, generally they'll approve it. This is a signal that your PR is good to go. Every project has a different standard for review, some require just one approval before they'll merge changes, and others will require multiple reviewers. The larger the maintainer team, and the larger the change you're making, the more review you should expect. The maintainers will merge the pull request once it's met their review standard. If your PR has been waiting for a while on a reviewer or has approvals but hasn't been merged, consider posting a message in the pull request discussion thread asking what the status is and whether there is anything you can do to help.
+
+## Conflict resolution and merge/rebase flow
+
+If you've been working on a change for a while, or if you haven't pulled the upstream repository into your fork before making your changes, there's a chance that the sections of code that you've changed have also been changed in the upstream repository. If you think of where your fork sits in the history, this means that the file has changed in both arms of the fork. In this situation we now have a conflict: how do we resolve the fact that the file has changed in both histories. What should the output of merging the histories be?
+
+The Git forge will let you know if there's a conflict. In this scenario you have two distinct options: you can merge the new upstream into your branch, or you can rebase your branch onto the upstream.
+
+Most of the time, merging is the easier option. In this case, you resolve all of the conflicts at once inside the merge commit. So the end result is that you get one extra commit on the end of your branch that brings your branch up to date with the upstream. If conflicts happen again (for example if a new one appears while you're waiting for review), you can repeat the process of merging the upstream branch into your branch.
+
+The alternative is rebasing.
+
+<div class="note">
+It's very important to recognise that rebasing re-writes the history of a branch. Never rebase a branch other people are working on, as if you push it to the remote everyone with a local copy of that branch will still be on the previous history. You will cause them much pain trying to figure out what has happened when they try to push.
+</div>
+
+A rebase works by
+1. Finding a shared ancestor between the two branches (probably your fork point)
+2. Hard resetting your branch to the branch you're rebasing onto (probably the upstream)
+3. Replaying all of the commits between the shared ancestor and the previous tip of your branch on your new branch
+
+As the commits are replayed, some of them won't be able to be applied cleanly, as the commit changed code which has already been changed on this new branch. For each commit that has conflicts, the rebase will stop, and you will need to resolve all the conflicts. This may mean that when rebasing you need to resolve conflicts many times, as opposed to just once when merging.
+
+However, there are a few advantages to rebasing. Being able to handle the conflicts commit-by-commit often makes it easier to see the correct way to resolve them. Additionally, after the rebase, there are no additional commits in the history so it can be easier to follow.
+
+Generally I recommend merging if you're new to Git. If it goes wrong it's much easier to try again, whereas with rebasing you permanently rewrite history and have to work quite hard to get it back (see `git reflog`). Consider rebasing if you have a well managed commit history and you want to avoid having merge commits.
+
+### Keeping your branch in shape
+
+Another thing rebasing is useful for is cleaning up your local commit history (before you open your PR). With an interactive rebase (`git rebase -i`), you can change the commit messages, re-order, combine and split out commits. So if you made many quick commits when developing or you neglected to write good commit messages, you can rebase to clean things up. I recommend making a copy of the branch you're working on before rebasing. Then if something goes wrong, you can hard reset your current branch to the copy and try again. Any in-progress rebase can also be aborted (`git rebase --abort`) if you get the feeling that it's not going the way you wanted it to.
+
+# Setting up a new project and accepting contributions
+
+Let's suppose you have a new project and you want to set it up so that other people can contribute. What things do you need to get started?
+
+The most important thing is the `README`, which is what every Git forge shows on the landing page of the repository. Describe what the project is, what it does, some cool features and provide usage examples or instructions on how to run/use it. Remember that this is the first impression your project will make, so if you want to attract users it's worth making it look nice.
+
+You may want to add an issue template and a contribution guide to help people who are new.
+
+You also need to choose a license for your code, which controls what freedoms you grant users. Much ink has been spilled on what licenses are best, but [Choose a license](https://choosealicense.com/) is a good summary. Or a bit more humorously, take a look at [Misha's license tier list](https://migam830.github.io/2025/04/21/software-license-tier-list.html).
+
+After that, if people are interested they will open issues and pull requests. This time it's your job to be the reviewer :) 
+
+# Continuous integration and delivery (make the boring stuff automatic!)
+
+Once you've got a project going, you'll find you spend a non-trivial amount of time testing code works before you merge it into your main branch. CI/CD allows you to automatically test and build ready-to-go artefacts automatically on each commit, release or pull request (as appropriate). It's absolutely worth having on your own projects and will save a lot of time in the long run preventing bad code from making its way into the repository. You'll also find most other serious projects using it, so it's worth knowing how it works and how to operate it. However, I won't dwell on this further here since Richard already did an excellent job covering CI/CD in [his talk](https://missingsemester.afnom.net/2025/using_cli_tools_for_work/#continuous-integration-and-delivery).
+
+# Git gotchas in open source
+
+There's a few gotchas which you should be aware of that apply whenever Git commits leave your device. Firstly, every commit must have a name and email on it. If you don't want to tie your full name to your commits, you might want to choose an alias. Also, you may not want to publish your personal email address to everyone. Most Git forges include an option to hide your email address, and provide you with a noreply address that you can copy to your git config e.g. `57713959+freddie-a@users.noreply.github.com`. You can have a look at what your current username and email are with `git config user.name` and `git config user.email`.
+
+Another thing to be careful of is secrets. Sometimes you will want to use tokens or passwords in your repository, particularly for CI. An example might be a token that allows deploying a Python package to the Python Packaging Index as your user, so that your CI can deploy new versions to the packaging index automatically. Never put these secrets into the repository, as they will be public to everyone and will be exploited for evil. Also remember that the Git history will show any tokens that existed at any point, so if a token is accidentally pushed you need to revoke it immediately.
+
+The correct way to secure secrets like this is in the Git forge, which will provide a place to store secrets so that that are only accessible to CI through environment variables. Securing secrets in this way is tricky and is a source of constant exploits, sometimes taking over major repositories. Be careful!
+
+Do not store API tokens for 3rd party services in your repository. For example, suppose you are writing a weather app, and to get the weather data you are using an API which requires a token. You do not want to be responsible for the usage cost of all of your users, and also people will be able to extract the token and use it for other things. Although it makes setting up the software more painful, the only sensible way to solve this is to require each user to get their own API token.
+
+The last important thing to remember is the immutability of Git. I already mentioned a bit earlier how the history can be looked through by anyone, and so everything that has ever been in the repository since it's creation is retrievable. Building on this, it's also important to remember that once something is in the main branch of a project, you can't take it out. There's no editing previous commits, instead you'll have to do another commit to fix it. So it's worth double checking all commits before you push them, as it can be a little embarrassing if a new user has a look at your commit history and sees it filled of fixes for silly mistakes that should have never been pushed in the first place.
+
+# Conclusion
+
+Though I've written far too many words on this topic (sorry!), getting started with open source is really not too hard. You will find that people are very welcoming and look forward to seeing new contributions. And you might even end up meeting some of your fellow contributors at places like FOSDEM and make some new friends :)
+
