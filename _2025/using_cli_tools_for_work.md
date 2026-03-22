@@ -6,6 +6,10 @@ ready: true
 hide: false
 ---
 
+<div class="note">
+The slides for my lecture are <a href="/static/media/2025/2026-03-16-missing-semester-lecture-14.pdf">here</a> (PDF).
+</div>
+
 ## Introduction
 
 Welcome! This talk covers how many of the tools and ideas that you have been introduced to can be used in an industrial setting.
@@ -305,7 +309,7 @@ Rebasing is one of the most powerful features of Git and it is sadly underused a
 
 Adding lots of commits at once from a branch pollutes the history. You can [use Magit to clean up small commits](https://systemcrafters.net/mastering-git-with-magit/using-interactive-rebase/) via interactive rebasing, which is helpful for combining tiny changes together. In general, *each commit should be a small, easily-reversible change*. Ideally a PR should be a single commit, but this isn't always a good idea. You can also choose to [squash commits on merge](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests) instead of making a merge commit, but this results in losing information that may be present in the commit message that could be valuable to someone looking through the history later.
 
-Related to this is the need for *descriptive commit messages*. If you are in control of a project, I recommend reading the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec and sticking to it. If you are contributing to another project, follow the style that they use - it is better to keep everything consistent, even if you lose out on a standardised approach like Conventional Commits. It is much easier to write descriptive commit messages if you have are making *small, idempotent changes*.
+Related to this is the need for *descriptive commit messages*. If you are in control of a project, I recommend reading the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec and sticking to it. If you are contributing to another project, follow the style that they use - it is better to keep everything consistent, even if you lose out on a standardised approach like Conventional Commits. It is much easier to write descriptive commit messages if you are making *small, idempotent changes*.
 
 Another really useful way of standardising Pull Requests is to use pre-commit hooks. These are programs that are run before any commit which can prevent a commit from taking place before they have all run successfully. I recommend installing [pre-commit](https://pre-commit.com/) and setting up a `.pre-commit-config.yaml` file with standard hooks. There are endless possibilities e.g.:
 
