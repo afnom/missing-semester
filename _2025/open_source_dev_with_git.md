@@ -8,19 +8,21 @@ hide: false
 
 # Introduction
 
-So what is Open Source all about? Is it significant, why would you want to contribute, and if so, how can you contribute?
+So what is Open Source all about? Is it significant? Why would you want to contribute? And if so, how can you contribute?
 
-Before getting into the details of all of this, it's worth pointing out that you'll want to have gone over the Git Basics covered in [Jacob's talk](https://missingsemester.afnom.net/2025/version-control/) this year. Otherwise, it's going to be tricky to understand what we're trying to achieve here.
+Before getting into the details of all of this, it's worth pointing out that you'll want to have gone over the Git Basics covered in [Jacob's talk](https://missingsemester.afnom.net/2025/version-control/) this year. Otherwise, it might be tricky to understand what we're trying to achieve here.
 
-Open source software (OSS) is software where users have the right to change and distribute the software and its source code to anyone for any purpose. Usually, this means that development is done in public, versus proprietary software where the code is developed by a company or individual and kept private. A large proportion of the most used software in the world is either open source or built on an open source base. Perhaps the most obvious success in OSS is Linux, which powers everything from the world's biggest websites to smart fridges. Try going to the "3rd party licenses" or "Legal notices" section in your phone settings and see how long the page is.
+Open source software (OSS) is software where users have the right to change and distribute the software and its source code to anyone for any purpose. Usually, this means that development is done in public, versus proprietary software where the code is developed by a company or individual and kept private. A large proportion of the most used software in the world is either open source or built on an open source base. Perhaps the most obvious success in OSS is Linux, which powers everything from the world's biggest websites to smart fridges. Try going to the "3rd Party Licenses" or "Legal Notices" section in your phone settings and see how long the page is.
 
-When people talk about contributing to open source, what exactly do they mean? Generally, they're talking about any work on or around open source software. This doesn't just mean code, it could be documentation, managing open issues and bugs, planning the future of the project and more.
+When people talk about contributing to open source, what exactly do they mean? Generally, they're talking about any work on or around open source software. This doesn't just mean code, it could be documentation, managing issues and bugs, planning the futures of projects and more.
 
-So there's many reasons you might want to contribute. Maybe there's a piece of software written that you'd like to share. Maybe there's a really annoying bug in some software you use that you'd like to help report, diagnose, or fix. Maybe there's some project you find really cool and you want to help it succeed in its vision.
+So there are many reasons you might want to contribute. Maybe there's a piece of software written that you'd like to share so others can download, use and extend it. Maybe there's a really annoying bug in some software you use that you'd like to help report, diagnose, or fix. Maybe there's a project you find really cool and you want to help it succeed in its vision.
 
 Most open source projects are very welcoming to new contributors. Often, everyone already working on the project is also a volunteer and so they're happy to see new people interested in the project. Be careful about starting by trying to contribute to the biggest projects. They usually have a well defined (and often non-obvious) process for most things due to their size, and it can be very difficult to get it right. However this is not the case the vast majority of the time, I only mention this as trying to get started with open source by contributing to the Linux kernel would be a real trial by fire.
 
-Also, occasionally you will come across projects where the source code is open, but it is developed mostly by a corporate entity or similar where external contributors are less welcome.
+Also, occasionally you will come across projects where the source code is open, but it is developed mostly by a corporate entity or similar where external contributors are less welcome. For example, some parts of android are very hard to contribute to if you don't work at Google, even though they're open source, as the development happens behind closed doors and then gets released quarterly.
+
+You'll also run into software which is source available but not open source - that is, the source code is available for download but comes with restrictions such as no right to distribute compiled executables. [Aseprite](https://www.aseprite.org) is a good example of this. Sometimes these projects accept contributions, but if they do the contributor almost always must release all rights over their contribution to the project owner. If you come across a project with a Contributor License Agreement (CLA), this is almost certainly what's happening.
 
 # Git forges
 
@@ -28,7 +30,7 @@ When you have a project that multiple people are working on, it's useful to have
 
 When you combine a Git repository web interface with features designed around collaboration, you have what's called a Git forge. Key features include the ability to track issues on the project, track proposed code changes from other developer's branches (often called pull requests or merge requests), create releases with additional notes around what's changed, CI/CD pipeline support and management of what users have write access to the repository.
 
-By far, the most popular Git forge in use today is GitHub, which provides a featureful and easy to use interface. You may have also heard of other forges such as GitLab or Codeberg. If you like self hosting, there are many options for running your own Git forge (cgit, Forgejo, Gitea).
+By far, the most popular Git forge in use today is [GitHub](https://github.com), which provides a featureful and easy to use interface. You may have also heard of other forges such as [GitLab](https://gitlab.com) or [Codeberg](https://codeberg.org/). If you like self hosting, there are many options for running your own Git forge ([cgit](https://github.com/woodsts/cgit), [Forgejo](https://forgejo.org), [Gitea](https://about.gitea.com)).
 
 ## Mirrors
 
@@ -58,13 +60,13 @@ If you do solve a problem using a model and you've manually reviewed it yourself
 
 ## Issues
 
-Issues are where problems are tracked in open source projects. This most often takes the form of specific bugs in the software. However, issues are also often used for support tickets (help, I don't know how to use/do this) and feature requests (Can you add this please?). If you're in either of those categories, have a look around the project on the forge to see where the right place to report them are. Some projects use the "Discussions" feature for this, and some prefer you to bring them up externally e.g. in a chat channel or on a separate forum. You may also see issues being used to track longer term goals within a project.
+Issues are where problems are tracked in open source projects. This most often takes the form of specific bugs in the software. However, issues are also often used for support tickets (Help, I don't know how to use/do this) and feature requests (Can you add this please?). If you're in either of those categories, have a look around the project on the forge to see where the right place to report them are. Some projects use the "Discussions" feature for this, and some prefer you to bring them up externally e.g. in a chat channel or on a separate forum. You may also see issues being used to track longer term goals within a project.
 
 A good issue report makes all the difference. As mentioned, most maintainers are busy and short on time. So if you take the time to write a good report and make it easy for the maintainer to respond, the chance you get a response is much better.
 
 ### Anatomy of a good issue
 
-If the project provide an issue reporting template, make sure to read this first and stick to it. It will include all the important fields that the maintainers want to see.
+If the project provides an issue reporting template, make sure to read this first and stick to it. It will include all the important fields that the maintainers want to see.
 
 - State exactly what the problem is
     - State exactly what you're observing
@@ -90,7 +92,7 @@ To submit a PR, you first need to have your own copy of the repository on the Gi
 
 Once you've got a fork, you can push your changes to it (since the fork is yours, you have full access to it). Then, you can use the Git forge web interface to create a pull request. Here you choose the branch you want to merge in (the one you just pushed to), and the branch you want to merge it into (probably the main branch). The name of your branch doesn't matter and can be anything. I'd recommend creating a new branch on your fork for every change you want to make. It will be much easier to manage things.
 
-At this point, you've got to write the PR description. Here you want to lay out what your changes achieve. The maintainers will read the code, so you don't to describe it, though if the change is large, an overview of the architecture might be useful. The most important part to include is what decisions you made and why you made them; it's very useful to see what other options someone considered when implementing a new feature or fixing a bug.
+At this point, you've got to write the PR description. Here you want to lay out what your changes achieve. The maintainers will read the code, so you don't have to describe it, though if the change is large, an overview of the architecture might be useful. The most important part to include is what decisions you made and why you made them; it's very useful to see what other options someone considered when implementing a new feature or fixing a bug.
 
 ## Review
 
@@ -133,7 +135,7 @@ Another thing rebasing is useful for is cleaning up your local commit history (b
 
 Let's suppose you have a new project and you want to set it up so that other people can contribute. What things do you need to get started?
 
-The most important thing is the `README`, which is what every Git forge shows on the landing page of the repository. Describe what the project is, what it does, some cool features and provide usage examples or instructions on how to run/use it. Remember that this is the first impression your project will make, so if you want to attract users it's worth making it look nice.
+The most important thing is the `README.md`, which is what every Git forge shows on the landing page of the repository. Describe what the project is, what it does, some cool features and provide usage examples or instructions on how to run/use it. Remember that this is the first impression your project will make, so if you want to attract users it's worth making it look nice.
 
 You may want to add an issue template and a contribution guide to help people who are new.
 
