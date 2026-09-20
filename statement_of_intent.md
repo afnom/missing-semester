@@ -31,7 +31,7 @@ We are targeting all students who would like to gain more familiarity with Linux
 
 Everything about MS will be organized through the [Missing Semester Discord Server](https://discord.gg/jCWRjjA9gw).  If you have any questions about either the structure or content of MS, please ask there.
 
-There will be 5 lectures to start with; you can read more about them and see the schedule on the [homepage of the missing semester site](https://missingsemester.afnom.net).
+There will be 10 lectures to start with in the first semester; you can read more about them and see the schedule on the [homepage of the missing semester site](https://missingsemester.afnom.net).
 
 Each lecture is being run by one or more CS students.  The contents of the lectures will be left to whoever is running the session; they will be free to shape the lecture based on what they think is most relevant / useful.
 
@@ -51,6 +51,6 @@ If you experience any behavior that makes you uncomfortable, please contact the 
 
 ### The Future
 
-This will be our second academic year running Missing Semester!  We've slightly changed the sessions we're running from what we've learnt running MS last year. As we get through the teaching term we may continue to make further changes, so be sure to keep updated by checking both the Discord and the website!.
+This will be our fourth academic year running Missing Semester!  We've slightly changed the sessions we're running from what we've learnt running MS over the past few years. As we get through the teaching term we may continue to make further changes, so be sure to keep updated by checking both the Discord and the website!
 
 We may record some of our sessions but this will be up to the preference of individual speakers.
