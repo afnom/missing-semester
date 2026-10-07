@@ -2,7 +2,7 @@
 layout: lecture
 title: "#1: Course overview + the shell"
 date: 2026-10-08
-ready: false
+ready: true
 hide: false
 video:
   aspect: 56.25
@@ -34,7 +34,7 @@ In essence, we try to cover everything you need to get started as computer scien
 
 
 The lectures itself are focused on a
-[particular topic]({{'/2024/' | relative_url}}), and most of them are largely independent (with the exception of the different levels of working with the shell). Nonetheless, as the semester goes on we will presume that you are familiar with the content from the earlier lectures. We have lecture notes online, but there will be a lot of content covered in class (e.g. in the form of demos) that may not be in the notes.
+[particular topic]({{'/2026/' | relative_url}}), and most of them are largely independent (with the exception of the different levels of working with the shell). Nonetheless, as the semester goes on we will presume that you are familiar with the content from the earlier lectures. We have lecture notes online, but there will be a lot of content covered in class (e.g. in the form of demos) that may not be in the notes.
 
 
 The original MIT lectures recorded the lectures and posted the recording online; while our version will be different, they can still provide a good overview of covered topics.
