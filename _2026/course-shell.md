@@ -29,7 +29,7 @@ We want to teach you how to make the most of the tools you know, show you new to
 # Class structure
 
 The class consists of multiple 1-hour lectures/hack'n'tell sessions running during the first and beginning of second term this year.
-For now, we have 14 exciting sessions lined up, introducing you the shell, editors, version control and more.
+For now, we have 10 exciting sessions lined up, introducing you the shell, editors, version control and more.
 In essence, we try to cover everything you need to get started as computer scientist frequently working on the command line!
 
 
