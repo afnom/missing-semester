@@ -2,7 +2,7 @@
 layout: lecture
 title: "#2: Intermediate Shell"
 date: 2026-10-15
-ready: false
+ready: true
 hide: false
 ---
 <div class="note">
