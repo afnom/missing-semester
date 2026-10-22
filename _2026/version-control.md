@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#3: Version Control with Git"
+title: "#3: Version Control with Git + 🍕"
 date: 2026-10-22
 ready: true
 hide: false
