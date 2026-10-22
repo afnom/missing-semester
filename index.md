@@ -59,7 +59,7 @@ Please note -- these links pertain only to the original MIT content which may ha
 
 Video recordings (of the original MIT lectures) are available [on YouTube](https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J).
 
-You can find posts and discssions on:
+You can find posts and discussions on:
 
  - [Hacker News](https://news.ycombinator.com/item?id=22226380)
  - [Lobsters](https://lobste.rs/s/ti1k98/missing_semester_your_cs_education_mit)
