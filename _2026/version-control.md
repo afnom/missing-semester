@@ -2,7 +2,7 @@
 layout: lecture
 title: "#3: Version Control with Git"
 date: 2026-10-22
-ready: false
+ready: true
 hide: false
 video:
     aspect: 56.25
