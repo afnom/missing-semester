@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#8: Introduction to LaTeX"
+title: "#7: Introduction to LaTeX"
 date: 2026-11-26
 ready: false
 hide: false

@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#7: Advanced Shell"
+title: "#6: Advanced Shell"
 date: 2026-11-19
 ready: false
 hide: false

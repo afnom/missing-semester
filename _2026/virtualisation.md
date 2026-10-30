@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#6: Containers and Virtualisation"
+title: "#5: Containers and Virtualisation"
 date: 2026-11-12
 ready: false
 hide: false

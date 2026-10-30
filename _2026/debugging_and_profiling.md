@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#9: Debugging and Profiling"
+title: "#8: Introduction to IDEs + Debugging and Profiling"
 date: 2026-12-03
 ready: false
 hide: false

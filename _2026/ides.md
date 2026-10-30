@@ -3,7 +3,7 @@ layout: lecture
 title: "#5: Introduction to IDEs"
 date: 2026-11-05
 ready: false
-hide: false
+hide: true
 ---
 
 ## Context: Using IDEs

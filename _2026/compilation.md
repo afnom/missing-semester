@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "#10: Getting Stuff you Download to Compile"
+title: "#9: Getting Stuff you Download to Compile"
 date: 2026-12-10
 ready: false
 hide: false
