@@ -23,7 +23,7 @@ Programmers have [strong opinions](https://en.wikipedia.org/wiki/Editor_war) abo
 
 Also, not all text editors are equal:
 
-![A selection of "editor learning curves", that presumably graph complexity over time. Emacs' line spirals nonsensically.](./files/editor_curves.png)
+![A selection of "editor learning curves", that presumably graph complexity over time. Emacs' line spirals nonsensically.](../files/editor_curves.png)
 
 Today I'll be talking about Emacs - characterised in this diagram as being a little esoteric, perhaps not entirely unfairly - a powerful graphical and terminal-based editor. It is perhaps one of very few exceptionally old editors - first released in 1984 - that still sees modern development. Despite its age, it has a very capable editing paradigm and support for modern affordances such as the latest code analysis tools.
 
@@ -31,7 +31,7 @@ Despite this, you may find Emacs not to your taste. Many people don't! Do not fr
 
 ### Why Emacs? Why not something shiny and modern?
 
-![A comic showing people arguing over text editors. One describes flipping bits manually through an absurd process, before another remarks that Emacs has that functionality built in.](./files/real_programmers.png)
+![A comic showing people arguing over text editors. One describes flipping bits manually through an absurd process, before another remarks that Emacs has that functionality built in.](../files/real_programmers.png)
 
 You're probably wondering why I'm talking about Emacs here; certainly it is less popular than the venerable (and also excellent!) Vim, whose advocates will extol the virtues of efficient modal editing and a minimal interface. Emacs has neither of these things. You might have heard of or used Visual Studio Code, arguably one of the most popular text editors currently in use, with a real, shiny graphical interface and the financial backing of Microsoft; certainly Emacs has neither of these things either.
 
@@ -185,7 +185,7 @@ I touch here briefly on LSP (Language Server Protocol) support in Emacs. LSP pow
 
 One thing that Emacs, like Vim, excels at is remote editing.
 
-![img](./files/astral_ssh.jpg "A figure from a book, captioned "Remote login is a lot like astral projection". It depicts a person at a computer magically projected to be sitting in front of another.")
+![img](../files/astral_ssh.jpg "A figure from a book, captioned "Remote login is a lot like astral projection". It depicts a person at a computer magically projected to be sitting in front of another.")
 
 #### With the textual interface
 
