@@ -63,6 +63,20 @@ p {
   margin-bottom: 1rem;
 }
 
+blockquote {
+  margin: 0 0 1rem;
+  padding: 0.25rem 0 0.25rem 1.2rem;
+  border-left: 4px solid #aaa;
+}
+
+blockquote p {
+  color: #666;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
 strong {
   font-weight: bold;
 }
@@ -364,6 +378,14 @@ input[type=checkbox]:checked ~ .menu-label:after {
     h1, h2, h3, h4, h5, h6 {
         color: #eee;
       }
+    
+    blockquote {
+        border-left-color: #666;
+    }
+
+    blockquote p {
+        color: #aaa;
+    }
 
     #nav-bg, a#logo {
       color: #202020;
