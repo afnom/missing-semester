@@ -2,7 +2,7 @@
 layout: lecture
 title: "#5: Containers and Virtualisation"
 date: 2026-11-12
-ready: false
+ready: true
 hide: false
 ---
 
@@ -91,6 +91,11 @@ perform the isolation?
   for isolating processes from each other, called namespaces, and mechanisms
   for controlling access to shared resources.
 
+<figure>
+    <img src="../files/container_vm_diagram.png">
+    <figcaption>A diagram showing the rough structure of containers vs virtual machines.</figcaption>
+</figure>
+
 That's the main difference, but this has some big implications on what they up
 looking like:
 
@@ -106,6 +111,7 @@ looking like:
 
 Some common software for virtualisation:
 - VirtualBox, VMWare, QEMU, firecracker
+
 vs some common software for containerisation:
 - Docker, podman, containerd, systemd
 
@@ -260,7 +266,7 @@ minimal):
     Digest: sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b
     docker.io/library/alpine:latest
 
-We can list our images with [`docker images`](https://docs.docker.com/engine/reference/commandline/image_ls/):
+We can list our images with [`docker images`](https://docs.docker.com/engine/reference/commandline/image_ls/) (or `docker image ls`):
 
     $ docker images
     REPOSITORY                    TAG       IMAGE ID       CREATED        SIZE
@@ -409,6 +415,7 @@ using the ID/name of our container:
     172.17.0.1 - - [30/Jan/2024:09:56:06 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/8.5.0" "-"
     ...
 
+You may wish to use the `-f` argument, which "follows" the logs - useful if you want to continually monitor the logs, e.g. to watch a request come in. 
 
 When we're done with our server, we can stop it using [`docker stop`](https://docs.docker.com/engine/reference/commandline/container_stop/):
 
